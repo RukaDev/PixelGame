@@ -40,6 +40,9 @@
 
 <script>
 
+
+// Just make seperate htmls for better organization
+
 function makeScripts(names) {
     for (let i = 0; i < names.length; i++) {
         var script = document.createElement('script')
@@ -70,6 +73,7 @@ switch (localStorage.getItem('GameName')) {
             '/js/helper/factory.js',
             '/data/collisions/about.js',
             '/data/zones/keypickup.js',
+            '/data/zones/keydropoff.js',
             '/js/classes/boundary.js',
             '/js/classes/sprite.js',
             '/js/games/service.js',

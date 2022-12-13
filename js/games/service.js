@@ -99,7 +99,8 @@ const weaponTest = new Sprite({
 // Zone data
 const boundaries = new Zone(collisions)
 const keyZones = new Zone(keyZoneData)
-const moveables = [background, ...boundaries.zone, foreground, ...keyZones.zone]
+const keyDropZones = new Zone(keyDropData)
+const moveables = [background, ...boundaries.zone, foreground, ...keyZones.zone, ...keyDropZones.zone]
 
 // Extra classes
 const controller = new Controller()
@@ -114,13 +115,21 @@ function drawPre() {
     keyZones.draw()
 }
 
-const toDraw = [background, player, foreground, boundaries, keyZones]
+const toDraw = [background, player, foreground, boundaries, keyZones, keyDropZones]
 
 function drawer() {
     toDraw.forEach((element) => {
         element.draw()
     })
 }
+
+function removeFromArray(arr, value) {
+    var index = arr.indexOf(value);
+    if (index > -1) {
+        arr.splice(index, 1);
+    }
+}
+  
 
 // Things that are 'static'
 function drawPost() {
@@ -130,7 +139,16 @@ function drawPost() {
     })
 }
 
-var found = false
+var holding = false
+function toolPickup() {
+    holding = true
+    toDraw.push(weaponTest)
+}
+
+function toolDrop() {
+    holding = false
+    removeFromArray(toDraw, weaponTest)
+}
 
 // Core loop
 function animate() {
@@ -160,15 +178,17 @@ function animate() {
 
             // Zone check
             if (keyZones.collision()) {
-                if (found) {
-                    drawPost()
-                    return
+                if (!holding) {
+                    toolPickup()
                 }
-                found = true
+            }
 
-                toDraw.push(weaponTest)
-
-                //uninit(animationId)
+            // Drop check (it's located right below the pickup row)
+            if (keyDropZones.collision()) {
+                if (holding) {
+                    toolDrop()
+                    uninit(animationId)
+                }
             }
 
             drawPost()
