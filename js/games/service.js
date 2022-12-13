@@ -80,8 +80,8 @@ const foreground = new Sprite({
 const weaponTest = new Sprite({
     position: {
         // 192 x 86 character dimensions
-        x: (canvas.width / 2 - 170 / 4 / 2) + 30, 
-        y: (canvas.height / 2 - 33 / 2)
+        x: player.position.x, 
+        y: player.position.y
     },
     image: weapon,
     frames: {
@@ -96,11 +96,10 @@ const weaponTest = new Sprite({
 })
 
 
-
 // Zone data
 const boundaries = new Zone(collisions)
-const battleZones = new Zone(battleZonesData)
-const moveables = [background, ...boundaries.zone, foreground, ...battleZones.zone]
+const keyZones = new Zone(keyZoneData)
+const moveables = [background, ...boundaries.zone, foreground, ...keyZones.zone]
 
 // Extra classes
 const controller = new Controller()
@@ -112,9 +111,18 @@ function drawPre() {
     weaponTest.draw()
     foreground.draw()
     boundaries.draw()
-    battleZones.draw()
+    keyZones.draw()
 }
 
+const toDraw = [background, player, foreground, boundaries, keyZones]
+
+function drawer() {
+    toDraw.forEach((element) => {
+        element.draw()
+    })
+}
+
+// Things that are 'static'
 function drawPost() {
     moveables.forEach((moveable) => {
         moveable.position.y += y
@@ -122,14 +130,17 @@ function drawPost() {
     })
 }
 
-
+var found = false
 
 // Core loop
 function animate() {
     const animationId = window.requestAnimationFrame(animate)
 
     // Setup
-    drawPre()
+    //drawPre()
+    drawer()
+
+ 
     player.moving = false
 
     for (var key in keys) {
@@ -148,8 +159,16 @@ function animate() {
             }
 
             // Zone check
-            if (battleZones.collision()) {
-                uninit(animationId)
+            if (keyZones.collision()) {
+                if (found) {
+                    drawPost()
+                    return
+                }
+                found = true
+
+                toDraw.push(weaponTest)
+
+                //uninit(animationId)
             }
 
             drawPost()
@@ -190,6 +209,3 @@ function init() {
 }
 
 init()
-
-
-

@@ -16,7 +16,7 @@
             Hey This is the dialogue
         </div>
         <div id="objective">
-            Race Objective
+            Objective
         </div>
         <div id="paragraph">
             This is some information on the topic of what the objective is.
@@ -60,12 +60,22 @@ switch (localStorage.getItem('GameName')) {
             '/js/classes/boundary.js',
             '/js/classes/sprite.js',
             '/js/games/portfolio.js',
-    ])
-    case 'about':
-        makeScripts([
-
         ])
+        break
     case 'service':
+        makeScripts([
+            '/js/classes/controller.js',
+            '/js/classes/zone.js',
+            '/js/helper/collision.js',
+            '/js/helper/factory.js',
+            '/data/collisions/about.js',
+            '/data/zones/keypickup.js',
+            '/js/classes/boundary.js',
+            '/js/classes/sprite.js',
+            '/js/games/service.js',
+        ])
+        break
+    case 'about':
         break
 }
 
