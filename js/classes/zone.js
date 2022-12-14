@@ -49,7 +49,7 @@ class Zone {
                     }
                 })
             ) {            
-                return true
+                return this.zone[i]
             }
         }
     }

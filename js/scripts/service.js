@@ -8,6 +8,8 @@ canvas.width = 1920
 c.fillStyle = 'white'
 c.fillRect(0, 0, canvas.width, canvas.height)
 
+//  boundary positioning is with the whole data file
+// but the enemy and keys can be hard coded in
 
 
 // Vars
@@ -36,9 +38,6 @@ playerRightImage.src = '/media/images/shared/player/playerRight.png'
 
 const foregroundImage = new Image()
 foregroundImage.src = '/media/images/game-1/map/foregroundObjects.png'
-
-const weapon = new Image()
-weapon.src = '/media/images/shared/tools/embySprite2.png'
 
 
 
@@ -77,45 +76,29 @@ const foreground = new Sprite({
     image: foregroundImage
 })
 
-const weaponTest = new Sprite({
+const enemy = new Sprite({
     position: {
-        // 192 x 86 character dimensions
-        x: player.position.x, 
-        y: player.position.y
+        x: (canvas.width / 2 - 192 / 4 / 2), 
+        y: (canvas.height / 2 - 68 / 2)
     },
-    image: weapon,
+    image: playerUpImage,
     frames: {
         max: 4
     },
-    sprites: {
-        w: playerUpImage,
-        a: playerLeftImage,
-        d: playerRightImage,
-        s: playerDownImage
-    }
 })
+
 
 
 // Zone data
 const boundaries = new Zone(collisions)
-const keyZones = new Zone(keyZoneData)
-const keyDropZones = new Zone(keyDropData)
-const moveables = [background, ...boundaries.zone, foreground, ...keyZones.zone, ...keyDropZones.zone]
+const enemyZones = new Zone(enemyData)
+const moveables = [background, ...boundaries.zone, enemy, foreground, ...enemyZones.zone]
 
 // Extra classes
 const controller = new Controller()
 
-// Rendering
-function drawPre() {
-    background.draw()
-    player.draw()
-    weaponTest.draw()
-    foreground.draw()
-    boundaries.draw()
-    keyZones.draw()
-}
 
-const toDraw = [background, player, foreground, boundaries, keyZones, keyDropZones]
+const toDraw = [background, player, enemy, foreground, boundaries, enemyZones]
 
 function drawer() {
     toDraw.forEach((element) => {
@@ -150,6 +133,14 @@ function toolDrop() {
     removeFromArray(toDraw, weaponTest)
 }
 
+function distance(p1, p2) {
+    var distance = Math.sqrt((Math.pow(p1.x-p2.x,2))+(Math.pow(p1.y-p2.y,2)))
+    if (distance < 15) {
+        console.log('yeah')
+    }
+    return distance;
+}
+
 // Core loop
 function animate() {
     const animationId = window.requestAnimationFrame(animate)
@@ -177,19 +168,18 @@ function animate() {
             }
 
             // Zone check
-            if (keyZones.collision()) {
+            var test = enemyZones.collision()
+            if (enemyZones.collision()) {
                 if (!holding) {
-                    toolPickup()
+                    distance(player.position, test.position)
                 }
             }
 
-            // Drop check (it's located right below the pickup row)
-            if (keyDropZones.collision()) {
-                if (holding) {
-                    toolDrop()
-                    uninit(animationId)
-                }
-            }
+            // have a method to get all zones that have enemies inisde
+            // then check fi player and that enemy positiojn are close
+            // also make it so that a player can't run over an ememy
+            // so make them have collisions
+            // other than that easy
 
             drawPost()
         }
