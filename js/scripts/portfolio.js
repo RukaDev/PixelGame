@@ -19,28 +19,35 @@ var lastKey = ''
 
 // Images
 const image = new Image()
-var mapimage = '/img/background/' + localStorage.getItem('GameName') + '.png'
+var mapimage = '/media/images/game-1/map/background.png'
 image.src = mapimage
 
 const playerDownImage = new Image()
-playerDownImage.src = '/img/player/playerDown.png'
+playerDownImage.src = '/media/images/shared/player/playerDown.png'
 
 const playerUpImage = new Image()
-playerUpImage.src = '/img/player/playerUp.png'
+playerUpImage.src = '/media/images/shared/player/playerUp.png'
 
 const playerLeftImage = new Image()
-playerLeftImage.src = '/img/player/playerLeft.png'
+playerLeftImage.src = '/media/images/shared/player/playerLeft.png'
 
 const playerRightImage = new Image()
-playerRightImage.src = '/img/player/playerRight.png'
+playerRightImage.src = '/media/images/shared/player/playerRight.png'
 
 const foregroundImage = new Image()
-foregroundImage.src = '/img/foreground/foregroundObjects.png'
+foregroundImage.src = '/media/images/game-1/map/foregroundObjects.png'
 
-const weapon = new Image()
-weapon.src = '/img/tools/embySprite2.png'
-
-
+// Might make the js files be thrown in there
+// instead of the scripts category
+// then just have the classess and helper folders still just sit in there?
+// then it matches a little better with html and css
+// so do i then put html, css, and js in their own area?
+// why have data and classes be seperate if both are just js files?
+// data will be inside of the js then, as a folder
+// and i will keep the scripts folder, it just makes it better since js has so much stuff
+// so html and css are just those files dumped in, and js has folders
+// WHEN I GET BACK ! make it so that the 
+// ! When i get back, make the css differernt style colors be in the js file instead of memeory
 
 // Sprites
 const player = new Sprite({
@@ -77,30 +84,13 @@ const foreground = new Sprite({
     image: foregroundImage
 })
 
-const weaponTest = new Sprite({
-    position: {
-        // 192 x 86 character dimensions
-        x: player.position.x, 
-        y: player.position.y
-    },
-    image: weapon,
-    frames: {
-        max: 4
-    },
-    sprites: {
-        w: playerUpImage,
-        a: playerLeftImage,
-        d: playerRightImage,
-        s: playerDownImage
-    }
-})
+
 
 
 // Zone data
 const boundaries = new Zone(collisions)
-const keyZones = new Zone(keyZoneData)
-const keyDropZones = new Zone(keyDropData)
-const moveables = [background, ...boundaries.zone, foreground, ...keyZones.zone, ...keyDropZones.zone]
+const battleZones = new Zone(battleZonesData)
+const moveables = [background, ...boundaries.zone, foreground, ...battleZones.zone]
 
 // Extra classes
 const controller = new Controller()
@@ -109,29 +99,11 @@ const controller = new Controller()
 function drawPre() {
     background.draw()
     player.draw()
-    weaponTest.draw()
     foreground.draw()
     boundaries.draw()
-    keyZones.draw()
+    battleZones.draw()
 }
 
-const toDraw = [background, player, foreground, boundaries, keyZones, keyDropZones]
-
-function drawer() {
-    toDraw.forEach((element) => {
-        element.draw()
-    })
-}
-
-function removeFromArray(arr, value) {
-    var index = arr.indexOf(value);
-    if (index > -1) {
-        arr.splice(index, 1);
-    }
-}
-  
-
-// Things that are 'static'
 function drawPost() {
     moveables.forEach((moveable) => {
         moveable.position.y += y
@@ -139,26 +111,14 @@ function drawPost() {
     })
 }
 
-var holding = false
-function toolPickup() {
-    holding = true
-    toDraw.push(weaponTest)
-}
 
-function toolDrop() {
-    holding = false
-    removeFromArray(toDraw, weaponTest)
-}
 
 // Core loop
 function animate() {
     const animationId = window.requestAnimationFrame(animate)
 
     // Setup
-    //drawPre()
-    drawer()
-
- 
+    drawPre()
     player.moving = false
 
     for (var key in keys) {
@@ -177,18 +137,8 @@ function animate() {
             }
 
             // Zone check
-            if (keyZones.collision()) {
-                if (!holding) {
-                    toolPickup()
-                }
-            }
-
-            // Drop check (it's located right below the pickup row)
-            if (keyDropZones.collision()) {
-                if (holding) {
-                    toolDrop()
-                    uninit(animationId)
-                }
+            if (battleZones.collision()) {
+                uninit(animationId)
             }
 
             drawPost()
@@ -229,3 +179,6 @@ function init() {
 }
 
 init()
+
+
+

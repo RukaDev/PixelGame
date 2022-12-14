@@ -88,19 +88,9 @@ window.addEventListener("scroll", () => {
 })
 
 /* ========================== theme colors =========================== */
-const alternateStyles = document.querySelectorAll(".alternate-style");
 function setActiveStyle(color)
 {
-    alternateStyles.forEach((style) => {
-        if(color === style.getAttribute("title"))
-        {
-            style.removeAttribute("disabled");
-        }
-        else
-        {
-            style.setAttribute("disabled","true");
-        }
-    })
+    document.documentElement.style.setProperty('--skin-color', 'var(--dark-peach)')
 }
 
 
@@ -113,6 +103,12 @@ dayNight.addEventListener("click", () => {
 })
 
 
+const colors = document.querySelectorAll(".colors span")
+colors.forEach((color) => {
+    color.addEventListener('click', function() {
+        setActiveStyle(color.className)
+    })
+})
 
 window.addEventListener("load", () => {
     if(document.body.classList.contains("dark"))

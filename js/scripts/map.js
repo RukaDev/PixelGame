@@ -63,7 +63,8 @@ function setupRegions() {
 
             gameBtn.addEventListener('click', function() {  
                 localStorage.setItem('GameName', region.id)
-                window.location.href = "/html/game.html"
+                var link = '/html/' + region.id + '.html'
+                window.location.href = link
             })
         }
     });

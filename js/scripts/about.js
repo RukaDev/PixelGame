@@ -19,27 +19,43 @@ var lastKey = ''
 
 // Images
 const image = new Image()
-var mapimage = '/img/background/' + localStorage.getItem('GameName') + '.png'
+var mapimage = '/media/images/game-1/map/background.png'
 image.src = mapimage
 
 const playerDownImage = new Image()
-playerDownImage.src = '/img/player/playerDown.png'
+playerDownImage.src = '/media/images/games/player/playerDown.png'
 
 const playerUpImage = new Image()
-playerUpImage.src = '/img/player/playerUp.png'
+playerUpImage.src = '/media/images/games/playerUp.png'
 
 const playerLeftImage = new Image()
-playerLeftImage.src = '/img/player/playerLeft.png'
+playerLeftImage.src = '/media/images/games/player/playerLeft.png'
 
 const playerRightImage = new Image()
-playerRightImage.src = '/img/player/playerRight.png'
+playerRightImage.src = '/media/images/games/player/playerRight.png'
 
 const foregroundImage = new Image()
-foregroundImage.src = '/img/foreground/foregroundObjects.png'
+foregroundImage.src = '/media/images/game-1/map/foregroundObjects.png'
 
-const weapon = new Image()
-weapon.src = '/img/tools/embySprite2.png'
+// Might make the js files be thrown in there
+// instead of the scripts category
+// then just have the classess and helper folders still just sit in there?
+// then it matches a little better with html and css
+// so do i then put html, css, and js in their own area?
+// why have data and classes be seperate if both are just js files?
+// data will be inside of the js then, as a folder
+// and i will keep the scripts folder, it just makes it better since js has so much stuff
+// so html and css are just those files dumped in, and js has folders
+// WHEN I GET BACK ! make it so that the 
+// ! When i get back, make the css differernt style colors be in the js file instead of memeory
 
+
+// Distance between two x, y positions
+function calculateDistance(p1, p2) {
+    var inner = (Math.pow(p1.x-p1.x,2))+(Math.pow(p1.y-p2.y,2))
+    var distance = Math.sqrt(inner)
+    return distance
+}
 
 
 // Sprites
@@ -77,23 +93,6 @@ const foreground = new Sprite({
     image: foregroundImage
 })
 
-const weaponTest = new Sprite({
-    position: {
-        // 192 x 86 character dimensions
-        x: (canvas.width / 2 - 170 / 4 / 2) + 30, 
-        y: (canvas.height / 2 - 33 / 2)
-    },
-    image: weapon,
-    frames: {
-        max: 4
-    },
-    sprites: {
-        w: playerUpImage,
-        a: playerLeftImage,
-        d: playerRightImage,
-        s: playerDownImage
-    }
-})
 
 
 
@@ -109,7 +108,6 @@ const controller = new Controller()
 function drawPre() {
     background.draw()
     player.draw()
-    weaponTest.draw()
     foreground.draw()
     boundaries.draw()
     battleZones.draw()

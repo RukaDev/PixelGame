@@ -10,7 +10,7 @@
     --bg-black-50:#e8dfec;
     --text-black-900:#302e4d;
     --text-black-700:#504e70;
-
+    --skin-color:#48ff00;
     --purple-brown: #231f20;
     --egg-shell: #e8e4d2;
     --dark-peach: #48ff00;
@@ -695,19 +695,6 @@ h3.my-profession
 .portfolio .container
 {
     padding-bottom: 40px;
-}
-
-.portfolio .portfolio-heading
-{
-    flex: 0 0 100%;
-    max-width: 100%;
-    margin-bottom: 40px;
-}
-
-.portfolio .portfolio-heading h2
-{
-    color: var(--text-black-900);
-    font-weight: 500;
 }
 
 .portfolio .portfolio-item
