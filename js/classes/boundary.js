@@ -13,3 +13,5 @@ class Boundary {
         c.fillRect(this.position.x, this.position.y, this.width, this.height)
     }
 }
+
+// zone is a collection of boundaries, with helpers, but you can still get a single one easiily

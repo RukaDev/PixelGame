@@ -1,7 +1,11 @@
 class Zone {
-    constructor(zoneData) {
+    constructor(zoneData, isSprite) {
         this.zone = []
-        this.create(zoneData)
+        if (isSprite) {
+            this.zone = zoneData
+        } else {
+            this.create(zoneData)
+        }
     }
 
     create(zoneData) {
@@ -26,7 +30,7 @@ class Zone {
     }
 
     destroy() {
-
+        delete this
     }
 
     draw() {
@@ -37,29 +41,33 @@ class Zone {
 
     collision(x = 0, y = 0) {
         for (let i = 0; i < this.zone.length; i++) {
+            var rectangle1 = player
+            var rectangle2 = {
+                ...this.zone[i],
+                position: {
+                    x: this.zone[i].position.x + x,
+                    y: this.zone[i].position.y + y
+                }
+            }
             if (
-                rectangularCollision({
-                    rectangle1: player,
-                    rectangle2: {
-                        ...this.zone[i],
-                        position: {
-                            x: this.zone[i].position.x + x,
-                            y: this.zone[i].position.y + y
-                        }
-                    }
-                })
+                rectangle1.position.x + rectangle1.width >= rectangle2.position.x &&
+                rectangle1.position.x <= rectangle2.position.x + rectangle2.width &&
+                rectangle1.position.y <= rectangle2.position.y + rectangle2.height &&
+                rectangle1.position.y + rectangle1.height >= rectangle2.position.y
             ) {            
                 return this.zone[i]
             }
         }
     }
-}
 
-function rectangularCollision({rectangle1, rectangle2}) {
-    return (
-        rectangle1.position.x + rectangle1.width >= rectangle2.position.x &&
-        rectangle1.position.x <= rectangle2.position.x + rectangle2.width &&
-        rectangle1.position.y <= rectangle2.position.y + rectangle2.height &&
-        rectangle1.position.y + rectangle1.height >= rectangle2.position.y
-    )
+    proximity() {
+        var p1 = player.position
+        for (let i = 0; i < this.zone.length; i++) {
+            var p2 = this.zone[i].position 
+            var distance = Math.sqrt((Math.pow(p1.x-p2.x,2))+(Math.pow(p1.y-p2.y,2)))
+            if (distance < 100) {
+                return true
+            }
+        }
+    }
 }
