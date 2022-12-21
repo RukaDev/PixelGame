@@ -1,3 +1,10 @@
+/*
+
+Attacking enemy objective
+Enemies walk around and player has to defeat them to win
+
+*/
+
 // Canvas properties
 const canvas = document.querySelector('canvas')
 const c = canvas.getContext('2d')

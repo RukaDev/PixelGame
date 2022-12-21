@@ -13,7 +13,7 @@
     --skin-color:#48ff00;
     --purple-brown: #231f20;
     --egg-shell: #e8e4d2;
-    --dark-peach: #48ff00;
+    --dark-peach: hwb(103 0% 0% / 0.706);
     --border-width: 0.75rem;
     --dots-gap: 10px;
 }
@@ -406,7 +406,7 @@ h3.my-profession
     width: 80px;
     border-top: 10px solid var(--skin-color);
     border-left: 10px solid var(--skin-color);
-    left: -20px;
+    left: -40px;
     top: -40px;
 }
 

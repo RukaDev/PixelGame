@@ -1,31 +1,35 @@
 class Input {
 
     constructor() {
-        this.lastKey = 'heyhey'
+        this.lastKey = 's'
         this.keys = {
             w: {
                 pressed: false,
                 positions: {
-                    y: 1
-                }
+                    y: 1,
+                },
+                yval: 3
             },
             a: {
                 pressed: false,
                 positions: {
-                    x: 1
-                }
+                    x: 1,
+                },
+                yval: 1
             },
             s: {
                 pressed: false,
                 positions: {
-                    y: -1
-                }
+                    y: -1,
+                },
+                yval: 0
             },
             d: {
                 pressed: false,
                 positions: {
-                    x: -1
+                    x: -1,
                 },
+                yval: 2
             }
         }
     }

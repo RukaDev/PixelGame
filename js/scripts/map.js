@@ -8,7 +8,7 @@ var section = document.querySelector('.section')
 
 // Data
 //var unlockedNames = localStorage.getItem('unlocked')
-var unlockedNames = ['portfolio', 'service']
+var unlockedNames = ['portfolio', 'service', 'about']
 
 // Properties
 var regionTimeout;
@@ -61,7 +61,7 @@ function setupRegions() {
                 removeSection(sectionElement)
             })
 
-            gameBtn.addEventListener('click', function() {  
+            gameBtn.addEventListener('click', function() { 
                 localStorage.setItem('GameName', region.id)
                 var link = '/html/' + region.id + '.html'
                 window.location.href = link

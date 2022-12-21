@@ -1,11 +1,12 @@
 class Boundary {
-    static width = 48
-    static height = 48
+    // width and height are tile 16x16 times zoom multiplier (400% means 16*4)
+    static width = 16 * 4.75
+    static height = 16 * 4.75
 
     constructor({position}) {
         this.position = position
-        this.width = 48
-        this.height = 48
+        this.width = Boundary.width
+        this.height = Boundary.height
     }
 
     draw() {

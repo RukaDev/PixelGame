@@ -1,7 +1,6 @@
 /*
 
-Key and door objective
-Pick up a key to unlock door
+Template for the areas
 
 */
 
@@ -17,15 +16,16 @@ c.fillRect(0, 0, canvas.width, canvas.height)
 
 
 // Vars
-const offset = {x: -100, y: -1050} // Player starting position
+const offset = {x: -285, y: -400} // Player starting position
 
 
 // Media
 const image = new Image()
-image.src = '/media/images/game-1/map.png'
+var mapimage = '/media/images/game-1/map/background.png'
+image.src = mapimage
 
 const playerDownImage = new Image()
-playerDownImage.src = '/media/images/shared/player/spritesheet.png'
+playerDownImage.src = '/media/images/shared/player/playerDown.png'
 
 const playerUpImage = new Image()
 playerUpImage.src = '/media/images/shared/player/playerUp.png'
@@ -39,37 +39,24 @@ playerRightImage.src = '/media/images/shared/player/playerRight.png'
 const foregroundImage = new Image()
 foregroundImage.src = '/media/images/game-1/map/foregroundObjects.png'
 
-const crystalImage = new Image()
-crystalImage.src = '/media/images/crystal.png'
-
 
 // Sprites
 const player = new Sprite({
     position: {
         // 192 x 86 character dimensions
-        x: (canvas.width / 2 - 96 / 4 / 2), // For centering char in middle of the screen
-        y: (canvas.height / 2 - 128 / 2)
+        x: (canvas.width / 2 - 192 / 4 / 2), 
+        y: (canvas.height / 2 - 68 / 2)
     },
     image: playerDownImage,
     frames: {
-        xmax: 3,
-        ymax: 3.975
+        max: 4
     },
-    scale: 3
-})
-
-const crystal = new Sprite({
-    position: {
-        x: player.position.x, 
-        y: player.position.y
-    },
-    image: crystalImage,
-    frames: {
-        xmax: 3,
-        ymax: 1
-    },
-    velocity: 20,
-    scale: 3
+    sprites: {
+        w: playerUpImage,
+        a: playerLeftImage,
+        d: playerRightImage,
+        s: playerDownImage
+    }
 })
 
 const background = new Sprite({
@@ -77,7 +64,7 @@ const background = new Sprite({
         x: offset.x,
         y: offset.y
     },
-    image: image,
+    image: image
 })
 
 const foreground = new Sprite({
@@ -88,67 +75,16 @@ const foreground = new Sprite({
     image: foregroundImage
 })
 
-var tool
-
-function makeTool() {
-    const weapon = new Image()
-    weapon.src = '/media/images/shared/tools/embySprite2.png'
-
-    tool = new Sprite({
-        position: {
-            // 192 x 86 character dimensions
-            x: player.position.x, 
-            y: player.position.y
-        },
-        image: weapon,
-        frames: {
-            max: 4
-        },
-        sprites: {
-            w: playerUpImage,
-            a: playerLeftImage,
-            d: playerRightImage,
-            s: playerDownImage
-        }
-    })
-}
-
-
-crystal.moving = true
 
 
 // Classes
 const input = new Input()
 const draw = new Draw()
-const boundaries = new Zone(greenData)
-const keyZones = new Zone(keyZoneData)
-const keyDropZones = new Zone(keyDropData)
+const boundaries = new Zone(collisions)
 
 // Updated elements
-const drawnElements = [background, player, foreground, crystal, boundaries, keyZones, keyDropZones]
-const moveableElements = [background, crystal, ...boundaries.zone, foreground, ...keyDropZones.zone, ...keyZones.zone]
-
-
-
-
-var holding = false
-function toolPickup() {
-    holding = true
-    makeTool()
-    drawnElements.push(tool)
-}
-function toolDrop() {
-    holding = false
-    removeFromArray(drawnElements, tool)
-}
-
-function removeFromArray(arr, value) {
-    var index = arr.indexOf(value);
-    if (index > -1) {
-        arr.splice(index, 1);
-    }
-}
-  
+const drawnElements = [background, player, foreground, boundaries]
+const moveableElements = [background, ...boundaries.zone, foreground]
 
  
 // Core loop
@@ -158,30 +94,13 @@ function animate() {
     // Initial
     draw.drawElements(drawnElements)
     player.moving = false
-
-
-    // Zone check
-    if (keyZones.collision()) {
-        if (!holding) {
-            toolPickup()
-        }
-    }
-
-    // Drop check (it's located right below the pickup row)
-    if (keyDropZones.collision()) {
-        if (holding) {
-            toolDrop()
-            uninit(animationId)
-        }
-    }
-
     
     // Movement
     if (input.getPressed(['w', 'a', 's', 'd'])) {
         // Update player sprite
         var key = input.lastKey
-        player.frames.yval = input.keys[key].yval
-        player.moving = true
+        player.setImage(false, key)
+        player.toggleMoving(true)
 
         // Future position
         const speed = 3
@@ -190,8 +109,7 @@ function animate() {
 
         // Collision conditions
         if (boundaries.collision(x, y)) {
-            console.log('collide')
-            player.moving = false 
+            player.toggleMoving(false)
             return
         } 
 

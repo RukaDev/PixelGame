@@ -180,7 +180,11 @@ body
     left: 50%;
 }
 
-
+.other2
+{
+    top: 50%;
+    left:75%
+}
 
 
 
@@ -421,6 +425,7 @@ body
     color: var(--text-black-700);
     line-height: 25px;
 }
+
 
 
 
