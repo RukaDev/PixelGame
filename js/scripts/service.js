@@ -1,7 +1,6 @@
 /*
 
-Attacking enemy objective
-Enemies walk around and player has to defeat them to win
+Objectives that float around to show the path
 
 */
 
@@ -9,66 +8,74 @@ Enemies walk around and player has to defeat them to win
 const canvas = document.querySelector('canvas')
 const c = canvas.getContext('2d')
 
-canvas.height = 1080
-canvas.width = 1920
+canvas.height = 1020
+canvas.width = 1980
  
 c.fillStyle = 'white'
 c.fillRect(0, 0, canvas.width, canvas.height)
 
 
 // Vars
-const offset = {x: -285, y: -400} // Player starting position
-var movex = 1
-var movey = 1
-var moving = false
+const offset = {x: -230, y: -925} // Player starting position on map
 
 
 // Media
 const image = new Image()
-var mapimage = '/media/images/game-1/map/background.png'
-image.src = mapimage
+image.src = '/media/images/maps/service/map.png'
 
-const playerDownImage = new Image()
-playerDownImage.src = '/media/images/shared/player/playerDown.png'
-
-const playerUpImage = new Image()
-playerUpImage.src = '/media/images/shared/player/playerUp.png'
-
-const playerLeftImage = new Image()
-playerLeftImage.src = '/media/images/shared/player/playerLeft.png'
-
-const playerRightImage = new Image()
-playerRightImage.src = '/media/images/shared/player/playerRight.png'
+const playerImage = new Image()
+playerImage.src = '/media/images/sprites/characters/all.png'
 
 const foregroundImage = new Image()
-foregroundImage.src = '/media/images/game-1/map/foregroundObjects.png'
+foregroundImage.src = '/media/images/maps/portfolio/foregroundObjects.png'
+
+const crystalImage = new Image()
+crystalImage.src = '/media/images/sprites/crystals/blue-crystal.png'
+
+const attackPlayerImage = new Image()
+attackPlayerImage.src = '/media/images/sprites/characters/attacksheet.png'
 
 
 // Sprites
 const player = new Sprite({
     position: {
         // 192 x 86 character dimensions
-        x: (canvas.width / 2 - 192 / 4 / 2), 
-        y: (canvas.height / 2 - 68 / 2)
+        x: (canvas.width / 2 - playerImage.width / 3), // For centering char in middle of the screen
+        y: (canvas.height / 2 - playerImage.height / 4)
     },
-    image: playerDownImage,
+    image: playerImage,
     frames: {
-        max: 4
+        xmax: 3,
+        ymax: 3.975
     },
-    sprites: {
-        w: playerUpImage,
-        a: playerLeftImage,
-        d: playerRightImage,
-        s: playerDownImage
-    }
+    scale: 3.5,
+    customWidth: playerImage.width/8,
+    customHeight: playerImage.height/4
 })
+
+// 6 x 1 
+
+
+
+const attackPlayer = new Sprite({
+    position: player.position,
+    image: attackPlayerImage,
+    frames: {
+        xmax: 3,
+        ymax: 4
+    },
+    scale: 3.5,
+    stop: true,
+    
+})
+attackPlayer.stopCallback = attackFinished
 
 const background = new Sprite({
     position: {
         x: offset.x,
         y: offset.y
     },
-    image: image
+    image: image,
 })
 
 const foreground = new Sprite({
@@ -79,45 +86,119 @@ const foreground = new Sprite({
     image: foregroundImage
 })
 
-const enemy2 = new Sprite({
+const crystal = new Sprite({
+    image: crystalImage,
     position: {
-        x: (canvas.width / 2 - 192 / 4 / 2), 
-        y: (canvas.height / 2 - 68 / 2 + (50))
+        x: player.position.x,
+        y: player.position.y
     },
-    image: playerUpImage,
     frames: {
-        max: 4
+        xmax: 3,
+        ymax: 1
     },
+    velocity: 40,
+    scale: 2
 })
+crystal.moving = true
 
 const enemy1 = new Sprite({
-    position: {
-        x: (canvas.width / 2 - 192 / 4 / 2), 
-        y: (canvas.height / 2 - 68 / 2 + (100))
-    },
-    image: playerDownImage,
+    image: attackPlayerImage,
     frames: {
-        max: 4
+        xmax: 3,
+        ymax: 3.975
     },
+    scale: 3.5
 })
 
+const enemy2 = new Sprite({
+    image: attackPlayerImage,
+    frames: {
+        xmax: 3,
+        ymax: 3.975
+    },
+    scale: 3.5
+})
+
+const enemy3 = new Sprite({
+    image: attackPlayerImage,
+    frames: {
+        xmax: 3,
+        ymax: 3.975
+    },
+    scale: 3.5
+})
+
+var enemies = [enemy1, enemy2, enemy3]
 
 // Classes
 const input = new Input()
-const boundaries = new Zone(collisions)
-const enemyZones = new Zone([enemy1, enemy2], true) 
 const draw = new Draw()
+const boundaries = new Zone(greenData)
+const mobZones = new Zone(mobData)
 
 // Updated elements
-const drawnElements = [background, player, enemy1, enemy2, foreground, boundaries]
-const moveableElements = [background, enemy1, enemy2, ...boundaries.zone, foreground]
+const drawnElements = [background, mobZones, ...enemies, crystal,  player, foreground]
+const moveableElements = [background, crystal, ...mobZones.zone, ...enemies, foreground]
+
+/*
+
+Options:
+    All crystals visible, they disappear each time you hit one
+        map all zones to their respective crystals
+        when we walk over a zone get the zone, then index it with the map
+        then make that crystal invisible, if it's the last crystal then end the map
 
 
-/* Can either draw the enemies manually, or call draw on the enemy zone which will
-draw all enemies for us
+    One crystal visible, new ones appear when the one is walked on
+        Keep reference to the crystal and the zone
+        When the zone is hit, call makecrystal func
+        make crystal func sets the crytalimage to be the new zone location
+        we keep the current iter of crystal pos, and have an arr of all the crystal locs
+        then we remove the current crystal loc from the zone and make it the new one
+        keep repeating until the last one
+
+    bridge one:
+        make it so that the actual ends of the bridge are there, but the lever
+        creates the middle of the bridge for us to walk on
+
+    
 */
 
 
+
+var enemyMap = new Map()
+
+// map the boundaries to an enemy
+// sort it for it to be consistent
+function spawnEnemies() {
+    mobZones.proximitySort(player.position)
+    for (var i = 0; i < mobZones.zone.length; i++) {
+        enemyMap.set(mobZones.zone[i], enemies[i])
+        enemies[i].position = {
+            x: mobZones.zone[i].position.x,
+            y: mobZones.zone[i].position.y
+        } 
+    }
+}
+
+spawnEnemies()
+
+
+var moving = false
+var movex = 0
+var movey = 0
+
+function attackFinished() {
+    drawnElements.pop()
+    drawnElements.push(player)
+    player.frames.xval = 1
+    attacking = false
+}
+
+console.log(enemyMap)
+
+var attacking = false
+ 
 // Core loop
 function animate() {
     const animationId = window.requestAnimationFrame(animate)
@@ -126,32 +207,48 @@ function animate() {
     draw.drawElements(drawnElements)
     player.moving = false
 
-    // Enemy movement
     if (moving) {
-        draw.moveElements([enemy1, enemy2], movex, movey)
+        //draw.moveElements([enemy1, enemy2], movex, movey)
     }
-
-    // Enemy attack
-    if (enemyZones.collision()) {
-        console.log('colliding')
-        player.toggleMoving(false)
-    } 
     
     // Player attack
     if (input.getPressed(['e'])) {
-        if (enemyZones.proximity()) {
-            uninit(animationId)
+        
+        if (attacking) {
+            return
         }
+
+        if (mobZones.proximity()) {
+            var zone = mobZones.proximity() // return the sprite
+            var enemy = enemyMap.get(zone)
+            removeFromArray(mobZones.zone, zone)
+            removeFromArray(enemies, enemy)
+            removeFromArray(drawnElements, enemy)
+            console.log(enemy)
+            console.log(zone)
+        }
+
+        attacking = true
+        attackPlayer.frames = player.frames
+        attackPlayer.frames.elapsed = 0
+        attackPlayer.frames.xval = 0
+        attackPlayer.frames.yval = player.frames.yval
+        removeFromArray(drawnElements, player)
+
+
+        drawnElements.push(attackPlayer)
+        attackPlayer.moving = true
+        
         input.toggleOff('e') 
         return
     } 
-    
+
     // Movement
     if (input.getPressed(['w', 'a', 's', 'd'])) {
         // Update player sprite
         var key = input.lastKey
-        player.setImage(false, key)
-        player.toggleMoving(true)
+        player.frames.yval = input.keys[key].yval
+        player.moving = true
 
         // Future position
         const speed = 3
@@ -160,14 +257,19 @@ function animate() {
 
         // Collision conditions
         if (boundaries.collision(x, y)) {
-            player.toggleMoving(false)
+            console.log('collide')
+            player.moving = false 
             return
         } 
+
+        // If char turns, then the attack character needs to also turn
+        // Just set the frame var of the attack char as the normal char
+        // So it does it automatically
+        // They might be sized differently though which will be an issue
 
         draw.moveElements(moveableElements, x, y)
     }
 }
-
 
 // Enemy
 setInterval(function() {
@@ -179,8 +281,6 @@ setInterval(function() {
         movey = movey = 0
     }
 }, 3000)
-
-
 
 
 
@@ -209,13 +309,14 @@ function uninit(animationId) {
 
 function init() {
     // Init
+    input.addKey('e')
+
     window.addEventListener('keydown', function(e) {
     input.keydown(e)
     })
     window.addEventListener('keyup', function(e) {
     input.keyup(e)
     })
-    input.addKey('e')
     animate()
 }
 

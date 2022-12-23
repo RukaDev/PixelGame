@@ -1,7 +1,6 @@
 /*
 
-Key and door objective
-Pick up a key to unlock door
+Objectives that float around to show the path
 
 */
 
@@ -17,21 +16,15 @@ c.fillRect(0, 0, canvas.width, canvas.height)
 
 
 // Vars
-const offset = {x: -1500, y: -1700} // Player starting position on map
+const offset = {x: -50, y: -1550} // Player starting position on map
 
 
 // Media
 const image = new Image()
-image.src = '/media/images/maps/about/map.png'
-
-const bridgeImage = new Image()
-bridgeImage.src = '/media/images/maps/about/bridge.png'
+image.src = '/media/images/maps/home/map.png'
 
 const playerImage = new Image()
 playerImage.src = '/media/images/sprites/characters/spritesheet.png'
-
-const switchImage = new Image()
-switchImage.src = '/media/images/sprites/misc/switch.png'
 
 const foregroundImage = new Image()
 foregroundImage.src = '/media/images/maps/portfolio/foregroundObjects.png'
@@ -56,39 +49,6 @@ const player = new Sprite({
 })
 
 
-const switchh = new Sprite({
-    image: switchImage,
-    frames: {
-        xmax: 3,
-        ymax: 3.975
-    },
-    velocity: 20,
-    scale: 4,
-    stop: true
-})
-
-
-
-
-// has to be based on map offset in case we ever move plr spawn
-// will probably use zone data for it to know where it is, then just use 
-// manual data by printing the location of it after using zone data
-const crystal = new Sprite({
-    position: {
-        x: (canvas.width / 2), // For centering char in middle of the screen
-        y: (canvas.height / 2 - 128 / 2)
-    },
-    image: crystalImage,
-    frames: {
-        xmax: 3,
-        ymax: 1
-    },
-    velocity: 40,
-    scale: 3
-})
-crystal.moving = true
-
-
 const background = new Sprite({
     position: {
         x: offset.x,
@@ -96,7 +56,6 @@ const background = new Sprite({
     },
     image: image,
 })
-
 
 const foreground = new Sprite({
     position: {
@@ -106,37 +65,72 @@ const foreground = new Sprite({
     image: foregroundImage
 })
 
+const crystal = new Sprite({
+    image: crystalImage,
+    frames: {
+        xmax: 3,
+        ymax: 1
+    },
+    velocity: 40,
+    scale: 2
+})
+crystal.moving = true
+
+var crystalZone
 
 
 // Classes
 const input = new Input()
 const draw = new Draw()
-const boundaries = new Zone(greenData)
-const switchZone = new Zone(switchData)
-const crystalZone = new Zone(crystalData)
+const crystalZonesAll = new Zone(crystalData)
 
 // Updated elements
-const drawnElements = [background, switchZone, crystalZone, switchh, player, foreground, boundaries, crystal]
-const moveableElements = [background, ...switchZone.zone, crystal, ...boundaries.zone, foreground]
+const drawnElements = [background, crystalZonesAll, crystal,  player, foreground]
+const moveableElements = [background, ...crystalZonesAll.zone, foreground]
 
 
-function activateBridge() {
-    const bridge = new Sprite({
-        position: {
-            x: background.position.x,
-            y: background.position.y
-        },
-        image: bridgeImage
-    })
-    drawnElements.splice(1, 0, bridge)
-    moveableElements.splice(1, 0, bridge)
-    switchh.moving = true
+/*
+
+Options:
+    All crystals visible, they disappear each time you hit one
+        map all zones to their respective crystals
+        when we walk over a zone get the zone, then index it with the map
+        then make that crystal invisible, if it's the last crystal then end the map
+
+
+    One crystal visible, new ones appear when the one is walked on
+        Keep reference to the crystal and the zone
+        When the zone is hit, call makecrystal func
+        make crystal func sets the crytalimage to be the new zone location
+        we keep the current iter of crystal pos, and have an arr of all the crystal locs
+        then we remove the current crystal loc from the zone and make it the new one
+        keep repeating until the last one
+
+    bridge one:
+        make it so that the actual ends of the bridge are there, but the lever
+        creates the middle of the bridge for us to walk on
+
+    
+*/
+
+var crystalNum = -1
+crystalZonesAll.proximitySort(player.position)
+
+function updateCrystal(animationId) {
+    crystalNum += 1
+    if (crystalNum === crystalZonesAll.zone.length) {
+        uninit(animationId)
+        return
+    }
+
+    var crystalZone = crystalZonesAll.zone[crystalNum]
+    console.log(crystalZone, crystalNum)
+    crystal.position = crystalZone.position
 }
 
-switchh.position = switchZone.zone[0].position
-crystal.position = crystalZone.zone[0].position
-  
-var activated = false
+updateCrystal()
+
+
  
 // Core loop
 function animate() {
@@ -158,28 +152,14 @@ function animate() {
         var x = (input.keys[key].positions.x * speed) || 0
         var y = (input.keys[key].positions.y * speed) || 0
 
-        // Collision conditions
-        if (boundaries.collision(x, y)) {
-            console.log('collide')
-            player.moving = false 
-            return
-        } 
 
-        if (crystalZone.collision(x, y)) {
-            uninit(animationId)
-        }
-
-        if (switchZone.collision()) {
-            if (!activated) {
-                activated = true
-                activateBridge()
-            }
+        if (crystalZonesAll.singleCollision(x, y, crystalNum)) {
+            updateCrystal(animationId)
         }
 
         draw.moveElements(moveableElements, x, y)
     }
 }
-
 
 
 // Setup and removal

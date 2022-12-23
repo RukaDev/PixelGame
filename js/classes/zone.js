@@ -8,6 +8,10 @@ class Zone {
         }
     }
 
+    add(boundary) {
+        
+    }
+
     create(zoneData) {
         // 50 is the map width
         var map = []
@@ -39,6 +43,14 @@ class Zone {
         })
     }
 
+    // Sort the boundaries by position to player
+    proximitySort(point) {
+        this.zone.sort(function(a, b) {
+            return distance(a.position, point) - distance(b.position, point)
+        })
+    }
+
+    // Have to pass more specific info
     collision(x = 0, y = 0) {
         for (let i = 0; i < this.zone.length; i++) {
             var rectangle1 = {
@@ -58,35 +70,54 @@ class Zone {
                 }
             }
             
-            if (
-                rectangle1.position.x + rectangle1.width >= rectangle2.position.x &&
-                rectangle1.position.x <= rectangle2.position.x + rectangle2.width &&
-                rectangle1.position.y <= rectangle2.position.y + rectangle2.height &&
-                rectangle1.position.y + rectangle1.height >= rectangle2.position.y
-            ) {   
-                console.log('collide')         
-                return this.zone[i]
-            }
-        }
-    }
-
-    proximity() {
-        var p1 = player.position
-        for (let i = 0; i < this.zone.length; i++) {
-            var p2 = this.zone[i].position 
-            var distance = Math.sqrt((Math.pow(p1.x-p2.x,2))+(Math.pow(p1.y-p2.y,2)))
-            if (distance < 100) {
+            if (collision(rectangle1, rectangle2)) {
                 return true
             }
         }
     }
 
-    inside() {
+    singleCollision(x = 0, y = 0, i) {
+        var rectangle1 = {
+            position: {
+                x: player.position.x,
+                y: player.position.y
+            },
+
+            width: player.width * player.scale,
+            height: player.height * player.scale
+        }
+        var rectangle2 = {
+            ...this.zone[i],
+            position: {
+                x: this.zone[i].position.x + x,
+                y: this.zone[i].position.y + y
+            }
+        }
+        
+        if (collision(rectangle1, rectangle2)) {
+            return true
+        }
+    }
+
+    
+
+    proximity() {
+        var p1 = player.position
+        for (let i = 0; i < this.zone.length; i++) {
+            var p2 = this.zone[i].position 
+            var dist = distance(p1, p2)
+            if (dist < 100) {
+                return this.zone[i]
+            }
+        }
+    }
+
+    inside(x, y) {
         for (let i = 0; i < this.zone.length; i++) {
             var rectangle1 = {
                 position: {
-                    x: player.position.x,
-                    y: player.position.y
+                    x: player.position.x + x,
+                    y: player.position.y + y
                 },
     
                 width: player.width * player.scale,
@@ -100,14 +131,13 @@ class Zone {
                 }
             }
             
-            if (
-                rectangle1.position.x + x >= rectangle2.position.x &&
-                rectangle1.position.x + player.scale + x < rectangle2.position.x + rectangle2.width - rectangle1.width &&
-                rectangle1.position.y + y >= rectangle2.position.y &&
-                rectangle1.position.y + player.scale + y < rectangle2.position.y + rectangle2.height - rectangle1.height
-            ) {
-                //console.log('fully inside collision')
+            if (bounded(rectangle1, rectangle2, player.scale)) {
+                return true
             }
         }
+    }
+
+    insideSingle(x, y) {
+
     }
 }

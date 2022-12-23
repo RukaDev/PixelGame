@@ -8,7 +8,7 @@ var section = document.querySelector('.section')
 
 // Data
 //var unlockedNames = localStorage.getItem('unlocked')
-var unlockedNames = ['portfolio', 'service', 'about']
+var unlockedNames = ['portfolio', 'service', 'about', 'contact', 'home']
 
 // Properties
 var regionTimeout;

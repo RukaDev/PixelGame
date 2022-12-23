@@ -30,7 +30,7 @@ class Input {
                     x: -1,
                 },
                 yval: 2
-            }
+            },
         }
     }
     

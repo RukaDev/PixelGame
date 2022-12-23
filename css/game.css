@@ -41,3 +41,12 @@ body {
     right: 0;
     border-top: 4px black solid;
 }
+
+canvas {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+

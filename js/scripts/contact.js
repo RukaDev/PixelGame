@@ -16,15 +16,15 @@ c.fillRect(0, 0, canvas.width, canvas.height)
 
 
 // Vars
-const offset = {x: -50, y: -1550} // Player starting position on map
+const offset = {x: -1100, y: -2500} // Player starting position on map
 
 
 // Media
 const image = new Image()
-image.src = '/media/images/maps/portfolio/map.png'
+image.src = '/media/images/maps/contact/map.png'
 
 const playerImage = new Image()
-playerImage.src = '/media/images/sprites/characters/spritesheet.png'
+playerImage.src = '/media/images/sprites/characters/all.png'
 
 const foregroundImage = new Image()
 foregroundImage.src = '/media/images/maps/portfolio/foregroundObjects.png'
@@ -32,6 +32,11 @@ foregroundImage.src = '/media/images/maps/portfolio/foregroundObjects.png'
 const crystalImage = new Image()
 crystalImage.src = '/media/images/sprites/crystals/blue-crystal.png'
 
+const attackPlayerImage = new Image()
+attackPlayerImage.src = '/media/images/sprites/characters/attacksheet.png'
+
+const sickleImage = new Image()
+sickleImage.src = '/media/images/sprites/traps/sickle.png'
 
 // Sprites
 const player = new Sprite({
@@ -45,9 +50,27 @@ const player = new Sprite({
         xmax: 3,
         ymax: 3.975
     },
-    scale: 3.5
+    scale: 3.5,
+    customWidth: playerImage.width/8,
+    customHeight: playerImage.height/4
 })
 
+// 6 x 1 
+
+
+
+const attackPlayer = new Sprite({
+    position: player.position,
+    image: attackPlayerImage,
+    frames: {
+        xmax: 3,
+        ymax: 4
+    },
+    scale: 3.5,
+    stop: true,
+    
+})
+attackPlayer.stopCallback = attackFinished
 
 const background = new Sprite({
     position: {
@@ -67,6 +90,10 @@ const foreground = new Sprite({
 
 const crystal = new Sprite({
     image: crystalImage,
+    position: {
+        x: player.position.x,
+        y: player.position.y
+    },
     frames: {
         xmax: 3,
         ymax: 1
@@ -76,21 +103,39 @@ const crystal = new Sprite({
 })
 crystal.moving = true
 
-var crystalZone
+const sickle1 = new Sprite({
+    image: sickleImage,
+    frames: {
+        xmax: 3,
+        ymax: 3.975
+    },
+    scale: 3.5
+})
+sickle1.frames.yval = 1
+sickle1.moving = true
 
+const sickle2 = new Sprite({
+    image: sickleImage,
+    frames: {
+        xmax: 3,
+        ymax: 3.975
+    },
+    scale: 3.5
+})
+sickle2.frames.yval = 1
+
+
+var sickles = [sickle1, sickle2]
 
 // Classes
 const input = new Input()
 const draw = new Draw()
 const boundaries = new Zone(greenData)
-const keyZones = new Zone(keyZoneData)
-const keyDropZones = new Zone(keyDropData)
-const crystalZonesAll = new Zone(crystalData)
+const sickleZones = new Zone(sickleData)
 
 // Updated elements
-const drawnElements = [background, crystalZonesAll, crystal,  player, foreground, boundaries, keyZones, keyDropZones]
-const moveableElements = [background, ...crystalZonesAll.zone, ...boundaries.zone, foreground, ...keyDropZones.zone, ...keyZones.zone]
-
+const drawnElements = [background, sickleZones, ...sickles, crystal,  player, foreground]
+const moveableElements = [background, crystal, ...sickleZones.zone, ...sickles, foreground]
 
 /*
 
@@ -116,24 +161,39 @@ Options:
     
 */
 
-var crystalNum = -1
-crystalZonesAll.proximitySort(player.position)
 
-function updateCrystal(animationId) {
-    crystalNum += 1
-    if (crystalNum === crystalZonesAll.zone.length) {
-        uninit(animationId)
-        return
+
+var sickleMap = new Map()
+
+// map the boundaries to an enemy
+// sort it for it to be consistent
+function spawnSickles() {
+    sickleZones.proximitySort(player.position)
+    for (var i = 0; i < sickleZones.zone.length; i++) {
+        sickleMap.set(sickleZones.zone[i], sickles[i])
+        sickles[i].position = {
+            x: sickleZones.zone[i].position.x - 48,
+            y: sickleZones.zone[i].position.y - 48
+        } 
     }
-
-    var crystalZone = crystalZonesAll.zone[crystalNum]
-    console.log(crystalZone, crystalNum)
-    crystal.position = crystalZone.position
 }
 
-updateCrystal()
+spawnSickles()
 
 
+var moving = false
+var movex = 0
+var movey = 0
+
+function attackFinished() {
+    drawnElements.pop()
+    drawnElements.push(player)
+    player.frames.xval = 1
+    attacking = false
+}
+
+
+var attacking = false
  
 // Core loop
 function animate() {
@@ -142,7 +202,17 @@ function animate() {
     // Initial
     draw.drawElements(drawnElements)
     player.moving = false
+
+    if (moving) {
+        //draw.moveElements([enemy1, enemy2], movex, movey)
+    }
+
+    if (sickleZones.collision()) {
+        // Kill player, reset them at the start pos
+        console.log('killed')
+    }
     
+
     // Movement
     if (input.getPressed(['w', 'a', 's', 'd'])) {
         // Update player sprite
@@ -162,13 +232,35 @@ function animate() {
             return
         } 
 
-        if (crystalZonesAll.singleCollision(x, y, crystalNum)) {
-            updateCrystal(animationId)
-        }
+        // If char turns, then the attack character needs to also turn
+        // Just set the frame var of the attack char as the normal char
+        // So it does it automatically
+        // They might be sized differently though which will be an issue
 
         draw.moveElements(moveableElements, x, y)
     }
 }
+
+function sickleOn() {
+
+}
+
+function sickleOff() {
+
+}
+
+// Enemy
+var iter = 0
+setInterval(function() {
+    sickles[iter].moving = !sickles[iter].moving
+
+    if (iter === sickles.length-1) {
+        iter = 0
+    } else {
+        iter++
+    }
+}, 1000)
+
 
 
 // Setup and removal
@@ -196,6 +288,8 @@ function uninit(animationId) {
 
 function init() {
     // Init
+    input.addKey('e')
+
     window.addEventListener('keydown', function(e) {
     input.keydown(e)
     })
