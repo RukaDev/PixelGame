@@ -7,7 +7,7 @@
     <title>Document</title>
     <!-- ===== CSS Files ===== -->
   <link rel="stylesheet" href="/css/map.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
     <div class="page-container">
@@ -19,27 +19,82 @@
                 <span style="--i:3;"></span>
             </div>
     
-            <div class="regions">
-                <span class="other4" id="home">
-                  <button id="game">Game</button>
-                  <button id="section">Section</button>
-                </span>
-                <span class="other2" id="about">
-                  <button id="game">Game</button>
-                  <button id="section">Section</button>
-                </span>
-                <span class="about" id="portfolio">
-                    <button id="game">Game</button>
-                    <button id="section">Section</button>
-                </span>
-                <span class="other" id="service">
-                    <button id="game">Game</button>
-                    <button id="section">Section</button>
-                </span>
-                <span class="other3" id="contact">
-                  <button id="game">Game</button>
-                  <button id="section">Section</button>
-                </span>
+            <div class="container">
+              <div class="card" id="portfolio">
+                <div class="face face1">
+                    <div class="content">
+                        <i class="fa-sharp fa-solid fa-castle"></i>
+                        <h3>Castle</h3>
+                    </div>
+                </div>
+                <div class="face face2">
+                    <div class="content">
+                        <p>A wooded forest to collect crystals while learning proper traversal.</p>
+                        <a href="#" id="play">Play</a>
+                        <a href="#" id="view">Portfolio</a>
+                    </div>
+                </div>
+              </div>
+              <div class="card" id="about">
+                <div class="face face1">
+                    <div class="content">
+                        <i class="fa-solid fa-lock-open"></i>
+                        <h3>Castle</h3>
+                    </div>
+                </div>
+                <div class="face face2">
+                    <div class="content">
+                      <p>A wooded forest to collect crystals while learning proper traversal.</p>
+                      <a href="#" id="play">Play</a>
+                      <a href="#" id="view">View</a>
+                    </div>
+                </div>
+              </div>
+              <div class="card" id="service">
+                  <div class="face face1">
+                      <div class="content">
+                        <i class="fa-solid fa-lock"></i>
+                        <h3>Locked</h3>
+                      </div>
+                  </div>
+                  <div class="face face2">
+                      <div class="content">
+                        <p>A wooded forest to collect crystals while learning proper traversal.</p>
+                        <a href="#" id="play">Play</a>
+                        <a href="#" id="view">View</a>
+                      </div>
+                  </div>
+              </div>
+              <div class="card" id="contact">
+                <div class="face face1">
+                    <div class="content">
+                      <i></i>
+                      <h3>Locked</h3>
+                    </div>
+                </div>
+                <div class="face face2">
+                    <div class="content">
+                      <p>A wooded forest to collect crystals while learning proper traversal.</p>
+                      <a href="#" id="play">Play</a>
+                      <a href="#" id="view">View</a>
+                    </div>
+                </div>
+              </div>
+              <div class="card" id="home">
+                <div class="face face1">
+                    <div class="content">
+                      <i class="fa-solid fa-lock"></i>
+                      <h3>Locked</h3>
+                    </div>
+                </div>
+                <div class="face face2">
+                    <div class="content">
+                      <p>A wooded forest to collect crystals while learning proper traversal.</p>
+                      <a href="#" id="play">Play</a>
+                      <a href="#" id="view">View</a>
+                    </div>
+                </div>
+              </div>
             </div>
         </div>
 
@@ -452,6 +507,8 @@
     </div>
 </body>
 
+<script src="/js/util/storage.js"></script>
 <script src="/js/scripts/map.js"></script>
+
 
 </html>

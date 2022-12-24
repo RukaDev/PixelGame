@@ -18,63 +18,115 @@ c.fillRect(0, 0, canvas.width, canvas.height)
 // Vars
 const offset = {x: -50, y: -1550} // Player starting position on map
 
+async function loadImages(imageUrlArray) {
+    const promiseArray = []; // create an array for promises
+    const imageArray = []; // array for the images
 
-// Media
-const image = new Image()
-image.src = '/media/images/maps/portfolio/map.png'
+    for (let imageUrl of imageUrlArray) {
 
-const playerImage = new Image()
-playerImage.src = '/media/images/sprites/characters/spritesheet.png'
+        promiseArray.push(new Promise(resolve => {
 
-const foregroundImage = new Image()
-foregroundImage.src = '/media/images/maps/portfolio/foregroundObjects.png'
+            const img = new Image();
+            // if you don't need to do anything when the image loads,
+            // then you can just write img.onload = resolve;
 
-const crystalImage = new Image()
-crystalImage.src = '/media/images/sprites/crystals/blue-crystal.png'
+            img.onload = function() {
+                // do stuff with the image if necessary
+
+                // resolve the promise, indicating that the image has been loaded
+                resolve();
+            };
+
+            img.src = imageUrl;
+            imageArray.push(img);
+        }));
+    }
+
+    await Promise.all(promiseArray); // wait for all the images to be loaded
+    console.log("all images loaded");
+    return imageArray;
+}
+
+var they = [
+    '/media/images/maps/portfolio/map.png',
+    '/media/images/sprites/characters/spritesheet.png',
+    '/media/images/maps/portfolio/foregroundObjects.png',
+    '/media/images/sprites/crystals/blue-crystal.png'
+]
+
+var image
+var playerImage
+var foregroundImage
+var crystalImage
 
 
-// Sprites
-const player = new Sprite({
-    position: {
-        // 192 x 86 character dimensions
-        x: (canvas.width / 2 - playerImage.width / 3), // For centering char in middle of the screen
-        y: (canvas.height / 2 - playerImage.height / 4)
-    },
-    image: playerImage,
-    frames: {
-        xmax: 3,
-        ymax: 3.975
-    },
-    scale: 3.5
+var player
+var background
+var foreground
+var crystal
+
+loadImages(they).then(images => {
+    // the loaded images are in the images array
+    image = images[0]
+    playerImage = images[1]
+    foregroundImage = images[2]
+    crystalImage = images[3]
+
+    createSprites()
+    init()
 })
 
+setTimeout(() => {
+    console.log('done')
+}, 2000);
 
-const background = new Sprite({
-    position: {
-        x: offset.x,
-        y: offset.y
-    },
-    image: image,
-})
+console.log('dioneee')
 
-const foreground = new Sprite({
-    position: {
-        x: offset.x,
-        y: offset.y
-    },
-    image: foregroundImage
-})
+function createSprites() {
+    // Sprites
+    player = new Sprite({
+        position: {
+            // 192 x 86 character dimensions
+            x: (canvas.width / 2 - playerImage.width / 3), // For centering char in middle of the screen
+            y: (canvas.height / 2 - playerImage.height / 4)
+        },
+        image: playerImage,
+        frames: {
+            xmax: 3,
+            ymax: 3.975
+        },
+        scale: 3.5
+    })
 
-const crystal = new Sprite({
-    image: crystalImage,
-    frames: {
-        xmax: 3,
-        ymax: 1
-    },
-    velocity: 40,
-    scale: 2
-})
-crystal.moving = true
+
+    background = new Sprite({
+        position: {
+            x: offset.x,
+            y: offset.y
+        },
+        image: image,
+    })
+
+    foreground = new Sprite({
+        position: {
+            x: offset.x,
+            y: offset.y
+        },
+        image: foregroundImage
+    })
+
+    crystal = new Sprite({
+        image: crystalImage,
+        frames: {
+            xmax: 3,
+            ymax: 1
+        },
+        velocity: 40,
+        scale: 2
+    })
+    crystal.moving = true
+
+}
 
 var crystalZone
 
@@ -88,8 +140,8 @@ const keyDropZones = new Zone(keyDropData)
 const crystalZonesAll = new Zone(crystalData)
 
 // Updated elements
-const drawnElements = [background, crystalZonesAll, crystal,  player, foreground, boundaries, keyZones, keyDropZones]
-const moveableElements = [background, ...crystalZonesAll.zone, ...boundaries.zone, foreground, ...keyDropZones.zone, ...keyZones.zone]
+var drawnElements = []
+var moveableElements = []
 
 
 /*
@@ -117,7 +169,6 @@ Options:
 */
 
 var crystalNum = -1
-crystalZonesAll.proximitySort(player.position)
 
 function updateCrystal(animationId) {
     crystalNum += 1
@@ -131,7 +182,6 @@ function updateCrystal(animationId) {
     crystal.position = crystalZone.position
 }
 
-updateCrystal()
 
 
  
@@ -186,7 +236,9 @@ function uninit(animationId) {
                 opacity: 1,
                 duration: 0.4,
                 onComplete() {
-                    localStorage.setItem('Portfolio', 'unlocked');
+
+                    setArrayItem('unlocked', 'portfolio')
+                    sessionStorage.setItem('latest', 'portfolio')
                     window.location.href = "/html/map.html"
                 }
             })
@@ -196,6 +248,15 @@ function uninit(animationId) {
 
 function init() {
     // Init
+    console.log('init')
+    crystalZonesAll.proximitySort(player.position)
+
+    updateCrystal()
+
+    drawnElements = [background, crystalZonesAll, crystal,  player, foreground, boundaries, keyZones, keyDropZones]
+    moveableElements = [background, ...crystalZonesAll.zone, ...boundaries.zone, foreground, ...keyDropZones.zone, ...keyZones.zone]
+
+
     window.addEventListener('keydown', function(e) {
     input.keydown(e)
     })
@@ -204,6 +265,4 @@ function init() {
     })
     animate()
 }
-
-init()
 

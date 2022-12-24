@@ -6,9 +6,32 @@ var sectionContainer = document.querySelector('.section-container')
 var regionSpans = document.querySelectorAll('.regions span')
 var section = document.querySelector('.section')
 
-// Data
-//var unlockedNames = localStorage.getItem('unlocked')
-var unlockedNames = ['portfolio', 'service', 'about', 'contact', 'home']
+var regionCards = document.querySelectorAll('.container .card')
+
+//sessionStorage.clear()
+
+// if first load, setup the session storage
+if (!sessionStorage.getItem('unlocked')) {
+    setArray("unlocked", [])
+}
+
+
+var latest 
+
+function nextUnlock() {
+    var arr = getArray('unlocked')
+    var amnt = arr.length
+    latest = regionCards[amnt]
+    setupLatest(latest)
+}
+
+
+
+nextUnlock()
+
+
+console.log(regionCards)
+
 
 // Properties
 var regionTimeout;
@@ -16,17 +39,40 @@ var regionTimeout;
 // Map 
 function mapEnter() {
     mapContainer.classList.add('unfold')
-    regionSpans.forEach(region => {
-        region.style.visibility = 'visible'
+    regionCards.forEach(region => {
+        region.style.display = 'block'
     });
 }
 
 function mapLeave() {
-    regionSpans.forEach(region => {
-        region.style.visibility = 'hidden'
-    });
     mapContainer.classList.remove('unfold')
+    regionCards.forEach(region => {
+        region.style.display = 'none'
+    });
     clearTimeout(regionTimeout)
+}
+
+// Cards
+function completedEnter(region) {
+
+}
+
+function unlockedEnter() {
+    var region = latest
+    var pathway = 'url(/media/images/maps/' + region.id + '/preview.png)'
+    var t = region.getElementsByClassName('face1')
+    t[0].style['background-image'] = pathway
+    t[0].style['background-size'] = 'cover'
+}
+
+function lockedEnter(region) {
+    region.style.background.color = 'red' 
+}
+
+function unlockedLeave(region) {
+    var region = latest
+    var t = region.getElementsByClassName('face1')
+    t[0].style.background = 'green'
 }
 
 
@@ -43,15 +89,40 @@ function addSection(sectionElement) {
     sectionElement.classList.add('show')
 }
 
+// Check if we just unlocked something, if so then display it
+
+function setupLatest(region) {
+    var t = region.getElementsByClassName('face1')
+    var sectionElement = sectionContainer.querySelector('#' + region.id)
+
+    var gameBtn = region.querySelector('#play')
+    gameBtn.addEventListener('click', function() { 
+        localStorage.setItem('GameName', region.id)
+        var link = '/html/' + region.id + '.html'
+        window.location.href = link
+    })
+
+    //region.classList.remove('locked')
+    region.classList.add('unlocked')
+
+    region.addEventListener('mouseenter', unlockedEnter)
+    region.addEventListener('mouseleave', unlockedLeave)
+}
+
 function setupRegions() {
-    regionSpans.forEach(region => {
+    var unlockedNames = getArray('unlocked')
+
+    regionCards.forEach(region => {
+
+        var t = region.getElementsByClassName('face1')
+
         if (unlockedNames.includes(region.id)) {
             var sectionElement = sectionContainer.querySelector('#' + region.id)
 
-            var gameBtn = region.querySelector('#game')
-            var sectionBtn = region.querySelector('#section')
+            var gameBtn = region.querySelector('#play')
+            var sectionBtn = region.querySelector('#view')
+
             var closeBtn = sectionElement.querySelector('#' + 'close')
-            region.classList.add('unlocked')
             
             sectionBtn.addEventListener('click', function() {
                 addSection(sectionElement)
@@ -66,6 +137,19 @@ function setupRegions() {
                 var link = '/html/' + region.id + '.html'
                 window.location.href = link
             })
+
+            // When we get back, if there is a new element unlocked display it
+            if (region.id === sessionStorage.getItem('latest')) {
+                addSection(sectionElement)
+                sessionStorage.setItem('latest', '') 
+            }
+
+            region.classList.add('completed')
+            t[0].style.background = 'url(/media/images/maps/' + region.id + '/preview.png)'
+            t[0]
+        
+        } else if (region.id != latest.id) {
+            region.classList.add('locked')
         }
     });
 }
