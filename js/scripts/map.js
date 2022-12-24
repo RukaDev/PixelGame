@@ -8,7 +8,13 @@ var section = document.querySelector('.section')
 
 var regionCards = document.querySelectorAll('.container .card')
 
-//sessionStorage.clear()
+sessionStorage.clear()
+
+gsap.to('#inner', {
+    opacity: 0,
+    repeat: 0,
+    duration: 4,
+})
 
 // if first load, setup the session storage
 if (!sessionStorage.getItem('unlocked')) {
@@ -97,9 +103,16 @@ function setupLatest(region) {
 
     var gameBtn = region.querySelector('#play')
     gameBtn.addEventListener('click', function() { 
-        localStorage.setItem('GameName', region.id)
-        var link = '/html/' + region.id + '.html'
-        window.location.href = link
+        gsap.to('#inner', {
+            opacity: 1,
+            repeat: 0,
+            duration: 1.5,
+            onComplete() {
+                localStorage.setItem('GameName', region.id)
+                var link = '/html/' + region.id + '.html'
+                window.location.href = link
+            }
+        })
     })
 
     //region.classList.remove('locked')
@@ -133,9 +146,16 @@ function setupRegions() {
             })
 
             gameBtn.addEventListener('click', function() { 
-                localStorage.setItem('GameName', region.id)
-                var link = '/html/' + region.id + '.html'
-                window.location.href = link
+                gsap.to('#inner', {
+                    opacity: 1,
+                    repeat: 0,
+                    duration: 1.5,
+                    onComplete() {
+                        localStorage.setItem('GameName', region.id)
+                        var link = '/html/' + region.id + '.html'
+                        window.location.href = link
+                    }
+                })
             })
 
             // When we get back, if there is a new element unlocked display it

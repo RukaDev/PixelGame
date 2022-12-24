@@ -4,6 +4,12 @@ Objectives that float around to show the path
 
 */
 
+gsap.to('#inner', {
+    opacity: 0,
+    repeat: 0,
+    duration: 4,
+})
+
 // Canvas properties
 const canvas = document.querySelector('canvas')
 const c = canvas.getContext('2d')
@@ -227,21 +233,12 @@ function uninit(animationId) {
 
     gsap.to('#inner', {
         opacity: 1,
-        repeat: 3,
-        yoyo: true,
-        duration: 0.4,
+        repeat: 0,
+        duration: 1.5,
         onComplete() {
-            // solid black
-            gsap.to('#inner', {
-                opacity: 1,
-                duration: 0.4,
-                onComplete() {
-
-                    setArrayItem('unlocked', 'portfolio')
-                    sessionStorage.setItem('latest', 'portfolio')
-                    window.location.href = "/html/map.html"
-                }
-            })
+            setArrayItem('unlocked', 'portfolio')
+            sessionStorage.setItem('latest', 'portfolio')
+            window.location.href = "/html/map.html"
         }
     })
 }
