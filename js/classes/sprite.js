@@ -12,10 +12,11 @@ class Sprite {
         this.width = this.customWidth / this.frames.xmax
         this.height = this.customHeight / this.frames.ymax
         this.stop = stop
+        this.c = document.querySelector('canvas').getContext('2d')
     }
 
     draw() {
-        c.drawImage(
+        this.c.drawImage(
             this.image,
             this.frames.xval * this.width,
             this.frames.yval * this.height,

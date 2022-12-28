@@ -592,11 +592,11 @@ body
 
 /* Locked Card Info */
 .locked:hover .face1 {
-    background: red !important;
+    background: red;
 }
 
 .locked .face1 {
-    background: #333 !important;
+    background: #333;
     box-shadow:0 0 20px black;
 }
 
@@ -610,12 +610,17 @@ body
     font-size: 125px;
 }
 
+.locked h3::before {
+    content: "Locked";
+}
+
 
 
 
 /* Completed Card Info */
 .completed .face1 {
     box-shadow:0 0 20px black;
+    background: var(--img);
 }
 
 .completed:hover {
@@ -629,6 +634,12 @@ body
 .completed:hover .face.face2{
     transform: translateY(0);
 }
+
+.completed h3::before {
+    content: var(--name);
+}
+
+
 
   
 #inner {
@@ -653,6 +664,7 @@ body
     background-size: cover;
 }
 
+
 .unlocked i::before {
     content: '\f3c1';
     font: var(--fa-font-solid);
@@ -665,6 +677,7 @@ body
 
 .unlocked:hover .face.face1{
     transform: translateY(0);
+    background: var(--img);
 }
 
 .unlocked:hover i {
@@ -679,8 +692,11 @@ body
     opacity: 0.2;
 }
 
+.unlocked h3::before {
+    content: "Unlocked";
+}
 
-
-
-
+.unlocked:hover h3::before {
+    content: var(--name);
+}
 

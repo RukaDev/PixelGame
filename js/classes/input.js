@@ -31,20 +31,35 @@ class Input {
                 },
                 yval: 2
             },
+
+            e: {
+                pressed: false,
+            },
+
+            f: {
+                pressed: false,
+            }
         }
+
+        this.keydown()
+        this.keyup()
     }
     
-    keydown(e) {
-        if (this.keys[e.key]) {
-            this.keys[e.key].pressed = true
-            this.lastKey = e.key
-        }
+    keydown() {
+        window.addEventListener('keydown', e=>{
+            if (this.keys[e.key]) {
+                this.keys[e.key].pressed = true
+                this.lastKey = e.key
+            }
+        })
     }
 
-    keyup(e) {
-        if (this.keys[e.key]) {
-            this.keys[e.key].pressed = false
-        }
+    keyup() {
+        window.addEventListener('keyup', e=>{
+            if (this.keys[e.key]) {
+                this.keys[e.key].pressed = false
+            }
+        })
     }
 
     getPressed(keys) {

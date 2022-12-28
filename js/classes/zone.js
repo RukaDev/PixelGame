@@ -101,12 +101,12 @@ class Zone {
 
     
 
-    proximity() {
+    proximity(amnt = 100) {
         var p1 = player.position
         for (let i = 0; i < this.zone.length; i++) {
             var p2 = this.zone[i].position 
             var dist = distance(p1, p2)
-            if (dist < 100) {
+            if (dist < amnt) {
                 return this.zone[i]
             }
         }

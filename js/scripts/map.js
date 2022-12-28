@@ -10,6 +10,10 @@ var regionCards = document.querySelectorAll('.container .card')
 
 sessionStorage.clear()
 
+
+// ! Going to have to make sure to load images on here too
+
+
 gsap.to('#inner', {
     opacity: 0,
     repeat: 0,
@@ -18,7 +22,7 @@ gsap.to('#inner', {
 
 // if first load, setup the session storage
 if (!sessionStorage.getItem('unlocked')) {
-    setArray("unlocked", [])
+    setArray("unlocked", ["portfolio", "about", "service", "contact"])
 }
 
 
@@ -32,11 +36,7 @@ function nextUnlock() {
 }
 
 
-
 nextUnlock()
-
-
-console.log(regionCards)
 
 
 // Properties
@@ -58,29 +58,6 @@ function mapLeave() {
     clearTimeout(regionTimeout)
 }
 
-// Cards
-function completedEnter(region) {
-
-}
-
-function unlockedEnter() {
-    var region = latest
-    var pathway = 'url(/media/images/maps/' + region.id + '/preview.png)'
-    var t = region.getElementsByClassName('face1')
-    t[0].style['background-image'] = pathway
-    t[0].style['background-size'] = 'cover'
-}
-
-function lockedEnter(region) {
-    region.style.background.color = 'red' 
-}
-
-function unlockedLeave(region) {
-    var region = latest
-    var t = region.getElementsByClassName('face1')
-    t[0].style.background = 'green'
-}
-
 
 // Sections 
 function removeSection(sectionElement) {
@@ -98,9 +75,6 @@ function addSection(sectionElement) {
 // Check if we just unlocked something, if so then display it
 
 function setupLatest(region) {
-    var t = region.getElementsByClassName('face1')
-    var sectionElement = sectionContainer.querySelector('#' + region.id)
-
     var gameBtn = region.querySelector('#play')
     gameBtn.addEventListener('click', function() { 
         gsap.to('#inner', {
@@ -108,18 +82,13 @@ function setupLatest(region) {
             repeat: 0,
             duration: 1.5,
             onComplete() {
-                localStorage.setItem('GameName', region.id)
-                var link = '/html/' + region.id + '.html'
-                window.location.href = link
+                sessionStorage.setItem('GameName', region.id)
+                window.location.href = '/html/game.html'
             }
         })
     })
 
-    //region.classList.remove('locked')
     region.classList.add('unlocked')
-
-    region.addEventListener('mouseenter', unlockedEnter)
-    region.addEventListener('mouseleave', unlockedLeave)
 }
 
 function setupRegions() {
@@ -127,9 +96,8 @@ function setupRegions() {
 
     regionCards.forEach(region => {
 
-        var t = region.getElementsByClassName('face1')
-
         if (unlockedNames.includes(region.id)) {
+            console.log(region.id)
             var sectionElement = sectionContainer.querySelector('#' + region.id)
 
             var gameBtn = region.querySelector('#play')
@@ -146,14 +114,14 @@ function setupRegions() {
             })
 
             gameBtn.addEventListener('click', function() { 
+                console.log('hii')
                 gsap.to('#inner', {
                     opacity: 1,
                     repeat: 0,
                     duration: 1.5,
                     onComplete() {
-                        localStorage.setItem('GameName', region.id)
-                        var link = '/html/' + region.id + '.html'
-                        window.location.href = link
+                        sessionStorage.setItem('GameName', region.id)
+                        window.location.href = '/html/game.html'
                     }
                 })
             })
@@ -165,9 +133,6 @@ function setupRegions() {
             }
 
             region.classList.add('completed')
-            t[0].style.background = 'url(/media/images/maps/' + region.id + '/preview.png)'
-            t[0]
-        
         } else if (region.id != latest.id) {
             region.classList.add('locked')
         }
@@ -177,3 +142,5 @@ function setupRegions() {
 setupRegions()
 mapContainer.addEventListener('mouseenter', mapEnter)
 mapContainer.addEventListener('mouseleave', mapLeave)
+
+

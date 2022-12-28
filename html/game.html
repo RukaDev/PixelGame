@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JonathanBogie</title>
+    <link rel="stylesheet" href="/css/game.css">
+</head>
+
+<body>
+    <div id="outer">
+        <div id="inner"></div>
+        <canvas></canvas>
+    </div>
+
+    <div class="controls">
+      <div class="label">
+          <h1>Controls</h1>
+      </div>
+
+      <div class="keys">
+
+      </div>
+  </div>
+
+  <div class="header">
+      <h1></h1>
+      <h3></h3>
+  </div>
+</body>
+
+
+<!-- CSS APIs-->
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"
+  integrity="sha512-6+YN/9o9BWrk6wSfGxQGpt3EUK6XeHi6yeHV+TYD2GR0Sj/cggRpXr1BrAQf0as6XslxomMUxXp2vIl+fv0QRA=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+></script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"
+  integrity="sha512-H6cPm97FAsgIKmlBA4s774vqoN24V5gSQL4yBTDOY2su2DeXZVhQPxFK4P6GPdnZqM9fg1G3cMv5wD7e6cFLZQ=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+></script>
+
+
+<!-- Classes -->
+<script src = '/js/classes/input.js'></script>
+<script src = '/js/classes/zone.js'></script>
+<script src = '/js/classes/boundary.js'></script>
+<script src = '/js/classes/sprite.js'></script>
+
+<!-- Util -->
+<script src="/js/util/storage.js"></script>
+<script src = '/js/util/math.js'></script>
+<script src = '/js/util/table.js'></script>
+
+<!-- Modules -->
+<script src="/js/modules/fade.js"></script>
+<script src="/js/modules/image.js"></script>
+<script src="/js/modules/canvas.js"></script>
+<script src="/js/modules/draw.js"></script>
+
+
+<script>
+
+var gameName = sessionStorage.getItem('GameName')
+
+  // Config
+  var info = {
+    portfolio: {
+      js: [
+        '/js/data/zones/portfolio/boundary.js',
+        '/js/data/zones/portfolio/crystal.js',
+        '/js/scripts/portfolio.js'
+      ],
+
+      keys: {
+        w: "Up",
+        a: "Left",
+        s: "Down",
+        d: "Right"
+      },
+
+      title: "Green Village",
+      description: "Collect all the crystal shards as you traverse the map.",
+    },
+
+    about: {
+      js: [
+        '/js/data/zones/about/boundary.js',
+        '/js/data/zones/about/crystal.js',
+        '/js/data/zones/about/bridgeBoundary.js',
+        '/js/data/zones/about/switch1.js',
+        '/js/data/zones/about/switch2.js',
+        '/js/scripts/about.js'
+      ],
+
+      keys: {
+        w: "Up",
+        a: "Left",
+        s: "Down",
+        d: "Right",
+        e: "Activate"
+      },
+
+      title: "Desert Village",
+      description: "Activate the switches with 'E' to cross the bridge.",
+    },
+
+    service: {
+        js: [
+        '/js/data/zones/service/boundary.js',
+        '/js/data/zones/service/crystal.js',
+        '/js/data/zones/service/enemy.js',
+        '/js/scripts/service.js'
+      ],
+
+      keys: {
+        w: "Up",
+        a: "Left",
+        s: "Down",
+        d: "Right",
+        e: "Attack"
+      },
+
+      title: "Ice Village",
+      description: "Attack the enemies with 'F' to access the crystal.",
+    },
+
+    contact: {
+        js: [
+        '/js/data/zones/contact/boundary.js',
+        '/js/data/zones/contact/crystal.js',
+        '/js/data/zones/contact/sickle.js',
+        '/js/scripts/contact.js'
+      ],
+
+      keys: {
+        w: "Up",
+        a: "Left",
+        s: "Down",
+        d: "Right",
+      },
+
+      title: "Dungeon Village",
+      description: "Avoid the obstacles and reach the crystal.",
+    },
+
+    
+    home: {
+        js: [
+        '/js/data/zones/home/boundary.js',
+        '/js/data/zones/home/crystal.js',
+        '/js/scripts/home.js'
+      ],
+
+      keys: {
+        w: "Up",
+        a: "Left",
+        s: "Down",
+        d: "Right",
+        e: "Activate",
+        f: "Attack"
+      },
+
+      title: "Fire Village",
+      description: "Put everything together to complete the course.",
+    },
+  }
+
+  // Setup scripts
+  info[gameName].js.forEach(val => {
+    var s = document.createElement('script')
+      s.src = val
+      document.getElementsByTagName('head')[0].appendChild(s)
+  })
+
+
+  // Setup styling
+  var spans = document.querySelectorAll('.aligned span')
+  var images = document.querySelectorAll('.aligned img')
+  var title = document.querySelector('.header h1')
+  var desc = document.querySelector('.header h3')
+
+  title.textContent = info[gameName].title
+  desc.textContent = info[gameName].description
+
+  var ctr = 0
+  for (const [key, value] of Object.entries(info[gameName].keys)) {
+    var aligned = document.createElement('div')
+    aligned.classList.add('aligned')
+
+    var parent = document.querySelector('.keys')
+    parent.append(aligned)
+
+    var img = document.createElement('img')
+    img.src = '/media/images/keys/a.png'
+    img.src = '/media/images/keys/' + key + '.png'
+
+    var span = document.createElement('span')
+    span.textContent = value
+    span.style.fontFamily = "font-family: 'Share Tech Mono', monospace;"
+
+    aligned.append(img)
+    aligned.append(span)
+
+    ctr++
+  }
+
+</script>
+
+</html>
+
+

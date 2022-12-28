@@ -1,5 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono');
+
 body {
     background-color: black;
+    font-family: 'Share Tech Mono', monospace;
 }
 
 #outer {
@@ -21,30 +24,6 @@ body {
     pointer-events: none;
 }
 
-#objective {
-    opacity: 1;
-    background-color: white;
-    height: 100px;
-    position: absolute;
-    text-align: center;
-    font-size: 60px;
-    top: 0%;
-    left: 0;
-    right: 0;
-    border-top: 4px black solid;
-}
-
-#dialogue {
-    opacity: 1;
-    background-color: white;
-    height: 400px;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    border-top: 4px black solid;
-}
-
 canvas {
     position: fixed;
     top: 50%;
@@ -55,25 +34,32 @@ canvas {
 
 
 
-
-
+/* Control */
 .controls {
     position: absolute;
     top: 35%;
     background-color:rgba(0, 0, 0, 0.5);
+    border-radius: 25px;
+}
+
+.label {
+    position: relative;
+    left: 14%;
 }
 
 .label h1 {
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     color:rgba(255, 255, 255, 1);
+    font-family: 'Share Tech Mono', monospace;
 }
 
-.parent {
+.keys {
+    position: relative;
     display: flex;
     align-items: left;
     flex-direction: column;
     width: 175px;
     gap: 10px;
+    padding: 10px;
 }
 
 .aligned {
@@ -91,33 +77,30 @@ canvas {
     font-size: 20px;
 }
 
+
+
+/* Title + desc */
 .header {
+    position: fixed;
     text-align: center;
     letter-spacing: 2px;
-    font-family: "Montserrat", sans-serif;
-
     color: #fff;
     background-color:rgba(0, 0, 0, 0.5);
-
-    position: fixed;
-    top: 5%;
+    border-radius: 25px;
+    padding: 15px;
+    top: 7.5%;
     left: 50%;
-    -webkit-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
 }
   
 .header h1 {
-    font-size: 25px;
-  
-    text-transform: uppercase;
-    font-family: "Montserrat", sans-serif;
-}
-  
-.header h1 span {
     font-size: 50px;
     color:rgba(255, 255, 255, 1);
     border-bottom: 2px solid #fff;
-    padding-bottom: 12px;
-    line-height: 3;
+    line-height: 2;
+}
+
+.header h3 {
+    font-size: 25px;
 }
   
