@@ -47,13 +47,16 @@
 
 
 <!-- Classes -->
+<script src = '/js/modules/image.js'></script>
+<script src = '/js/classes/player.js'></script>
 <script src = '/js/classes/input.js'></script>
-<script src = '/js/classes/zone.js'></script>
 <script src = '/js/classes/boundary.js'></script>
 <script src = '/js/classes/sprite.js'></script>
+<script src = '/js/classes/zone.js'></script>
+<script src = '/js/classes/canvas.js'></script>
+<script src = '/js/classes/level.js'></script>
 
 <!-- Util -->
-<script src="/js/util/storage.js"></script>
 <script src = '/js/util/math.js'></script>
 <script src = '/js/util/table.js'></script>
 
@@ -61,12 +64,12 @@
 <script src="/js/modules/fade.js"></script>
 <script src="/js/modules/image.js"></script>
 <script src="/js/modules/canvas.js"></script>
-<script src="/js/modules/draw.js"></script>
 
 
 <script>
 
 var gameName = sessionStorage.getItem('GameName')
+//gameName = "contact"
 
   // Config
   var info = {
@@ -74,6 +77,7 @@ var gameName = sessionStorage.getItem('GameName')
       js: [
         '/js/data/zones/portfolio/boundary.js',
         '/js/data/zones/portfolio/crystal.js',
+        '/js/classes/crystal.js',
         '/js/scripts/portfolio.js'
       ],
 
@@ -84,8 +88,15 @@ var gameName = sessionStorage.getItem('GameName')
         d: "Right"
       },
 
+      images: {
+        background: '/media/images/maps/portfolio/map.png',
+        player: '/media/images/sprites/characters/all.png',
+        foreground: '/media/images/maps/portfolio/foreground.png',
+        crystal: '/media/images/sprites/crystals/blue-crystal.png'
+      },
+
       title: "Green Village",
-      description: "Collect all the crystal shards as you traverse the map.",
+      description: "Use 'WASD' to traverse the map and collect crystals.",
     },
 
     about: {
@@ -94,9 +105,23 @@ var gameName = sessionStorage.getItem('GameName')
         '/js/data/zones/about/crystal.js',
         '/js/data/zones/about/bridgeBoundary.js',
         '/js/data/zones/about/switch1.js',
-        '/js/data/zones/about/switch2.js',
+        '/js/classes/bridge.js',
+        '/js/classes/lever.js',
+        '/js/classes/crystal.js',
         '/js/scripts/about.js'
+        
       ],
+
+      images: {
+        background: '/media/images/maps/about/map.png',
+        bridge1: '/media/images/maps/about/bridge1.png',
+        bridge2: '/media/images/maps/about/bridge2.png',
+        player: '/media/images/sprites/characters/all.png',
+        lever1: '/media/images/sprites/switches/switch1.png',
+        lever2: '/media/images/sprites/switches/switch2.png',
+        foreground: '/media/images/maps/about/foreground.png',
+        crystal: '/media/images/sprites/crystals/blue-crystal.png'
+      },
 
       keys: {
         w: "Up",
@@ -107,7 +132,7 @@ var gameName = sessionStorage.getItem('GameName')
       },
 
       title: "Desert Village",
-      description: "Activate the switches with 'E' to cross the bridge.",
+      description: "Activate the green switches with 'E' to build bridges.",
     },
 
     service: {
@@ -115,8 +140,18 @@ var gameName = sessionStorage.getItem('GameName')
         '/js/data/zones/service/boundary.js',
         '/js/data/zones/service/crystal.js',
         '/js/data/zones/service/enemy.js',
+        '/js/classes/enemy.js',
+        '/js/classes/crystal.js',
         '/js/scripts/service.js'
       ],
+
+      images: {
+        background: '/media/images/maps/service/map.png',
+        player: '/media/images/sprites/characters/all.png',
+        foreground: '/media/images/maps/service/foreground.png',
+        crystal: '/media/images/sprites/crystals/blue-crystal.png',
+        attackPlayer: '/media/images/sprites/characters/attacksheet.png'
+      },
 
       keys: {
         w: "Up",
@@ -127,7 +162,7 @@ var gameName = sessionStorage.getItem('GameName')
       },
 
       title: "Ice Village",
-      description: "Attack the enemies with 'F' to access the crystal.",
+      description: "Attack the enemies with 'F' to reach the crystal.",
     },
 
     contact: {
@@ -135,8 +170,17 @@ var gameName = sessionStorage.getItem('GameName')
         '/js/data/zones/contact/boundary.js',
         '/js/data/zones/contact/crystal.js',
         '/js/data/zones/contact/sickle.js',
+        '/js/classes/sickle.js',
         '/js/scripts/contact.js'
       ],
+
+      images: {
+        background: '/media/images/maps/contact/map.png',
+        foreground: '/media/images/maps/contact/map.png',
+        player: '/media/images/sprites/characters/all.png',
+        crystal: '/media/images/sprites/crystals/blue-crystal.png',
+        sickle: '/media/images/sprites/traps/sickle.png'
+      },
 
       keys: {
         w: "Up",
@@ -146,16 +190,33 @@ var gameName = sessionStorage.getItem('GameName')
       },
 
       title: "Dungeon Village",
-      description: "Avoid the obstacles and reach the crystal.",
+      description: "Avoid the spinning obstacles to reach the crystal.",
     },
 
     
     home: {
         js: [
+        '/js/classes/bridge.js',
+        '/js/classes/enemy.js',
         '/js/data/zones/home/boundary.js',
-        '/js/data/zones/home/crystal.js',
+        '/js/data/zones/home/sickle.js',
+        '/js/data/zones/home/enemies.js',
+        '/js/data/zones/home/switches.js',
+        '/js/data/zones/home/bridgeBoundary.js',
+        '/js/classes/lever.js',
         '/js/scripts/home.js'
       ],
+
+      images: {
+        background: '/media/images/maps/home/map.png',
+        foreground: '/media/images/maps/home/map.png',
+        player: '/media/images/sprites/characters/all.png',
+        crystal: '/media/images/sprites/crystals/blue-crystal.png',
+        attackPlayer: '/media/images/sprites/characters/attacksheet.png',
+        lever1: '/media/images/sprites/switches/switch1.png',
+        bridge1: '/media/images/maps/home/bridge1.png',
+        bridge2: '/media/images/maps/home/bridge2.png'
+      },
 
       keys: {
         w: "Up",
@@ -174,10 +235,9 @@ var gameName = sessionStorage.getItem('GameName')
   // Setup scripts
   info[gameName].js.forEach(val => {
     var s = document.createElement('script')
-      s.src = val
-      document.getElementsByTagName('head')[0].appendChild(s)
+    s.src = val
+    document.getElementsByTagName('head')[0].appendChild(s)
   })
-
 
   // Setup styling
   var spans = document.querySelectorAll('.aligned span')
@@ -211,6 +271,23 @@ var gameName = sessionStorage.getItem('GameName')
   }
 
 </script>
+
+<script>
+
+  // Setup game
+  window.onload = function() {
+    fadeIn()
+    loadImages(info[gameName].images, function(images) {
+      
+      new Input()
+      new Canvas()
+
+      setupGame(images)
+    })
+  }
+</script>
+
+
 
 </html>
 

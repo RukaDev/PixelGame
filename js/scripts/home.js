@@ -2,169 +2,111 @@
 
 Objectives that float around to show the path
 
+"Scene" class that draws everything
+instead of draw
+
+
+
+Don't have the enemies thing inside the attack from the player
+pass the enemies to it as a paramter 
+
+
+if player.canAttack() {
+    player.attack(enemies)
+}
+
+if player.canMove() {
+    player.move(input.lastKey)
+}
+
+if Lever.checkActivation(levers) {
+
+}
+
+
+passing params and not just a map gives more control so i will do that
+
+all things must be created in the start game area
+then the game loop just sets them up
 */
 
 
-// Vars
-const offset = {x: -1100, y: -2550} // Player starting position on map
-var drawnElements
-var moveableElements
-var crystalNum = -1
 
 
-// Media
-var image
-var playerImage
-var foregroundImage
-var crystalImage
+function startGame(player, levers) {
 
-function loader() {
-    var imageUrls = [
-        '/media/images/maps/home/map.png',
-        '/media/images/sprites/characters/all.png',
-        '/media/images/maps/portfolio/foreground.png',
-        '/media/images/sprites/crystals/blue-crystal.png',
-    ]
+    var input = new Input()
 
-    loadImages(imageUrls).then(images => {
-        // the loaded images are in the images array
-        image = images[0]
-        playerImage = images[1]
-        foregroundImage = images[2]
-        crystalImage = images[3]
-        init()
-    })
-}
+    // Core loop
+    function step() {
+        Scene.ending = window.requestAnimationFrame(step)
+        Scene.drawElements()
 
-var player
-var background
-var foreground
-var crystal
+        // Switches
+        if (input.getPressed(['e'])) {
+            Lever.activate(player.playerSprite.position)
+        }
 
-function createSprites() {
-    const canvas = document.querySelector('canvas')
-
-    player = new Sprite({
-        position: {
-            // 192 x 86 character dimensions
-            x: (canvas.width / 2 - playerImage.width / 3), // For centering char in middle of the screen
-            y: (canvas.height / 2 - playerImage.height / 4)
-        },
-        image: playerImage,
-        frames: {
-            xmax: 3,
-            ymax: 3.975
-        },
-        scale: 3.5,
-        customWidth: playerImage.width/8,
-        customHeight: playerImage.height/4
-    })
-
-    background = new Sprite({
-        position: {
-            x: offset.x,
-            y: offset.y
-        },
-        image: image,
-    })
-
-    foreground = new Sprite({
-        position: {
-            x: offset.x,
-            y: offset.y
-        },
-        image: foregroundImage
-    })
-
-    crystal = new Sprite({
-        image: crystalImage,
-        frames: {
-            xmax: 3,
-            ymax: 1
-        },
-        velocity: 40,
-        scale: 2
-    })
-}
-
-
-var crystalZone
-
-
-// Classes
-const input = new Input()
-
-var boundary 
-var crystalZonesAll
-
-function createZones() {
-    boundary = new Zone(boundaryData)
-    crystalZonesAll = new Zone(crystalData)
-}
-
-function updateCrystal(animationId) {
-    crystalNum += 1
-    if (crystalNum === crystalZonesAll.zone.length) {
-        uninit(animationId)
-        return
+        // Player attack
+        if (input.getPressed(['f'])) {
+            player.attack()
+        } 
+        
+        // Movement
+        if (input.getPressed(['w', 'a', 's', 'd'])) {
+            player.move(input.lastKey)
+        } else {
+            player.stop()
+        }
     }
 
-    var crystalZone = crystalZonesAll.zone[crystalNum]
-    console.log(crystalZone, crystalNum)
-    crystal.position = crystalZone.position
+    step()
 }
 
- 
-// Core loop
-function animate() {
-    const animationId = window.requestAnimationFrame(animate)
-
-    // Initial
-    drawElements(drawnElements)
-    player.moving = false
+function setupGame(images) {
+    // Sets the canvas + bg + fg
+    Scene.canvas()
+    Scene.set(
+        {x: -875, y: -2650}, 
+        images.background, 
+        images.foreground
+    )
     
-    // Movement
-    if (input.getPressed(['w', 'a', 's', 'd'])) {
-        // Update player sprite
-        var key = input.lastKey
-        player.frames.yval = input.keys[key].yval
-        player.moving = true
+    // Zones
+    var boundaryZone = new Zone(boundaryData)
+    var leverZone = new Zone(switchData)
+    var enemyZone = new Zone(enemyData)
+    var sickleZone = new Zone(sickleData)
+    var bridgeZone = new Zone(bridgeBoundaryData)
 
-        // Future position
-        const speed = 3
-        var x = (input.keys[key].positions.x * speed) || 0
-        var y = (input.keys[key].positions.y * speed) || 0
+    // Player
+    var player = new Player({
+        boundaryZones: [bridgeZone, boundaryZone], 
+        mobZones: enemyZone, 
+        playerImage: images.player,
+        attackImage: images.attackPlayer
+    })
 
-        if (boundary.collision(x,y)) {
-            console.log('boundary')
-            player.moving = false
-            return
-        }
+    // Enemies
+    var enemy1 = new Enemy(images.player)
+    var enemy2 = new Enemy(images.player)
+    var enemy3 = new Enemy(images.player)
+    Enemy.map = enemyZone.mapPosition([enemy1, enemy2, enemy3], player.playerSprite.position)
+    Enemy.zone = enemyZone
+    
+    // Bridges
+    var bridge1 = new Bridge(images.bridge1, bridgeZone, bridgeZone.zone.slice(3, 6))
+    var bridge2 = new Bridge(images.bridge2, bridgeZone, bridgeZone.zone.slice(0, 3))
+ 
+    // Levers
+    var lever1 = new Lever(images.lever1, bridge1.activate.bind(bridge1))
+    var lever2 = new Lever(images.lever1, bridge2.activate.bind(bridge2))
+    Lever.map = leverZone.mapPosition([lever1, lever2], player.playerSprite.position)
+    Lever.zone = leverZone
 
-        if (crystalZonesAll.singleCollision(x, y, crystalNum)) {
-            updateCrystal(animationId)
-        }
-
-        moveElements(moveableElements, x, y)
-    }
+    startGame(player)
 }
 
 
-function init() {
-    createSprites()
-    createZones()
-
-    crystal.moving = true
-    crystalZonesAll.proximitySort(player.position)
-    updateCrystal()
-
-    drawnElements = [background, boundary, crystalZonesAll, crystal,  player, foreground]
-    moveableElements = [background, ...boundary.zone, ...crystalZonesAll.zone, foreground]
 
 
-    animate()
-}
-
-fadeIn()
-setCanvas()
-loader()

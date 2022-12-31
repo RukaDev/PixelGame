@@ -2,311 +2,108 @@
 
 Objectives that float around to show the path
 
+"Scene" class that draws everything
+instead of draw
+
+!
+!Instead of setting a map, i could just add .boundary = 
+to each of the objects
+then pass the objects to the start game
+then call a static method and pass the objects like
+Enemy.move(objects)
+not sure this will work actually
+like for the lever one
+on the update, we do a prox check to get a boundary then check the map
+if i don't do that, then i'd have to check each one individually and see it it's close
+that is already what i do when i call it, it checks all of them if they are close
+so just a diff way to do it
+
+start game has all the things that will be used during the game
+so everything is setup already
+
+boundaries are used as hitboxes 
+differnt types of collisions can be done on them
+
+! remember payer doesn't move, always at the center
+so don't have to pass it around as much as i have been
+plyaer is only ever screated once
+so make it a singleton
+same with the input
+only objects made multiple tiles have a class
+
+
+might get rid of zone class funcionality 
+and put it inside of the boundaries
+the zone will still have things but, mainly helpers to do on all of them
+
+it's how i do the enemies and other things
+class for the boundaries, then static helpers inside the boundary class
+sio get rid of the zone
 */
 
 
-// Vars
-const offset = {x: -420, y: -1000} // Player starting position on map
-var drawnElements
-var moveableElements
-var moving = false
-var movex = 0
-var movey = 1
-var attacking = false
- 
 
-// Media
-var image
-var playerImage
-var foregroundImage
-var crystalImage
-var attackPlayerImage
 
-function loader() {
-    var imageUrls = [
-        '/media/images/maps/service/map.png',
-        '/media/images/sprites/characters/all.png',
-        '/media/images/maps/service/foreground.png',
-        '/media/images/sprites/crystals/blue-crystal.png',
-        '/media/images/sprites/characters/attacksheet.png'
-    ]
+function startGame(player, crystals, enemies) {
 
-    loadImages(imageUrls).then(images => {
-        // the loaded images are in the images array
-        image = images[0]
-        playerImage = images[1]
-        foregroundImage = images[2]
-        crystalImage = images[3]
-        attackPlayerImage = images[4]
-        init()
-    })
-}
+    const input = Input.getInstance()
+    const canvas = Canvas.getInstance()
 
-var player
-var attackPlayer
-var background
-var foreground
-var crystal
-var enemy1
-var enemy2
-var enemy3
+    // Core loop
+    function step() {
+        const animId = window.requestAnimationFrame(step)
 
-function createSprites() {
-    const canvas = document.querySelector('canvas')
-
-    player = new Sprite({
-        position: {
-            // 192 x 86 character dimensions
-            x: (canvas.width / 2 - playerImage.width / 3), // For centering char in middle of the screen
-            y: (canvas.height / 2 - playerImage.height / 4)
-        },
-        image: playerImage,
-        frames: {
-            xmax: 3,
-            ymax: 3.975
-        },
-        scale: 3.5,
-        customWidth: playerImage.width/8,
-        customHeight: playerImage.height/4
-    })
+        // Update objects
+        Enemy.move(enemies)
+        Crystal.reached(crystals)
     
-    attackPlayer = new Sprite({
-        position: player.position,
-        image: attackPlayerImage,
-        frames: {
-            xmax: 3,
-            ymax: 4
-        },
-        scale: 3.5,
-        stop: true,
-        
-    })
-
-    background = new Sprite({
-        position: {
-            x: offset.x,
-            y: offset.y
-        },
-        image: image,
-    })
-    
-    foreground = new Sprite({
-        position: {
-            x: offset.x,
-            y: offset.y
-        },
-        image: foregroundImage
-    })
-    
-    crystal = new Sprite({
-        position: {
-            x: (canvas.width / 2), // For centering char in middle of the screen
-            y: (canvas.height / 2 - 128 / 2)
-        },
-        image: crystalImage,
-        frames: {
-            xmax: 3,
-            ymax: 1
-        },
-        velocity: 40,
-        scale: 3
-    })
-
-    enemy1 = new Sprite({
-        image: playerImage,
-        image: playerImage,
-        frames: {
-            xmax: 3,
-            ymax: 3.975
-        },
-        scale: 3.5,
-        customWidth: playerImage.width/8,
-        customHeight: playerImage.height/4
-    })
-    
-    enemy2 = new Sprite({
-        image: attackPlayerImage,
-        image: playerImage,
-        frames: {
-            xmax: 3,
-            ymax: 3.975
-        },
-        scale: 3.5,
-        customWidth: playerImage.width/8,
-        customHeight: playerImage.height/4
-    })
-    
-    enemy3 = new Sprite({
-        image: playerImage,
-        frames: {
-            xmax: 3,
-            ymax: 3.975
-        },
-        scale: 3.5,
-        customWidth: playerImage.width/8,
-        customHeight: playerImage.height/4
-    })
-}
-
-
-// Sprites
-var enemies
-
-
-
-// Classes
-const input = new Input()
-
-var boundaries
-var mobZones
-var crystalZone
-
-function createZones() {
-    boundaries = new Zone(iceCollision)
-    mobZones = new Zone(enemyData)
-    crystalZone = new Zone(crystalData)
-}
-
-
-var enemyMap = new Map()
-
-function spawnEnemies() {
-    enemies = [enemy1, enemy2, enemy3]
-    mobZones.proximitySort(player.position)
-    for (var i = 0; i < mobZones.zone.length; i++) {
-        enemyMap.set(mobZones.zone[i], enemies[i])
-        enemies[i].position = {
-            x: mobZones.zone[i].position.x,
-            y: mobZones.zone[i].position.y
-        } 
-    }
-}
-
-function attackFinished() {
-    drawnElements.pop()
-    drawnElements.push(player)
-    player.frames.xval = 1
-    attacking = false
-}
-
-
-
-
-// Core loop
-function animate() {
-    const animationId = window.requestAnimationFrame(animate)
-
-    // Initial
-    drawElements(drawnElements)
-    player.moving = false
-
-    if (moving) {
-        moveElements(enemies, movex, movey)
-    }
-    
-    // Player attack
-    if (input.getPressed(['e'])) {
-        
-        if (attacking) {
-            return
-        }
-
-        if (mobZones.proximity()) {
-            var zone = mobZones.proximity() // return the sprite
-            var enemy = enemyMap.get(zone)
-            removeFromArray(mobZones.zone, zone)
-            removeFromArray(enemies, enemy)
-            removeFromArray(drawnElements, enemy)
-        }
-
-        attacking = true
-        attackPlayer.frames = player.frames
-        attackPlayer.frames.elapsed = 0
-        attackPlayer.frames.xval = 0
-        attackPlayer.frames.yval = player.frames.yval
-        removeFromArray(drawnElements, player)
-
-
-        drawnElements.push(attackPlayer)
-        attackPlayer.moving = true
-        
-        input.toggleOff('e') 
-        return
-    } 
-
-    // Movement
-    if (input.getPressed(['w', 'a', 's', 'd'])) {
-        // Update player sprite
-        var key = input.lastKey
-        player.frames.yval = input.keys[key].yval
-        player.moving = true
-
-        // Future position
-        const speed = 3
-        var x = (input.keys[key].positions.x * speed) || 0
-        var y = (input.keys[key].positions.y * speed) || 0
-
-        if (crystalZone.collision(x, y)) {
-            window.cancelAnimationFrame(animationId)
-            fadeOut()
-        }
-
-        // Collision conditions
-        if (boundaries.collision(x, y)) {
-            console.log('collide')
-            player.moving = false 
-            return
+        // Attack
+        if (input.isPressed(input.binds.attack) && player.canAttack()) {
+            player.attack(enemies)
         } 
 
-        moveElements(moveableElements, x, y)
-    }
-}
-
-
-function changeRotation(val) {
-    enemies.forEach(enemy => {
-        enemy.frames.yval = val
-    });
-}
-
-function toggleMovement(val) {
-    enemies.forEach(enemy => {
-        enemy.moving = val
-    })
-    moving = val
-}
-
-function setMovement() {
-    setInterval(function() {
-        if (moving) {
-            toggleMovement(false)
+        // Movement
+        if (input.isPressed(input.binds.walk) && player.canMove()) {
+            player.move()
         } else {
-            toggleMovement(true)
-            movey *= -1
-            var dir = (movey === -1) ? 3 : 0
-            changeRotation(dir)
+            player.stop()
         }
-    }, 1500)
+
+        // Display
+        canvas.drawElements()
+    }
+
+    step()
+}
+
+function setupGame(images) {
+    // Zones
+    var boundaryZone = new Zone(boundaryData)
+    var enemyZone = new Zone(enemyData)
+    var crystalZone = new Zone(crystalData)
+
+    // Enemies
+    var enemy1 = new Enemy(images.player)
+    var enemy2 = new Enemy(images.player)
+    var enemy3 = new Enemy(images.player)
+    var enemies = [enemy1, enemy2, enemy3]
+    enemyZone.assignBoundaries(enemies, Canvas.instance.center)
+    
+    // Crystals
+    var crystal1 = new Crystal(images.crystal)
+    var crystals = [crystal1]
+    crystalZone.assignBoundaries(crystals, Canvas.instance.center)
+
+    // Player
+    var player = new Player({
+        boundaryZones: [boundaryZone], 
+        playerImage: images.player,
+        attackImage: images.attackPlayer
+    })
+
+    startGame(player, crystals, enemies)
 }
 
 
-function init() {
-    createSprites()
-    createZones()
-    spawnEnemies()
-    setMovement()
 
-    attackPlayer.stopCallback = attackFinished
-    crystal.moving = true
-    crystal.position = crystalZone.zone[0].position
-
-    drawnElements = [background, mobZones, crystalZone, ...enemies, boundaries, crystal, player, foreground]
-    moveableElements = [background, ...crystalZone.zone, ...mobZones.zone, ...boundaries.zone, ...enemies, foreground]
-
-    animate()
-}
-
-fadeIn()
-setCanvas()
-loader()
 

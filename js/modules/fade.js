@@ -14,7 +14,7 @@ function fadeOut() {
         repeat: 0,
         duration: 1.5,
         onComplete() {
-            setArrayItem('unlocked', 'portfolio')
+            //setArrayItem('unlocked', 'portfolio')
             sessionStorage.setItem('latest', 'portfolio')
             window.location.href = "/html/map.html"
         }

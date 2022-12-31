@@ -1,40 +1,58 @@
 class Zone {
-    constructor(zoneData, isSprite) {
+
+    constructor(zoneData) {
         this.zone = []
-        if (isSprite) {
-            this.zone = zoneData
-        } else {
-            this.create(zoneData)
-        }
-    }
-
-    add(boundary) {
         
+         // 50 is the map width
+         var map = []
+         for (let i = 0; i < zoneData.length; i += 50) {
+             map.push(zoneData.slice(i, 50 + i))
+         }
+ 
+         map.forEach((row, i) => {
+             row.forEach((symbol, j) => {
+             // 1025 collision id
+             if (symbol === 1025)
+                 this.zone.push(new Boundary({
+                     position: {
+                         x: j * Boundary.width + Level.instance.offset.x,
+                         y: i * Boundary.height + Level.instance.offset.y
+                     },
+                     zone: this.zone
+                 }))
+             }) 
+         })
+
+        Canvas.instance.drawn.push(this)
+        Canvas.instance.moveable.push(...this.zone)
     }
 
-    create(zoneData) {
-        // 50 is the map width
-        var map = []
-        for (let i = 0; i < zoneData.length; i += 50) {
-            map.push(zoneData.slice(i, 50 + i))
+    removeBoundary(i) {
+        this.zone.splice(i, 1)
+    }
+
+    mapPosition(elements, position, offset = {x: 0, y: 0}) {
+        var map = new Map()
+        this.proximitySort(position)
+        for (var i = 0; i < elements.length; i++) {
+            map.set(this.zone[i], elements[i])
+            elements[i].sprite.position = {
+                x: this.zone[i].position.x + offset.x,
+                y: this.zone[i].position.y + offset.y
+            }
         }
-
-        map.forEach((row, i) => {
-            row.forEach((symbol, j) => {
-            // 1025 collision id
-            if (symbol === 1025)
-                this.zone.push(new Boundary({
-                    position: {
-                        x: j * Boundary.width + offset.x,
-                        y: i * Boundary.height + offset.y
-                    }
-                }))
-            })
-        })
+        return map
     }
 
-    destroy() {
-        delete this
+    assignBoundaries(elements, position, offset = {x: 0, y: 0}) {
+        this.proximitySort(position)
+        for (var i = 0; i < elements.length; i++) {
+            elements[i].boundary = this.zone[i]
+            elements[i].sprite.position = {
+                x: this.zone[i].position.x + offset.x,
+                y: this.zone[i].position.y + offset.y
+            }
+        }
     }
 
     draw() {
@@ -51,58 +69,13 @@ class Zone {
     }
 
     // Have to pass more specific info
-    collision(x = 0, y = 0) {
-        for (let i = 0; i < this.zone.length; i++) {
-            var rectangle1 = {
-                position: {
-                    x: player.position.x,
-                    y: player.position.y
-                },
-
-                width: player.width * player.scale,
-                height: player.height * player.scale
-            }
-            var rectangle2 = {
-                ...this.zone[i],
-                position: {
-                    x: this.zone[i].position.x + x,
-                    y: this.zone[i].position.y + y
-                }
-            }
-            
-            if (collision(rectangle1, rectangle2)) {
-                return true
-            }
-        }
+    collision(sprite, x=0, y=0) {
+        return this.zone.some(boundary => {
+            return boundary.collision(sprite, x, y)
+        })
     }
-
-    singleCollision(x = 0, y = 0, i) {
-        var rectangle1 = {
-            position: {
-                x: player.position.x,
-                y: player.position.y
-            },
-
-            width: player.width * player.scale,
-            height: player.height * player.scale
-        }
-        var rectangle2 = {
-            ...this.zone[i],
-            position: {
-                x: this.zone[i].position.x + x,
-                y: this.zone[i].position.y + y
-            }
-        }
-        
-        if (collision(rectangle1, rectangle2)) {
-            return true
-        }
-    }
-
     
-
-    proximity(amnt = 100) {
-        var p1 = player.position
+    proximity(amnt = 100, p1) {
         for (let i = 0; i < this.zone.length; i++) {
             var p2 = this.zone[i].position 
             var dist = distance(p1, p2)
@@ -110,34 +83,5 @@ class Zone {
                 return this.zone[i]
             }
         }
-    }
-
-    inside(x, y) {
-        for (let i = 0; i < this.zone.length; i++) {
-            var rectangle1 = {
-                position: {
-                    x: player.position.x + x,
-                    y: player.position.y + y
-                },
-    
-                width: player.width * player.scale,
-                height: player.height * player.scale
-            }
-            var rectangle2 = {
-                ...this.zone[i],
-                position: {
-                    x: this.zone[i].position.x + x,
-                    y: this.zone[i].position.y + y
-                }
-            }
-            
-            if (bounded(rectangle1, rectangle2, player.scale)) {
-                return true
-            }
-        }
-    }
-
-    insideSingle(x, y) {
-
     }
 }

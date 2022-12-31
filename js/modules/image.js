@@ -1,10 +1,11 @@
 // Image loading and unloading
 
-async function loadImages(imageUrlArray) {
-    const promiseArray = []; // create an array for promises
-    const imageArray = []; // array for the images
 
-    for (let imageUrl of imageUrlArray) {
+async function loadImages(imageUrls, callback) {
+    const promiseArray = []; // create an array for promises
+    const imageDict = {}
+
+    for (let [key, imageUrl] of Object.entries(imageUrls)) {
         promiseArray.push(new Promise(resolve => {
             const img = new Image();
             img.onload = function() {
@@ -13,12 +14,17 @@ async function loadImages(imageUrlArray) {
             };
 
             img.src = imageUrl;
-            imageArray.push(img);
+            imageDict[key] = img
         }));
     }
 
     await Promise.all(promiseArray); // wait for all the images to be loaded
-    return imageArray;
+    callback(imageDict)
 }
 
+function loadZones(zoneUrls) {
+    for (let [key, zoneUrl] of Object.entries(zoneUrls)) {
+        zones[key] = new Zone()
+    }
 
+}

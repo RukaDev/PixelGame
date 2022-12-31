@@ -1,5 +1,8 @@
+
+
 class Sprite {
-    constructor({position, customWidth, customHeight, stop, velocity = 10, image, frames = {xmax: 1, ymax: 1}, sprites, scale = 1}) {
+
+    constructor({position, invis, moveable, customWidth, customHeight, stop, velocity = 10, image, frames = {xmax: 1, ymax: 1}, sprites, scale = 1}) {
         this.position = position
         this.image = image
         this.frames = {...frames, xval: 0, yval: 0, elapsed: 0}
@@ -12,11 +15,17 @@ class Sprite {
         this.width = this.customWidth / this.frames.xmax
         this.height = this.customHeight / this.frames.ymax
         this.stop = stop
-        this.c = document.querySelector('canvas').getContext('2d')
+        
+        if (!invis) {
+            Canvas.instance.drawn.push(this)
+        }
+        if (moveable) {
+            Canvas.instance.moveable.push(this)
+        }
     }
 
     draw() {
-        this.c.drawImage(
+        Canvas.instance.ctx.drawImage(
             this.image,
             this.frames.xval * this.width,
             this.frames.yval * this.height,
