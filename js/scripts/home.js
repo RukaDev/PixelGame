@@ -31,46 +31,63 @@ then the game loop just sets them up
 */
 
 
+function endGame(animId) {
+    window.cancelAnimationFrame(animId)
+    fadeOut()
+}
 
 
-function startGame(player, levers) {
+function startGame(player, levers, enemies, crystal) {
 
-    var input = new Input()
+    const canvas = Canvas.getInstance()
+    const input = Input.getInstance()
 
     // Core loop
     function step() {
-        Scene.ending = window.requestAnimationFrame(step)
-        Scene.drawElements()
+        const animId = window.requestAnimationFrame(step)
 
-        // Switches
-        if (input.getPressed(['e'])) {
-            Lever.activate(player.playerSprite.position)
+        Enemy.moveAll(enemies)
+
+        // Crystal
+        if (crystal.singleReach(player.playerSprite)) {
+            endGame(animId)
         }
 
-        // Player attack
-        if (input.getPressed(['f'])) {
-            player.attack()
+        // Levers
+        if (input.isPressed(['e'])) {
+            Lever.activateCheck(levers, player.playerSprite.position)
+        }
+
+        // Attack
+        if (input.isPressed(['f']) && player.canAttack()) {
+            player.attack(enemies)
         } 
         
         // Movement
-        if (input.getPressed(['w', 'a', 's', 'd'])) {
-            player.move(input.lastKey)
+        if (input.isPressed(['w', 'a', 's', 'd'])) {
+            var {x, y} = player.calculatePosition(input.lastKey)
+            if (player.canMove(x, y)) {
+                player.animate(input.lastKey)
+                canvas.moveElements(x, y)
+            }
         } else {
             player.stop()
         }
+
+        canvas.drawElements()
     }
 
     step()
 }
 
 function setupGame(images) {
-    // Sets the canvas + bg + fg
-    Scene.canvas()
-    Scene.set(
+    // Sets the bg + fg
+    new Level(
+        images.background,
+        images.foreground,
         {x: -875, y: -2650}, 
-        images.background, 
-        images.foreground
     )
+
     
     // Zones
     var boundaryZone = new Zone(boundaryData)
@@ -78,6 +95,7 @@ function setupGame(images) {
     var enemyZone = new Zone(enemyData)
     var sickleZone = new Zone(sickleData)
     var bridgeZone = new Zone(bridgeBoundaryData)
+    var crystalZone = new Zone(crystalData)
 
     // Player
     var player = new Player({
@@ -91,9 +109,9 @@ function setupGame(images) {
     var enemy1 = new Enemy(images.player)
     var enemy2 = new Enemy(images.player)
     var enemy3 = new Enemy(images.player)
-    Enemy.map = enemyZone.mapPosition([enemy1, enemy2, enemy3], player.playerSprite.position)
-    Enemy.zone = enemyZone
-    
+    var enemies = [enemy1, enemy2, enemy3]
+    enemyZone.assignBoundaries(enemies, player.playerSprite)
+
     // Bridges
     var bridge1 = new Bridge(images.bridge1, bridgeZone, bridgeZone.zone.slice(3, 6))
     var bridge2 = new Bridge(images.bridge2, bridgeZone, bridgeZone.zone.slice(0, 3))
@@ -101,10 +119,18 @@ function setupGame(images) {
     // Levers
     var lever1 = new Lever(images.lever1, bridge1.activate.bind(bridge1))
     var lever2 = new Lever(images.lever1, bridge2.activate.bind(bridge2))
-    Lever.map = leverZone.mapPosition([lever1, lever2], player.playerSprite.position)
-    Lever.zone = leverZone
+    var levers = [lever1, lever2]
+    leverZone.assignBoundaries(levers, player.playerSprite.position)
 
-    startGame(player)
+    //! Make sickles then done
+
+    // Crystal
+    var crystal1 = new Crystal({
+        image: images.crystal,
+        boundary: crystalZone.zone[0]
+    })
+
+    startGame(player, levers, enemies, crystal1)
 }
 
 

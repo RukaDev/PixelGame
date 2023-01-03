@@ -23,43 +23,6 @@ ion-icon {
   font-size: 25px;
 }
 
-/* NAVBAR
-=========================== */
-.navbar {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 80px;
-  width: 100%;
-  padding: 0 30px;
-  font-size: 20px;
-  z-index: 1;
-
-  display: flex;
-  align-items: center;
-}
-
-.navbar > div {
-  padding: 0 30px;
-}
-
-.logo {
-  margin: 0 auto 0 38%;
-  font-family: 'sansserifexbflf-italic';
-  font-size: 30px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.profile img {
-  width: 35px;
-  height: 35px;
-  object-fit: cover;
-  border-radius: 50%;
-}
-
-
-
 
 /* CONTENT
 =========================== */
@@ -160,8 +123,6 @@ ion-icon {
 }
 
 
-
-
 /* Default view
 =========================== */
 .split.left {
@@ -180,6 +141,11 @@ ion-icon {
 .split.left .text .title {
   font-family: 'Share Tech Mono', monospace;
 }
+
+.split.left .button:hover {
+  background-color: #05222e;
+}
+
 
 
 
@@ -203,43 +169,7 @@ ion-icon {
     font-family: 'Press Start 2P', cursive;
 }
 
-
-
-
-
-
-/* SLIDER
-=========================== */
-.slider {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  height: 80px;
-
-  display: flex;
-  align-items: center;
-}
-
-.pages {
-  padding: 0 20px;
-  font-weight: bold;
-}
-
-.pages span::after {
-  content: "";
-  display: inline-block;
-  border: .5px solid #fff;
-  width: 100px;
-  margin: 0 10px;
-  transform: translateY(-4px);
-}
-
-.arrows {
-  padding: 0 20px;
-}
-
-.arrows ion-icon {
-  font-size: 30px;
-  padding: 0 20px;
+.split.right .button:hover {
+  background-color: #9b9b9b;
 }
 

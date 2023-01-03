@@ -25,6 +25,11 @@ class Canvas {
         })
     }
 
+    manualMoveElement(element, x, y) {
+        element.position.x += x
+        element.position.y += y
+    }
+
     removeElement(element) {
         removeFromArray(this.drawn, element)
         removeFromArray(this.moveable, element)

@@ -37,16 +37,15 @@ class Player {
             position: {
                 // 192 x 86 character dimensions
                 x: (canvas.width / 2 - playerImage.width / 8 + 40), // For centering char in middle of the screen
-                y: (canvas.height / 2 - playerImage.height / 4 + 40)
+                y: (canvas.height / 2 - playerImage.height / 4)
             },
             image: playerImage,
             frames: {
                 xmax: 3,
-                ymax: 3.975
+                ymax: 4
             },
             scale: 3.5,
-            customWidth: playerImage.width/8,
-            customHeight: playerImage.height/4
+
         })
 
         if (attackImage) {
@@ -119,9 +118,7 @@ class Player {
     attack(enemies) {
         enemies.forEach(enemy => {
             if (distance(enemy.sprite.position, this.playerSprite.position) < 200) {
-                // Mob detection
-                //removeFromArray(this.mobZones.zone, zone)
-                removeFromArray(Canvas.instance.drawn, enemy.sprite)
+                enemy.cleanup(enemies)
             }
         })
 

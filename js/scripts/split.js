@@ -22,11 +22,9 @@ right.addEventListener('mouseleave', () => {
 })
 
 gameBtn.addEventListener('click', function(){
-  console.log('click')
   window.location.href = "/html/map.html"
 })
 
 defaultBtn.addEventListener('click', function() {
-  console.log('click')
   window.location.href = "/html/default.html"
 })

@@ -14,6 +14,8 @@ Have one crystal that can change to a set of positions
 
 class Crystal {
 
+    static crystals = []
+
     // Check if any of the crystals were collected
     static reached(crystals) {
         crystals.forEach(crystal => {
@@ -26,7 +28,7 @@ class Crystal {
         })
     }
 
-    constructor({image, positionZone}) {
+    constructor({image, positionZone, boundary}) {
         this.sprite = new Sprite({
             image: image,
             frames: {
@@ -38,6 +40,7 @@ class Crystal {
             moveable: true
         })
 
+        this.boundary = boundary
         this.sprite.moving = true
         this.positionZone = positionZone
         this.positionIter = 0
@@ -48,7 +51,15 @@ class Crystal {
                 x: positionZone.zone[0].position.x,
                 y: positionZone.zone[0].position.y
             } 
+        } else if (boundary) {
+            this.boundary = boundary
+            this.sprite.position = {
+                x: this.boundary.position.x,
+                y: this.boundary.position.y
+            }
         }
+
+        Crystal.crystals.push(this)
     }
 
     // Delete crystal
@@ -74,6 +85,10 @@ class Crystal {
     // Check if the player reached it
     reached(sprite) {
         return this.positionZone.zone[this.positionIter].collision(sprite)
+    }
+
+    singleReach(sprite) {
+        return this.boundary.collision(sprite)
     }
 }
 

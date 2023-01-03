@@ -8,15 +8,15 @@ function fadeIn() {
     })
 }
 
-function fadeOut() {
+function fadeOut(current) {
     gsap.to('#inner', {
         opacity: 1,
         repeat: 0,
         duration: 1.5,
         onComplete() {
-            //setArrayItem('unlocked', 'portfolio')
-            sessionStorage.setItem('latest', 'portfolio')
-            window.location.href = "/html/map.html"
+            setArrayItem('unlocked', current)
+            sessionStorage.setItem('fromGame', current)
+            history.back()
         }
     })
 }

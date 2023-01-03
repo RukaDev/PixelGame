@@ -59,6 +59,8 @@
 <!-- Util -->
 <script src = '/js/util/math.js'></script>
 <script src = '/js/util/table.js'></script>
+<script src="/js/util/storage.js"></script>
+
 
 <!-- Modules -->
 <script src="/js/modules/fade.js"></script>
@@ -68,8 +70,10 @@
 
 <script>
 
+
+
 var gameName = sessionStorage.getItem('GameName')
-//gameName = "contact"
+
 
   // Config
   var info = {
@@ -90,7 +94,7 @@ var gameName = sessionStorage.getItem('GameName')
 
       images: {
         background: '/media/images/maps/portfolio/map.png',
-        player: '/media/images/sprites/characters/all.png',
+        player: '/media/images/sprites/characters/chara.png',
         foreground: '/media/images/maps/portfolio/foreground.png',
         crystal: '/media/images/sprites/crystals/blue-crystal.png'
       },
@@ -171,6 +175,7 @@ var gameName = sessionStorage.getItem('GameName')
         '/js/data/zones/contact/crystal.js',
         '/js/data/zones/contact/sickle.js',
         '/js/classes/sickle.js',
+        '/js/classes/crystal.js',
         '/js/scripts/contact.js'
       ],
 
@@ -200,9 +205,11 @@ var gameName = sessionStorage.getItem('GameName')
         '/js/classes/enemy.js',
         '/js/data/zones/home/boundary.js',
         '/js/data/zones/home/sickle.js',
+        '/js/data/zones/home/crystal.js',
         '/js/data/zones/home/enemies.js',
         '/js/data/zones/home/switches.js',
         '/js/data/zones/home/bridgeBoundary.js',
+        '/js/classes/crystal.js',
         '/js/classes/lever.js',
         '/js/scripts/home.js'
       ],
@@ -285,6 +292,12 @@ var gameName = sessionStorage.getItem('GameName')
       setupGame(images)
     })
   }
+
+</script>
+
+<script>
+
+  sessionStorage.setItem('fromGame', '234')
 </script>
 
 

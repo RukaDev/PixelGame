@@ -1,9 +1,15 @@
 class Sickle {
 
-    static reached(p) {
-        if (Sickle.zone.proximity(50, p)) {
-            console.log('yes')
-        }
+    static reached(sickles, pos) {
+        sickles.forEach(sickle => {
+            sickle.hitPlayer(pos)
+        });
+    }
+
+    static assignCallback(sickles, callback) {
+        sickles.forEach(sickle => {
+            sickle.callback = callback
+        })
     }
 
     constructor(img) {
@@ -21,17 +27,37 @@ class Sickle {
         this.setMovement()
     }
 
-    setMovement() {
-        this.iter = 0
-        this.max = 8 // num sickles
-        setInterval(function() {
-            this.sprite.moving = !this.sprite.moving
-            if (this.iter === this.max) {
-                this.iter = 0
-            } else {
-                this.iter++
+    isActive() {
+        return this.sprite.moving
+    }
+
+    reset() {
+        this.sprite.moving = false
+    }
+
+    set() {
+        this.sprite.moving = true
+    }
+
+    hitPlayer(p) {
+        if (this.isActive() && this.boundary.proximity(p)) {
+            if (this.callback) {
+                this.callback()
             }
-        }.bind(this), 400 * this.max)
+        }
+    }
+
+    // Set active length and delay length
+    setMovement(intervalLength = 3000, delayLength = 1000) {
+        function thing() {
+            this.reset()
+            setTimeout(function() {      
+                this.set()
+            }.bind(this), delayLength)
+        }
+
+        thing.bind(this)()
+        this.intervalId = setInterval(thing.bind(this), intervalLength + delayLength)
     }
 
     animate() {

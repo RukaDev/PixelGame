@@ -8,31 +8,39 @@ instead of draw
 
 */
 
+function endGame(animId) {
+    window.cancelAnimationFrame(animId)
+    fadeOut()
+}
 
+function startGame(player, sickles, crystal) {
 
-
-function startGame(player) {
-
-    var input = new Input()
+    var canvas = Canvas.getInstance()
+    var input = Input.getInstance()
 
     // Core loop
     function step() {
-        Scene.ending = window.requestAnimationFrame(step)        
-        Scene.drawElements()
+        const animId = window.requestAnimationFrame(step)        
 
-        Sickle.reached(player.playerSprite.position) 
+        Sickle.reached(sickles, player.playerSprite.position) 
 
-        // Player attack
-        if (input.getPressed(['f'])) {
-            player.attack()
-        } 
-        
+        // Crystal
+        if (crystal.singleReach(player.playerSprite)) {
+            endGame(animId)
+        }
+
         // Movement
-        if (input.getPressed(['w', 'a', 's', 'd'])) {
-            player.move(input.lastKey)
+        if (input.isPressed(['w', 'a', 's', 'd'])) {
+            var {x, y} = player.calculatePosition(input.lastKey)
+            if (player.canMove(x, y)) {
+                player.animate(input.lastKey)
+                canvas.moveElements(x, y)
+            }
         } else {
             player.stop()
         }
+
+        canvas.drawElements()
     }
 
     step()
@@ -40,17 +48,16 @@ function startGame(player) {
 
 function setupGame(images) {
     // Sets the canvas + bg + fg
-    Scene.canvas()
-    Scene.set(
-        {x: -875, y: -2450}, 
+    new Level(
         images.background, 
-        images.foreground
+        images.foreground,
+        {x: -875, y: -2450}, 
     )
     
-
     // Zones
     var boundaryZone = new Zone(boundaryData)
     var sickleZone = new Zone(sickleData)
+    var crystalZone = new Zone(crystalData)
 
     // Player
     var player = new Player({
@@ -58,6 +65,11 @@ function setupGame(images) {
         playerImage: images.player,
     })
     
+    // Crystals
+    var crystal1 = new Crystal({
+        image: images.crystal,
+        boundary: crystalZone.zone[0]
+    })
     
     // Sickles
     var sickle1 = new Sickle(images.sickle) 
@@ -68,15 +80,14 @@ function setupGame(images) {
     var sickle6 = new Sickle(images.sickle) 
     var sickle7 = new Sickle(images.sickle)
     var sickle8 = new Sickle(images.sickle)
+    var sickles = [sickle1, sickle2, sickle3, sickle4, sickle5, sickle6, sickle7, sickle8]
+    sickleZone.assignBoundaries(sickles, player.playerSprite.position)
 
-    sickleZone.mapPosition(
-        [sickle1, sickle2, sickle3, sickle4, sickle5, sickle6, sickle7, sickle8], 
-        player.playerSprite.position,
-        {x: -48, y: -48}
-    )
-    Sickle.zone = sickleZone
+    Sickle.assignCallback(sickles, function() {
+        window.location = location
+    })
 
-    startGame(player)
+    startGame(player, sickles, crystal1)
 }
 
 

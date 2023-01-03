@@ -7,7 +7,9 @@
     <title>Document</title>
     <!-- ===== CSS Files ===== -->
   <link rel="stylesheet" href="/css/map.css">
+  <link rel="stylesheet" href="/css/sections.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 </head>
 <body>
     <div id="inner"></div>
@@ -31,8 +33,8 @@
                 <div class="face face2">
                     <div class="content">
                         <p>A wooded forest to collect crystals while learning proper traversal.</p>
-                        <a href="#" id="play">Play</a>
-                        <a href="#" id="view">Portfolio</a>
+                        <a id="play">Play</a>
+                        <a id="view">Portfolio</a>
                     </div>
                 </div>
               </div>
@@ -46,8 +48,8 @@
                 <div class="face face2">
                     <div class="content">
                       <p>A wooded forest to collect crystals while learning proper traversal.</p>
-                      <a href="#" id="play">Play</a>
-                      <a href="#" id="view">About</a>
+                      <a id="play">Play</a>
+                      <a id="view">About</a>
                     </div>
                 </div>
               </div>
@@ -61,8 +63,8 @@
                   <div class="face face2">
                       <div class="content">
                         <p>A wooded forest to collect crystals while learning proper traversal.</p>
-                        <a href="#" id="play">Play</a>
-                        <a href="#" id="view">Interests</a>
+                        <a id="play">Play</a>
+                        <a id="view">Interests</a>
                       </div>
                   </div>
               </div>
@@ -76,8 +78,8 @@
                 <div class="face face2">
                     <div class="content">
                       <p>A wooded forest to collect crystals while learning proper traversal.</p>
-                      <a href="#" id="play">Play</a>
-                      <a href="#" id="view">Contact</a>
+                      <a id="play">Play</a>
+                      <a id="view">Contact</a>
                     </div>
                 </div>
               </div>
@@ -91,420 +93,38 @@
                 <div class="face face2">
                     <div class="content">
                       <p>A wooded forest to collect crystals while learning proper traversal.</p>
-                      <a href="#" id="play">Play</a>
-                      <a href="#" id="view">Home</a>
+                      <a id="play">Play</a>
+                      <a id="view">Home</a>
                     </div>
                 </div>
               </div>
             </div>
         </div>
 
-        <div class="header">
-            <h1>Jonathan Bogie,,,,,,,,Switch to default website</h1>
+        <div id="container">
+          <span id="left">
+            <h1>Collect crystals and unlock content!</h1>
+          </span>
+
+          <span id="center">
+            <h1>Map Title</h1>
+          </span>
+
+          <span id="right">
+            <a href="/html/split.html">Main Menu</a>
+          </span>
+            
         </div>
     </div>
 
     <div class="section-container">
-        <!-- ===== Portfolio Section Start ===== -->
-        <section class="portfolio section" id="portfolio">
-            <div class="container">
-                <button class="exitButton" id="close">Close</button>
-
-
-                <div class="row">
-                <div class="section-title padd-15">
-                    <h2>Portfolio</h2>
-                </div>
-                </div>
-                <div class="row">
-                <div class="portfolio-heading padd-15">
-                    <h2>My Last Projects :</h2>
-                </div>
-              
-                </div>
-                <div class="row">
-                <!-- ====== portfolio item start ====== -->
-                <div class="portfolio-item padd-15">
-                    <div class="portfolio-item-inner shadow-dark">
-                    <div class="portfolio-img">
-                        <img src="/media/images/content/portfolio/portfolio-1.jpg" alt="">
-                    </div>
-                    </div>
-                </div>
-                <!-- ====== portfolio item End ====== -->
-                    <!-- ====== portfolio item start ====== -->
-                    <div class="portfolio-item padd-15">
-                    <div class="portfolio-item-inner shadow-dark">
-                    <div class="portfolio-img">
-                        <img src="/media/images/content/portfolio/portfolio-2.jpg" alt="">
-                    </div>
-                    </div>
-                </div>
-                <!-- ====== portfolio item End ====== -->
-                    <!-- ====== portfolio item start ====== -->
-                    <div class="portfolio-item padd-15">
-                    <div class="portfolio-item-inner shadow-dark">
-                    <div class="portfolio-img">
-                        <img src="/media/images/content/portfolio/portfolio-3.jpg" alt="">
-                    </div>
-                    </div>
-                </div>
-                <!-- ====== portfolio item End ====== -->
-                    <!-- ====== portfolio item start ====== -->
-                    <div class="portfolio-item padd-15">
-                    <div class="portfolio-item-inner shadow-dark">
-                    <div class="portfolio-img">
-                        <img src="/media/images/content/portfolio/portfolio-4.jpg" alt="">
-                    </div>
-                    </div>
-                </div>
-                <!-- ====== portfolio item End ====== -->
-                    <!-- ====== portfolio item start ====== -->
-                    <div class="portfolio-item padd-15">
-                    <div class="portfolio-item-inner shadow-dark">
-                    <div class="portfolio-img">
-                        <img src="/media/images/content/portfolio/portfolio-5.jpg" alt="">
-                    </div>
-                    </div>
-                </div>
-                <!-- ====== portfolio item End ====== -->
-                    <!-- ====== portfolio item start ====== -->
-                    <div class="portfolio-item padd-15">
-                    <div class="portfolio-item-inner shadow-dark">
-                    <div class="portfolio-img">
-                        <img src="/media/images/content/portfolio/portfolio-6.jpg" alt="">
-                    </div>
-                    </div>
-                </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="service section" id="service">
-            <div class="container">
-
-            <button class="exitButton" id="close">Close</button>
-
-              <div class="row">
-                <div class="section-title padd-15">
-                  <h2>Interests</h2>
-                </div>
-              </div>
-              <div class="row">
-                <!-- ===== Service item Start ====== -->
-                <div class="service-item padd-15">
-                  <div class="service-item-inner">
-                    <div class="icon">
-                      <i class="fa fa-gamepad"></i>
-                    </div>
-                    <h4>Game Design</h4>
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil velit ab itaque.</p>
-                  </div>
-                </div>
-                <!-- ===== Service item End ====== -->
-                 <!-- ===== Service item Start ====== -->
-                 <div class="service-item padd-15">
-                  <div class="service-item-inner">
-                    <div class="icon">
-                      <i class="fa fa-laptop-code"></i>
-                    </div>
-                    <h4>Web Design</h4>
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil velit ab itaque.</p>
-                  </div>
-                </div>
-                <!-- ===== Service item End ====== -->
-                 <!-- ===== Service item Start ====== -->
-                 <div class="service-item padd-15">
-                  <div class="service-item-inner">
-                    <div class="icon">
-                      <i class="fa fa-palette"></i>
-                    </div>
-                    <h4>Web Design</h4>
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil velit ab itaque.</p>
-                  </div>
-                </div>
-                <!-- ===== Service item End ====== -->
-                 <!-- ===== Service item Start ====== -->
-                 <div class="service-item padd-15">
-                  <div class="service-item-inner">
-                    <div class="icon">
-                      <i class="fa fa-code"></i>
-                    </div>
-                    <h4>Web Design</h4>
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil velit ab itaque.</p>
-                  </div>
-                </div>
-                <!-- ===== Service item End ====== -->
-                 <!-- ===== Service item Start ====== -->
-                 <div class="service-item padd-15">
-                  <div class="service-item-inner">
-                    <div class="icon">
-                      <i class="fa fa-search"></i>
-                    </div>
-                    <h4>Web Design</h4>
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil velit ab itaque.</p>
-                  </div>
-                </div>
-                <!-- ===== Service item End ====== -->
-                 <!-- ===== Service item Start ====== -->
-                 <div class="service-item padd-15">
-                  <div class="service-item-inner">
-                    <div class="icon">
-                      <i class="fa fa-bullhorn"></i>
-                    </div>
-                    <h4>Web Design</h4>
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil velit ab itaque.</p>
-                  </div>
-                </div>
-                <!-- ===== Service item End ====== -->
-              </div>
-            </div>
-          </section>
-          <!-- ===== About Section End ===== -->
-          <section class="about section" id="about">
-            <div class="container">
-
-            <button class="exitButton" id="close">Close</button>
-
-              <div class="row">
-                <div class="section-title padd-15">
-                  <h2>Interests</h2>
-                </div>
-              </div>
-              <div class="row">
-                <!-- ===== Service item Start ====== -->
-                <div class="service-item padd-15">
-                  <div class="service-item-inner">
-                    <div class="icon">
-                      <i class="fa fa-gamepad"></i>
-                    </div>
-                    <h4>Game Design</h4>
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil velit ab itaque.</p>
-                  </div>
-                </div>
-                <!-- ===== Service item End ====== -->
-                 <!-- ===== Service item Start ====== -->
-                 <div class="service-item padd-15">
-                  <div class="service-item-inner">
-                    <div class="icon">
-                      <i class="fa fa-laptop-code"></i>
-                    </div>
-                    <h4>Web Design</h4>
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil velit ab itaque.</p>
-                  </div>
-                </div>
-                <!-- ===== Service item End ====== -->
-                 <!-- ===== Service item Start ====== -->
-                 <div class="service-item padd-15">
-                  <div class="service-item-inner">
-                    <div class="icon">
-                      <i class="fa fa-palette"></i>
-                    </div>
-                    <h4>Web Design</h4>
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil velit ab itaque.</p>
-                  </div>
-                </div>
-                <!-- ===== Service item End ====== -->
-                 <!-- ===== Service item Start ====== -->
-                 <div class="service-item padd-15">
-                  <div class="service-item-inner">
-                    <div class="icon">
-                      <i class="fa fa-code"></i>
-                    </div>
-                    <h4>Web Design</h4>
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil velit ab itaque.</p>
-                  </div>
-                </div>
-                <!-- ===== Service item End ====== -->
-                 <!-- ===== Service item Start ====== -->
-                 <div class="service-item padd-15">
-                  <div class="service-item-inner">
-                    <div class="icon">
-                      <i class="fa fa-search"></i>
-                    </div>
-                    <h4>Web Design</h4>
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil velit ab itaque.</p>
-                  </div>
-                </div>
-                <!-- ===== Service item End ====== -->
-                 <!-- ===== Service item Start ====== -->
-                 <div class="service-item padd-15">
-                  <div class="service-item-inner">
-                    <div class="icon">
-                      <i class="fa fa-bullhorn"></i>
-                    </div>
-                    <h4>Web Design</h4>
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil velit ab itaque.</p>
-                  </div>
-                </div>
-                <!-- ===== Service item End ====== -->
-              </div>
-            </div>
-          </section>
-
-
-          <section class="contact section" id="contact">
-            <div class="container">
-
-            <button class="exitButton" id="close">Close</button>
-
-              <div class="row">
-                <div class="section-title padd-15">
-                  <h2>Interests</h2>
-                </div>
-              </div>
-              <div class="row">
-                <!-- ===== Service item Start ====== -->
-                <div class="service-item padd-15">
-                  <div class="service-item-inner">
-                    <div class="icon">
-                      <i class="fa fa-gamepad"></i>
-                    </div>
-                    <h4>Game Design</h4>
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil velit ab itaque.</p>
-                  </div>
-                </div>
-                <!-- ===== Service item End ====== -->
-                 <!-- ===== Service item Start ====== -->
-                 <div class="service-item padd-15">
-                  <div class="service-item-inner">
-                    <div class="icon">
-                      <i class="fa fa-laptop-code"></i>
-                    </div>
-                    <h4>Web Design</h4>
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil velit ab itaque.</p>
-                  </div>
-                </div>
-                <!-- ===== Service item End ====== -->
-                 <!-- ===== Service item Start ====== -->
-                 <div class="service-item padd-15">
-                  <div class="service-item-inner">
-                    <div class="icon">
-                      <i class="fa fa-palette"></i>
-                    </div>
-                    <h4>Web Design</h4>
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil velit ab itaque.</p>
-                  </div>
-                </div>
-                <!-- ===== Service item End ====== -->
-                 <!-- ===== Service item Start ====== -->
-                 <div class="service-item padd-15">
-                  <div class="service-item-inner">
-                    <div class="icon">
-                      <i class="fa fa-code"></i>
-                    </div>
-                    <h4>Web Design</h4>
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil velit ab itaque.</p>
-                  </div>
-                </div>
-                <!-- ===== Service item End ====== -->
-                 <!-- ===== Service item Start ====== -->
-                 <div class="service-item padd-15">
-                  <div class="service-item-inner">
-                    <div class="icon">
-                      <i class="fa fa-search"></i>
-                    </div>
-                    <h4>Web Design</h4>
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil velit ab itaque.</p>
-                  </div>
-                </div>
-                <!-- ===== Service item End ====== -->
-                 <!-- ===== Service item Start ====== -->
-                 <div class="service-item padd-15">
-                  <div class="service-item-inner">
-                    <div class="icon">
-                      <i class="fa fa-bullhorn"></i>
-                    </div>
-                    <h4>Web Design</h4>
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil velit ab itaque.</p>
-                  </div>
-                </div>
-                <!-- ===== Service item End ====== -->
-              </div>
-            </div>
-          </section>
-          <!-- ===== Services Section End ===== -->
-
-          <section class="home section" id="home">
-            <div class="container">
-
-            <button class="exitButton" id="close">Close</button>
-
-              <div class="row">
-                <div class="section-title padd-15">
-                  <h2>Interests</h2>
-                </div>
-              </div>
-              <div class="row">
-                <!-- ===== Service item Start ====== -->
-                <div class="service-item padd-15">
-                  <div class="service-item-inner">
-                    <div class="icon">
-                      <i class="fa fa-gamepad"></i>
-                    </div>
-                    <h4>Game Design</h4>
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil velit ab itaque.</p>
-                  </div>
-                </div>
-                <!-- ===== Service item End ====== -->
-                 <!-- ===== Service item Start ====== -->
-                 <div class="service-item padd-15">
-                  <div class="service-item-inner">
-                    <div class="icon">
-                      <i class="fa fa-laptop-code"></i>
-                    </div>
-                    <h4>Web Design</h4>
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil velit ab itaque.</p>
-                  </div>
-                </div>
-                <!-- ===== Service item End ====== -->
-                 <!-- ===== Service item Start ====== -->
-                 <div class="service-item padd-15">
-                  <div class="service-item-inner">
-                    <div class="icon">
-                      <i class="fa fa-palette"></i>
-                    </div>
-                    <h4>Web Design</h4>
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil velit ab itaque.</p>
-                  </div>
-                </div>
-                <!-- ===== Service item End ====== -->
-                 <!-- ===== Service item Start ====== -->
-                 <div class="service-item padd-15">
-                  <div class="service-item-inner">
-                    <div class="icon">
-                      <i class="fa fa-code"></i>
-                    </div>
-                    <h4>Web Design</h4>
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil velit ab itaque.</p>
-                  </div>
-                </div>
-                <!-- ===== Service item End ====== -->
-                 <!-- ===== Service item Start ====== -->
-                 <div class="service-item padd-15">
-                  <div class="service-item-inner">
-                    <div class="icon">
-                      <i class="fa fa-search"></i>
-                    </div>
-                    <h4>Web Design</h4>
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil velit ab itaque.</p>
-                  </div>
-                </div>
-                <!-- ===== Service item End ====== -->
-                 <!-- ===== Service item Start ====== -->
-                 <div class="service-item padd-15">
-                  <div class="service-item-inner">
-                    <div class="icon">
-                      <i class="fa fa-bullhorn"></i>
-                    </div>
-                    <h4>Web Design</h4>
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil velit ab itaque.</p>
-                  </div>
-                </div>
-                <!-- ===== Service item End ====== -->
-              </div>
-            </div>
-          </section>
+      <!-- ===== Section Start ===== -->
+      <section class="home active section" id="homet"></section>
+      <section class="about section" id="aboutt"> </section>
+      <section class="service section" id="servicet"></section>
+      <section class="portfolio section" id="portfoliot"></section>
+      <section class="contact section" id="contactt"></section>
+      <!-- ===== Section End ===== -->
     </div>
 </body>
 
@@ -522,8 +142,21 @@
   referrerpolicy="no-referrer"
 ></script>
 
+<script src="/js/modules/fade.js"></script>
 <script src="/js/util/storage.js"></script>
-<script src="/js/modules/image.js"></script>
-<script src="/js/scripts/map.js"></script>
+
+<script>
+  ['#home', '#about', '#service', '#portfolio', '#contact'].forEach((val, i) => {
+    $(val + 't').load(`/html/sections.html ${val}`, function() {
+      console.log(i)
+      if (i == 4) {
+        var sc = document.createElement('script')
+        sc.src = "/js/scripts/map.js"
+        document.body.append(sc)
+      }
+    })
+  })
+</script>
+
 
 </html>

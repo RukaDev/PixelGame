@@ -39,12 +39,17 @@ the zone will still have things but, mainly helpers to do on all of them
 it's how i do the enemies and other things
 class for the boundaries, then static helpers inside the boundary class
 sio get rid of the zone
+
+might change level name to 'scene'
 */
 
 
+function endGame(animId) {
+    window.cancelAnimationFrame(animId)
+    fadeOut()
+}
 
-
-function startGame(player, crystals, enemies) {
+function startGame(player, crystal, enemies) {
 
     const input = Input.getInstance()
     const canvas = Canvas.getInstance()
@@ -54,17 +59,23 @@ function startGame(player, crystals, enemies) {
         const animId = window.requestAnimationFrame(step)
 
         // Update objects
-        Enemy.move(enemies)
-        Crystal.reached(crystals)
-    
+        Enemy.moveAll(enemies)
+        if (crystal.singleReach(player.playerSprite)) {
+            endGame(animId)
+        }
+
         // Attack
-        if (input.isPressed(input.binds.attack) && player.canAttack()) {
+        if (input.isPressed(['f']) && player.canAttack()) {
             player.attack(enemies)
         } 
 
         // Movement
-        if (input.isPressed(input.binds.walk) && player.canMove()) {
-            player.move()
+        if (input.isPressed(['w', 'a', 's', 'd'])) {
+            var {x, y} = player.calculatePosition(input.lastKey)
+            if (player.canMove(x, y)) {
+                player.animate(input.lastKey)
+                canvas.moveElements(x, y)
+            }
         } else {
             player.stop()
         }
@@ -77,6 +88,14 @@ function startGame(player, crystals, enemies) {
 }
 
 function setupGame(images) {
+
+    // Level
+    new Level(
+        images.background,
+        images.foreground,
+        {x: -210, y: -1000}
+    )
+
     // Zones
     var boundaryZone = new Zone(boundaryData)
     var enemyZone = new Zone(enemyData)
@@ -90,9 +109,10 @@ function setupGame(images) {
     enemyZone.assignBoundaries(enemies, Canvas.instance.center)
     
     // Crystals
-    var crystal1 = new Crystal(images.crystal)
-    var crystals = [crystal1]
-    crystalZone.assignBoundaries(crystals, Canvas.instance.center)
+    var crystal1 = new Crystal({
+        image: images.crystal,
+        boundary: crystalZone.zone[0]
+    })
 
     // Player
     var player = new Player({
@@ -101,7 +121,7 @@ function setupGame(images) {
         attackImage: images.attackPlayer
     })
 
-    startGame(player, crystals, enemies)
+    startGame(player, crystal1, enemies)
 }
 
 

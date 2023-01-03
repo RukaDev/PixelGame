@@ -2,9 +2,8 @@ class Lever {
 
     static activateCheck(levers, pos) {
         levers.forEach(lever => {
-            if (lever.boundary.proximity(pos)) {
-                lever.animate()
-                lever.callback()
+            if (lever.canActivate(pos)) {
+                lever.activate()
             }
         }) 
     }
@@ -26,8 +25,16 @@ class Lever {
         this.activated = false
     }
 
-    animate() {
+    canActivate(pos) {
+        return this.boundary.proximity(pos) && !this.activated
+    }
+
+    activate() {
+        this.activated = true
         this.sprite.moving = true
+        if (this.callback) {
+            this.callback()
+        }
     }
 }
 

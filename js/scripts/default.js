@@ -21,7 +21,7 @@ var currentNav = navList[1]
 
 for(let i=0; i<totalNavList; i++) {
     const a = navList[i].querySelector("a");
-    a.addEventListener("click", function() {
+    a.onclick = function() {
         for(let j=0; j<totalNavList; j++) {
             navList[j].querySelector("a").classList.remove("active");
         }
@@ -29,8 +29,13 @@ for(let i=0; i<totalNavList; i++) {
         if(window.innerWidth < 1200) {
             asideSectionTogglerBtn();
         }
-    })
+        var id = a.href.substring(a.href.indexOf('#'))
+        var element = document.querySelector(id)
+        element.scrollIntoView({behavior: 'smooth'}, true);
+        return false
+    }
 }
+
 
 function updateNav(sectId) {
     for(let i=0; i < totalNavList; i++) {
@@ -65,7 +70,7 @@ function sectionScroll() {
         var sect = allSection[i]
         var offset = Math.round(sect.getBoundingClientRect().top + pos)
 
-        if (offset <= pos) {
+        if (offset - 500 <= pos) {
             finalId = sect.id
         }
     }
@@ -76,18 +81,6 @@ function sectionScroll() {
 }
 
 
-/* ========================== toggle style switcher =========================== */
-const styleSwitcherToggle = document.querySelector(".style-switcher-toggler");
-styleSwitcherToggle.addEventListener("click", () => {
-    document.querySelector(".style-switcher").classList.toggle("open");
-})
-// hide style - switcher on scroll
-window.addEventListener("scroll", () => {
-    if(document.querySelector(".style-switcher").classList.contains("open"))
-    {
-        document.querySelector(".style-switcher").classList.remove("open");
-    }
-})
 
 /* ========================== theme colors =========================== */
 function setActiveStyle(color)
@@ -104,14 +97,6 @@ dayNight.addEventListener("click", () => {
     document.body.classList.toggle("dark");
 })
 
-
-const colors = document.querySelectorAll(".colors span")
-colors.forEach((color) => {
-    color.addEventListener('click', function() {
-        setActiveStyle(color.className)
-    })
-})
-
 window.addEventListener("load", () => {
     if(document.body.classList.contains("dark"))
     {
@@ -122,6 +107,7 @@ window.addEventListener("load", () => {
         dayNight.querySelector("i").classList.add("fa-moon");
     }
 })
+
 
 setActiveStyle('color-3')
 document.body.classList.toggle("dark");

@@ -2,46 +2,18 @@
 var mapContainer = document.querySelector('.map-container')
 var pageContainer = document.querySelector('.page-container')
 var sectionContainer = document.querySelector('.section-container')
-
 var regionSpans = document.querySelectorAll('.regions span')
 var section = document.querySelector('.section')
-
 var regionCards = document.querySelectorAll('.container .card')
 
+
+// Session stroage
 sessionStorage.clear()
-
-
-// ! Going to have to make sure to load images on here too
-
-
-gsap.to('#inner', {
-    opacity: 0,
-    repeat: 0,
-    duration: 4,
-})
-
-// if first load, setup the session storage
 if (!sessionStorage.getItem('unlocked')) {
-    setArray("unlocked", ["portfolio", "about", "service", "contact"])
+    setArray("unlocked", [])
 }
 
 
-var latest 
-
-function nextUnlock() {
-    var arr = getArray('unlocked')
-    var amnt = arr.length
-    latest = regionCards[amnt]
-    setupLatest(latest)
-}
-
-
-nextUnlock()
-
-
-// Properties
-var regionTimeout;
- 
 // Map 
 function mapEnter() {
     mapContainer.classList.add('unfold')
@@ -55,7 +27,6 @@ function mapLeave() {
     regionCards.forEach(region => {
         region.style.display = 'none'
     });
-    clearTimeout(regionTimeout)
 }
 
 
@@ -72,9 +43,19 @@ function addSection(sectionElement) {
     sectionElement.classList.add('show')
 }
 
-// Check if we just unlocked something, if so then display it
 
-function setupLatest(region) {
+// Card configs
+function addCloseBtn(sectionElement) {
+    var closeBtn = document.createElement('a')
+    closeBtn.classList.add('btnn')
+    closeBtn.addEventListener('click', function() {
+        removeSection(sectionElement)
+    })
+    var container = sectionElement.querySelector('.container')
+    container.prepend(closeBtn)
+}
+
+function addGameBtn(region) {
     var gameBtn = region.querySelector('#play')
     gameBtn.addEventListener('click', function() { 
         gsap.to('#inner', {
@@ -87,60 +68,57 @@ function setupLatest(region) {
             }
         })
     })
-
-    region.classList.add('unlocked')
 }
 
+function addSectionBtn(region, sectionElement) {
+    var sectionBtn = region.querySelector('#view')
+    sectionBtn.onclick = function() {
+        addSection(sectionElement)
+        return false
+    }
+}
+
+
+// Completed cards
 function setupRegions() {
     var unlockedNames = getArray('unlocked')
 
+    console.log(unlockedNames)
+
+    // Get current unlock
+    var arr = getArray('unlocked')
+    var amnt = arr.length
+    var nextUnlock = regionCards[amnt]
+
     regionCards.forEach(region => {
+        var sectionElement = sectionContainer.querySelector('#' + region.id)
 
         if (unlockedNames.includes(region.id)) {
-            console.log(region.id)
-            var sectionElement = sectionContainer.querySelector('#' + region.id)
-
-            var gameBtn = region.querySelector('#play')
-            var sectionBtn = region.querySelector('#view')
-
-            var closeBtn = sectionElement.querySelector('#' + 'close')
-            
-            sectionBtn.addEventListener('click', function() {
-                addSection(sectionElement)
-            })
-
-            closeBtn.addEventListener('click', function() {
-                removeSection(sectionElement)
-            })
-
-            gameBtn.addEventListener('click', function() { 
-                console.log('hii')
-                gsap.to('#inner', {
-                    opacity: 1,
-                    repeat: 0,
-                    duration: 1.5,
-                    onComplete() {
-                        sessionStorage.setItem('GameName', region.id)
-                        window.location.href = '/html/game.html'
-                    }
-                })
-            })
-
-            // When we get back, if there is a new element unlocked display it
-            if (region.id === sessionStorage.getItem('latest')) {
-                addSection(sectionElement)
-                sessionStorage.setItem('latest', '') 
-            }
-
+            addCloseBtn(sectionElement)
+            addGameBtn(region)
+            addSectionBtn(region, sectionElement)
             region.classList.add('completed')
-        } else if (region.id != latest.id) {
+
+            if (region.id == sessionStorage.getItem('fromGame')) {
+                sessionStorage.setItem('fromGame', '') 
+                addSection(sectionElement)
+            }
+        }
+        else if (region.id == nextUnlock.id) {
+            addCloseBtn(sectionElement)
+            addGameBtn(region)
+            region.classList.add('unlocked')
+        }
+        else {
             region.classList.add('locked')
         }
     });
 }
 
+
+fadeIn()
 setupRegions()
 mapContainer.addEventListener('mouseenter', mapEnter)
 mapContainer.addEventListener('mouseleave', mapLeave)
-
+document.body.classList.toggle("dark");
 

@@ -16,7 +16,7 @@ instead of draw
 
 function endGame(animId) {
     window.cancelAnimationFrame(animId)
-    fadeOut()
+    fadeOut('portfolio')
 }
 
 function startGame(player, crystal) {
