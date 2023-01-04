@@ -37,7 +37,7 @@ class Player {
             position: {
                 // 192 x 86 character dimensions
                 x: (canvas.width / 2 - playerImage.width / 8 + 40), // For centering char in middle of the screen
-                y: (canvas.height / 2 - playerImage.height / 4)
+                y: (canvas.height / 2 - playerImage.height / 2)
             },
             image: playerImage,
             frames: {

@@ -10,7 +10,7 @@ var regionCards = document.querySelectorAll('.container .card')
 // Session stroage
 sessionStorage.clear()
 if (!sessionStorage.getItem('unlocked')) {
-    setArray("unlocked", [])
+    setArray("unlocked", ['portfolio', 'about', 'service', 'contact'])
 }
 
 
@@ -83,8 +83,6 @@ function addSectionBtn(region, sectionElement) {
 function setupRegions() {
     var unlockedNames = getArray('unlocked')
 
-    console.log(unlockedNames)
-
     // Get current unlock
     var arr = getArray('unlocked')
     var amnt = arr.length
@@ -115,10 +113,26 @@ function setupRegions() {
     });
 }
 
+function start() {
+    fadeIn()
+    setupRegions()
+    mapContainer.addEventListener('mouseenter', mapEnter)
+    mapContainer.addEventListener('mouseleave', mapLeave)
+    document.body.classList.toggle("dark")
+}
 
-fadeIn()
-setupRegions()
-mapContainer.addEventListener('mouseenter', mapEnter)
-mapContainer.addEventListener('mouseleave', mapLeave)
-document.body.classList.toggle("dark");
+window.onload = function() {
+    start()
+    console.log('start')
+}
 
+var images = {
+    portfolio: '/media/images/maps/portfolio/preview.png',
+    about: '/media/images/maps/about/preview.png',
+    service: '/media/images/maps/service/preview.png',
+    contact: '/media/images/maps/contact/preview.png',
+    home: '/media/images/maps/home/preview.png'
+}
+
+// error where map won't load map fully
+// 
