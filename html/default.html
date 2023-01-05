@@ -38,7 +38,7 @@
       <!-- ===== Section Start ===== -->
       <section class="home active section" id="home"></section>
       <section class="about section" id="about"> </section>
-      <section class="service section" id="services"></section>
+      <section class="service section" id="service"></section>
       <section class="portfolio section" id="portfolio"></section>
       <section class="contact section" id="contact"></section>
       <!-- ===== Section End ===== -->
@@ -56,7 +56,7 @@
   <!-- ===== JS Files ===== -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js" referrerpolicy="no-referrer"></script>
   <script>
-    ['#home', '#about', '#services', '#portfolio', '#contact'].forEach((val, i) => {
+    ['#home', '#about', '#service', '#portfolio', '#contact'].forEach((val, i) => {
       $(val).load(`/html/sections.html ${val}`, function() {
         console.log(i)
         if (i == 4) {

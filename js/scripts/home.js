@@ -106,9 +106,9 @@ function setupGame(images) {
     })
 
     // Enemies
-    var enemy1 = new Enemy(images.player)
-    var enemy2 = new Enemy(images.player)
-    var enemy3 = new Enemy(images.player)
+    var enemy1 = new Enemy(images.bull)
+    var enemy2 = new Enemy(images.fireSkeleton)
+    var enemy3 = new Enemy(images.fireSkeleton)
     var enemies = [enemy1, enemy2, enemy3]
     enemyZone.assignBoundaries(enemies, player.playerSprite)
 

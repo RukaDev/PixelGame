@@ -50,7 +50,10 @@ class Player {
 
         if (attackImage) {
             this.attackSprite = new Sprite({
-                position: this.playerSprite.position,
+                position: {
+                    x: this.playerSprite.position.x - 27.5,
+                    y: this.playerSprite.position.y - 5
+                },
                 image: attackImage,
                 frames: {
                     xmax: 3,

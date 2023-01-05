@@ -2,18 +2,18 @@
 
 class Sprite {
 
-    constructor({position, invis, moveable, customWidth, customHeight, stop, velocity = 10, image, frames = {xmax: 1, ymax: 1}, sprites, scale = 1}) {
+    constructor({position, invis, moveable, stop, velocity = 10, image, frames = {xmax: 1, ymax: 1}, sprites, scale = 1}) {
         this.position = position
         this.image = image
         this.frames = {...frames, xval: 0, yval: 0, elapsed: 0}
         this.moving = false
         this.sprites = sprites
         this.velocity = velocity
-        this.customWidth = customWidth || this.image.width,
-        this.customHeight = customHeight || this.image.height
         this.scale = scale
-        this.width = this.customWidth / this.frames.xmax
-        this.height = this.customHeight / this.frames.ymax
+        this.width = this.image.width / this.frames.xmax
+        this.height = this.image.height / this.frames.ymax
+        this.scaledWidth = this.width * this.scale
+        this.scaledHeight = this.height * this.scale
         this.stop = stop
         
         if (!invis) {
@@ -29,12 +29,12 @@ class Sprite {
             this.image,
             this.frames.xval * this.width,
             this.frames.yval * this.height,
-            this.customWidth / this.frames.xmax,
-            this.customHeight / this.frames.ymax, 
+            this.width,
+            this.height, 
             this.position.x,
             this.position.y,
-            (this.customWidth / this.frames.xmax) * this.scale,
-            (this.customHeight / this.frames.ymax) * this.scale
+            this.scaledWidth,
+            this.scaledHeight
         )
 
         if (!this.moving) return  

@@ -12,19 +12,19 @@ class Sickle {
         })
     }
 
-    constructor(img) {
+    constructor({img, frame, timing}) {
+
         this.sprite = new Sprite({
             image: img,
-            frames: {
-                xmax: 3,
-                ymax: 3.975
-            },
+            frames: frame,
             scale: 3.5,
             moveable: true
         })
         this.sprite.moving = true
         this.sprite.frames.yval = 1
-        this.setMovement()
+        this.sprite.frames.xval = 0
+        this.stop = true
+        this.setMovement(timing.interval, timing.delay)
     }
 
     isActive() {

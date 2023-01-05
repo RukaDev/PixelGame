@@ -72,14 +72,54 @@ function setupGame(images) {
     })
     
     // Sickles
-    var sickle1 = new Sickle(images.sickle) 
-    var sickle2 = new Sickle(images.sickle) 
-    var sickle3 = new Sickle(images.sickle) 
-    var sickle4 = new Sickle(images.sickle) 
-    var sickle5 = new Sickle(images.sickle) 
-    var sickle6 = new Sickle(images.sickle) 
-    var sickle7 = new Sickle(images.sickle)
-    var sickle8 = new Sickle(images.sickle)
+    var sickle1 = new Sickle({
+        img: images.spike,
+        frame: {xmax: 6, ymax: 2},
+        timing: {interval: 800, delay: 2000}
+    }) 
+    
+    var sickle2 = new Sickle({
+        img: images.sickle,
+        frame: {xmax: 3, ymax: 4},
+        timing: {interval: 3000, delay: 1000}
+    }) 
+
+    var sickle3 = new Sickle({
+        img: images.sickle,
+        frame: {xmax: 3, ymax: 4},
+        timing: {interval: 3000, delay: 1000}
+    }) 
+
+    var sickle4 = new Sickle({
+        img: images.sickle,
+        frame: {xmax: 3, ymax: 4},
+        timing: {interval: 3000, delay: 1000}
+    }) 
+
+    var sickle5 = new Sickle({
+        img: images.sickle,
+        frame: {xmax: 3, ymax: 4},
+        timing: {interval: 3000, delay: 1000}
+    }) 
+
+    var sickle6 = new Sickle({
+        img: images.sickle,
+        frame: {xmax: 3, ymax: 4},
+        timing: {interval: 3000, delay: 1000}
+    }) 
+
+    var sickle7 = new Sickle({
+        img: images.sickle,
+        frame: {xmax: 3, ymax: 4},
+        timing: {interval: 3000, delay: 1000}
+    }) 
+
+    var sickle8 = new Sickle({
+        img: images.sickle,
+        frame: {xmax: 3, ymax: 4},
+        timing: {interval: 3000, delay: 1000}
+    }) 
+
     var sickles = [sickle1, sickle2, sickle3, sickle4, sickle5, sickle6, sickle7, sickle8]
     sickleZone.assignBoundaries(sickles, player.playerSprite.position)
 

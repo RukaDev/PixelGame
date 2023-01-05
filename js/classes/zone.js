@@ -49,8 +49,8 @@ class Zone {
         for (var i = 0; i < elements.length; i++) {
             elements[i].boundary = this.zone[i]
             elements[i].sprite.position = {
-                x: this.zone[i].position.x + offset.x,
-                y: this.zone[i].position.y + offset.y
+                x: this.zone[i].position.x + (this.zone[i].width - elements[i].sprite.scaledWidth)/2,
+                y: this.zone[i].position.y + (this.zone[i].height - elements[i].sprite.scaledHeight)/2
             }
         }
     }

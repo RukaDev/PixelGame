@@ -102,11 +102,14 @@ function setupGame(images) {
     var crystalZone = new Zone(crystalData)
 
     // Enemies
-    var enemy1 = new Enemy(images.player)
-    var enemy2 = new Enemy(images.player)
-    var enemy3 = new Enemy(images.player)
+    var enemy1 = new Enemy(images.skeleton)
+    var enemy2 = new Enemy(images.scorpion)
+    var enemy3 = new Enemy(images.skeleton)
     var enemies = [enemy1, enemy2, enemy3]
     enemyZone.assignBoundaries(enemies, Canvas.instance.center)
+
+    // ! when assigning a boundary, boundary is in top left of sprite sheet
+    // so have to offset the sprite to be at that boundary
     
     // Crystals
     var crystal1 = new Crystal({

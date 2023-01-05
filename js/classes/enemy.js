@@ -13,11 +13,9 @@ class Enemy {
             image: img,
             frames: {
                 xmax: 3,
-                ymax: 3.975
+                ymax: 4
             },
             scale: 3.5,
-            customWidth: img.width/8,
-            customHeight: img.height/4,
             moveable: true
         })
         this.moving = false
