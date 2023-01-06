@@ -5,13 +5,16 @@ var sectionContainer = document.querySelector('.section-container')
 var regionSpans = document.querySelectorAll('.regions span')
 var section = document.querySelector('.section')
 var regionCards = document.querySelectorAll('.container .card')
+var mapSpans = document.querySelectorAll('.map span')
 
 
 // Session stroage
 sessionStorage.clear()
 if (!sessionStorage.getItem('unlocked')) {
-    setArray("unlocked", ['portfolio', 'about', 'service', 'contact'])
+    setArray("unlocked", ['home', 'about', 'service', 'portfolio', 'contact'])
 }
+
+
 
 
 // Map 
@@ -113,9 +116,23 @@ function setupRegions() {
     });
 }
 
+
 function start() {
     fadeIn()
     setupRegions()
+
+    var ar = getArray('unlocked')
+    var n = ar[ar.length-1]
+    
+    var name = n ? n : 'empty'
+    
+    
+
+    mapSpans.forEach(span => {
+        span.style.background = "url(/media/images/maps/overworld/" + name + ".png)"
+        span.style['background-position'] =  "calc(-235px * var(--i))"
+    })
+
     mapContainer.addEventListener('mouseenter', mapEnter)
     mapContainer.addEventListener('mouseleave', mapLeave)
     document.body.classList.toggle("dark")
@@ -123,16 +140,5 @@ function start() {
 
 window.onload = function() {
     start()
-    console.log('start')
 }
 
-var images = {
-    portfolio: '/media/images/maps/portfolio/preview.png',
-    about: '/media/images/maps/about/preview.png',
-    service: '/media/images/maps/service/preview.png',
-    contact: '/media/images/maps/contact/preview.png',
-    home: '/media/images/maps/home/preview.png'
-}
-
-// error where map won't load map fully
-// 

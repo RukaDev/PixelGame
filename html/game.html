@@ -70,19 +70,14 @@
 
 <script>
 
-
-
-var gameName = sessionStorage.getItem('GameName')
-
-
   // Config
   var info = {
-    portfolio: {
+    home: {
       js: [
-        '/js/data/zones/portfolio/boundary.js',
-        '/js/data/zones/portfolio/crystal.js',
+        '/js/data/zones/home/boundary.js',
+        '/js/data/zones/home/crystal.js',
         '/js/classes/crystal.js',
-        '/js/scripts/portfolio.js'
+        '/js/scripts/home.js'
       ],
 
       keys: {
@@ -93,9 +88,9 @@ var gameName = sessionStorage.getItem('GameName')
       },
 
       images: {
-        background: '/media/images/maps/portfolio/map.png',
+        background: '/media/images/maps/home/map.png',
         player: '/media/images/sprites/characters/chara.png',
-        foreground: '/media/images/maps/portfolio/foreground.png',
+        foreground: '/media/images/maps/home/foreground.png',
         crystal: '/media/images/sprites/crystals/blue-crystal.png'
       },
 
@@ -124,7 +119,7 @@ var gameName = sessionStorage.getItem('GameName')
         lever1: '/media/images/sprites/switches/switch1.png',
         lever2: '/media/images/sprites/switches/switch2.png',
         foreground: '/media/images/maps/about/foreground.png',
-        crystal: '/media/images/sprites/crystals/blue-crystal.png'
+        crystal: '/media/images/sprites/crystals/orange-crystal.png'
       },
 
       keys: {
@@ -153,7 +148,7 @@ var gameName = sessionStorage.getItem('GameName')
         background: '/media/images/maps/service/map.png',
         player: '/media/images/sprites/characters/chara.png',
         foreground: '/media/images/maps/service/foreground.png',
-        crystal: '/media/images/sprites/crystals/blue-crystal.png',
+        crystal: '/media/images/sprites/crystals/pink-crystal.png',
         attackPlayer: '/media/images/sprites/characters/attacksheet.png',
         scorpion: '/media/images/sprites/enemies/scorpion.png',
         skeleton: '/media/images/sprites/enemies/skeleton.png'
@@ -171,19 +166,19 @@ var gameName = sessionStorage.getItem('GameName')
       description: "Attack the enemies with 'F' to reach the crystal.",
     },
 
-    contact: {
+    portfolio: {
         js: [
-        '/js/data/zones/contact/boundary.js',
-        '/js/data/zones/contact/crystal.js',
-        '/js/data/zones/contact/sickle.js',
+        '/js/data/zones/portfolio/boundary.js',
+        '/js/data/zones/portfolio/crystal.js',
+        '/js/data/zones/portfolio/sickle.js',
         '/js/classes/trap.js',
         '/js/classes/crystal.js',
-        '/js/scripts/contact.js'
+        '/js/scripts/portfolio.js'
       ],
 
       images: {
-        background: '/media/images/maps/contact/map.png',
-        foreground: '/media/images/maps/contact/map.png',
+        background: '/media/images/maps/portfolio/map.png',
+        foreground: '/media/images/maps/portfolio/map.png',
         player: '/media/images/sprites/characters/chara.png',
         crystal: '/media/images/sprites/crystals/blue-crystal.png',
         sickle: '/media/images/sprites/traps/sickle.png',
@@ -202,30 +197,30 @@ var gameName = sessionStorage.getItem('GameName')
     },
 
     
-    home: {
+    contact: {
         js: [
         '/js/classes/bridge.js',
         '/js/classes/enemy.js',
-        '/js/data/zones/home/boundary.js',
-        '/js/data/zones/home/sickle.js',
-        '/js/data/zones/home/crystal.js',
-        '/js/data/zones/home/enemies.js',
-        '/js/data/zones/home/switches.js',
-        '/js/data/zones/home/bridgeBoundary.js',
+        '/js/data/zones/contact/boundary.js',
+        '/js/data/zones/contact/sickle.js',
+        '/js/data/zones/contact/crystal.js',
+        '/js/data/zones/contact/enemies.js',
+        '/js/data/zones/contact/switches.js',
+        '/js/data/zones/contact/bridgeBoundary.js',
         '/js/classes/crystal.js',
         '/js/classes/lever.js',
-        '/js/scripts/home.js'
+        '/js/scripts/contact.js'
       ],
 
       images: {
-        background: '/media/images/maps/home/map.png',
-        foreground: '/media/images/maps/home/map.png',
+        background: '/media/images/maps/contact/map.png',
+        foreground: '/media/images/maps/contact/map.png',
         player: '/media/images/sprites/characters/chara.png',
-        crystal: '/media/images/sprites/crystals/blue-crystal.png',
+        crystal: '/media/images/sprites/crystals/green-crystal.png',
         attackPlayer: '/media/images/sprites/characters/attacksheet.png',
         lever1: '/media/images/sprites/switches/switch1.png',
-        bridge1: '/media/images/maps/home/bridge1.png',
-        bridge2: '/media/images/maps/home/bridge2.png',
+        bridge1: '/media/images/maps/contact/bridge1.png',
+        bridge2: '/media/images/maps/contact/bridge2.png',
         fireSkeleton: '/media/images/sprites/enemies/fire-skeleton.png',
         bull: '/media/images/sprites/enemies/bull.png',
       },
@@ -243,6 +238,9 @@ var gameName = sessionStorage.getItem('GameName')
       description: "Put everything together to complete the course.",
     },
   }
+
+  var gameName = sessionStorage.getItem('GameName')
+  console.log(gameName)
 
   // Setup scripts
   info[gameName].js.forEach(val => {
@@ -299,12 +297,6 @@ var gameName = sessionStorage.getItem('GameName')
   }
 
 </script>
-
-<script>
-
-  sessionStorage.setItem('fromGame', '234')
-</script>
-
 
 
 </html>

@@ -12,14 +12,8 @@ class Sickle {
         })
     }
 
-    constructor({img, frame, timing}) {
-
-        this.sprite = new Sprite({
-            image: img,
-            frames: frame,
-            scale: 3.5,
-            moveable: true
-        })
+    constructor(sprite, timing) {
+        this.sprite = sprite
         this.sprite.moving = true
         this.sprite.frames.yval = 1
         this.sprite.frames.xval = 0

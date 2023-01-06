@@ -29,40 +29,13 @@ class Player {
         },
     }
 
-    constructor({boundaryZones, mobZones, playerImage, attackImage}) {
+    constructor({playerSprite, attackSprite, boundaryZones, mobZones, playerImage, attackImage}) {
         var canvas = document.querySelector('canvas')
 
-        // Sprites
-        this.playerSprite = new Sprite({
-            position: {
-                // 192 x 86 character dimensions
-                x: (canvas.width / 2 - playerImage.width / 8 + 40), // For centering char in middle of the screen
-                y: (canvas.height / 2 - playerImage.height / 2)
-            },
-            image: playerImage,
-            frames: {
-                xmax: 3,
-                ymax: 4
-            },
-            scale: 3.5,
+        this.playerSprite = playerSprite
+        this.attackSprite = attackSprite
 
-        })
-
-        if (attackImage) {
-            this.attackSprite = new Sprite({
-                position: {
-                    x: this.playerSprite.position.x - 27.5,
-                    y: this.playerSprite.position.y - 5
-                },
-                image: attackImage,
-                frames: {
-                    xmax: 3,
-                    ymax: 4
-                },
-                scale: 3.5,
-                stop: true,
-                invis: true
-            })
+        if (attackSprite) {
             this.attacking = false
             this.attackSprite.stopCallback = this.attackFinished.bind(this)
         }

@@ -29,11 +29,3 @@ class Input {
     }
 }
 
-/*
-        for(const [id, keys] of Object.entries(binds)) {
-            keys.forEach(key => {
-                this.keys[key] = {pressed: false}
-            })
-        }
-
-*/

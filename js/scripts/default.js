@@ -106,11 +106,16 @@ window.addEventListener("load", () => {
     {
         dayNight.querySelector("i").classList.add("fa-moon");
     }
+
+    window.addEventListener('scroll', sectionScroll)
 })
 
 
 setActiveStyle('color-3')
 document.body.classList.toggle("dark");
 
-window.addEventListener('scroll', sectionScroll)
+var leaveIcon = document.querySelector('.back-out')
+leaveIcon.addEventListener("click", () => {
+    window.history.back()
+})
 

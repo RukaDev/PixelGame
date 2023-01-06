@@ -43,34 +43,8 @@ body
     font-family: 'Share Tech Mono', monospace;
 }
 
-.btnn {
-    font-size: 16px;
-    font-weight: 500;
-    padding: 12px 35px;
-    color: white;
-    border-radius: 40px;
-    display: inline-block;
-    white-space: nowrap;
-    border: none;
-    background: var(--skin-color);
-    transition: all 0.3s ease;
-    position: absolute;
-    left: 1100px;
-    z-index: 5;
-}
 
-.btnn::before {
-    content: 'Close';
-}
-
-.btnn:hover {
-    cursor: pointer;
-    color: black;
-}
-
-
-
-/* Page content --------------------------------------------------*/
+/* Page content ------------------------------------------------ */
 .page-container
 {
     position: fixed;
@@ -80,19 +54,20 @@ body
     width: 100%;
     -webkit-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
+    background-color: rgb(230, 228, 228);
 }
 
 
-/* Header */
+/* Header ------------------------------------------------ */
 #container {
     display: flex;
     flex-wrap: wrap;
     padding-left: 0;
-    background-color: green;
+    background: black;
 }
 
 #container span {
-    background-color: orange;
+    color: white;
     list-style: none;
     flex: 0 0 33.3333%;
 }
@@ -127,7 +102,9 @@ body
     font-size: 1.5em;
     font-weight: 900;
     line-height: 50px;
-    color: #333;
+    color: white;
+    padding-left: 15px;
+    padding-right: 15px;
     border: 1px solid #333;
     height: 50px;
 }
@@ -137,11 +114,7 @@ body
 }
 
 
-
-
-
-
-
+/* Map ------------------------------------------------ */
 .map-container
 {
     position: fixed;
@@ -151,8 +124,6 @@ body
     transform: translate(-50%, -50%);
 }
 
-
-/* Map */
 .map
 {
     /* image dimensions */
@@ -160,18 +131,16 @@ body
     height: 640px;
     transition: 0.5s;
     display: flex;
-    border-top: 5px solid white;
-    border-bottom: 5px solid white;
+
 }
 
 .map span
 {
     width: 25%;
     height: 100%;
-    background: url(/media/images/maps/overworld/background.png);
     background-size: cover;
     /* Image width divided by 4, adjusted a bit */
-    background-position: calc(-235px * var(--i));
+
     display: block;
     transition: 0.5s;
     border-top: 5px solid white;
@@ -213,42 +182,7 @@ body
 }
 
 
-
-
-.about
-{
-    top: 50%;
-    left: 25%;
-}
-
-.other
-{
-    top: 50%;
-    left: 50%;
-}
-
-.other2
-{
-    top: 50%;
-    left:75%
-}
-
-.other3 
-{
-    top: 70%;
-    left: 40%
-}
-
-.other4
-{
-    top: 70%;
-    left: 75%;
-}
-
-
-
-/* section */
-
+/* Sections ------------------------------------------------ */
 .section
 {
     min-height: 100vh;
@@ -266,8 +200,9 @@ body
 }
 
 .section-container .container {
-    position: relative;
+    position: absolute;
     top: 10%;
+    left: 15%;
     max-height: 800px;
     max-width: 1300px;
     padding: 100px;
@@ -343,6 +278,31 @@ body
     position: relative;
 }
 
+.btnn {
+    font-size: 16px;
+    font-weight: 500;
+    padding: 12px 35px;
+    color: white;
+    border-radius: 40px;
+    display: inline-block;
+    white-space: nowrap;
+    border: none;
+    background: var(--skin-color);
+    transition: all 0.3s ease;
+    position: absolute;
+    left: 1100px;
+    z-index: 5;
+}
+
+.btnn::before {
+    content: 'Close';
+}
+
+.btnn:hover {
+    cursor: pointer;
+    color: black;
+}
+
 .btn
 {
     font-size: 16px;
@@ -368,11 +328,7 @@ body
 }
 
 
-
-
-
-
-
+/* General classes ------------------------------------------------ */
 .hide
 {
     visibility: hidden;
@@ -389,14 +345,7 @@ body
 }
 
 
-
-
-
-
-
-
-
-
+/* Cards ------------------------------------------------ */
 .container{
     width: 100%;
 }
@@ -421,7 +370,6 @@ body
     z-index: 1;
     transform: translateY(100px);
 }
-
 
 .container .card .face.face1 .content{
     transition: 0.5s;
@@ -483,11 +431,11 @@ body
 }
 
 
-/* Card positioning*/
-.container #portfolio {
+/* Card positioning ------------------------------------------------ */
+.container #home {
     position: absolute;
-    top: 20%;
-    left: 85%;
+    top: 30%;
+    left: 12%;
     margin-top: -200px;
     margin-left: -150px;
     scale: 0.5;
@@ -496,18 +444,8 @@ body
 
 .container #about {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-top: -200px;
-    margin-left: -150px;
-    scale: 0.5;
-    transition: transform 0.75s;
-}
-
-.container #home {
-    position: absolute;
-    top: 30%;
-    left: 15%;
+    top: 80%;
+    left: 75%;
     margin-top: -200px;
     margin-left: -150px;
     scale: 0.5;
@@ -516,7 +454,17 @@ body
 
 .container #service {
     position: absolute;
-    top: 80%;
+    top: 15%;
+    left: 40%;
+    margin-top: -200px;
+    margin-left: -150px;
+    scale: 0.5;
+    transition: transform 0.75s;
+}
+
+.container #portfolio {
+    position: absolute;
+    top: 70%;
     left: 15%;
     margin-top: -200px;
     margin-left: -150px;
@@ -526,7 +474,7 @@ body
 
 .container #contact {
     position: absolute;
-    top: 75%;
+    top: 20%;
     left: 85%;
     margin-top: -200px;
     margin-left: -150px;
@@ -535,7 +483,7 @@ body
 }
 
 
-/* Locked Card Info */
+/* Locked cards ------------------------------------------------ */
 .locked:hover .face1 {
     background: red;
 }
@@ -560,9 +508,7 @@ body
 }
 
 
-
-
-/* Completed Card Info */
+/* Completed cards ------------------------------------------------ */
 .completed .face1 {
     box-shadow:0 0 20px black;
     background: var(--img);
@@ -585,23 +531,7 @@ body
 }
 
 
-
-#inner {
-    background-color: black;
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    opacity: 1;
-    width: 100%;
-    height: 100%;
-    z-index: 6;
-    pointer-events: none;
-}
-
-
-/* Unlocked Card Info */
+/* Unlocked cards ------------------------------------------------ */
 .unlocked .face1 {
     background: green;
     box-shadow:0 0 20px black;
@@ -644,3 +574,17 @@ body
     content: var(--name);
 }
 
+/* Misc ------------------------------------------------ */
+#inner {
+    background-color: black;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    opacity: 1;
+    width: 100%;
+    height: 100%;
+    z-index: 6;
+    pointer-events: none;
+}

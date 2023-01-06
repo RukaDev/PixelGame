@@ -8,16 +8,8 @@ class Enemy {
         })
     }
     
-    constructor(img) {
-        this.sprite = new Sprite({
-            image: img,
-            frames: {
-                xmax: 3,
-                ymax: 4
-            },
-            scale: 3.5,
-            moveable: true
-        })
+    constructor(sprite) {
+        this.sprite = sprite
         this.moving = false
         this.horizontal()
     }

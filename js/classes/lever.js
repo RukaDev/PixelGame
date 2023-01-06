@@ -8,18 +8,8 @@ class Lever {
         }) 
     }
 
-    constructor(img, callback) {
-        this.sprite = new Sprite({
-            image: img,
-            frames: {
-                xmax: 3,
-                ymax: 3.975
-            },
-            velocity: 20,
-            scale: 4,
-            stop: true,
-            moveable: true
-        })
+    constructor(sprite, callback) {
+        this.sprite = sprite
 
         this.callback = callback
         this.activated = false

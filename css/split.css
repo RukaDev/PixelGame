@@ -1,10 +1,7 @@
-/* FONTS
-=========================== */
 @import url("https://fonts.googleapis.com/css?family=Lato|Press+Start+2P&display=swap");
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono');
 
-/* GENERAL
-=========================== */
+
 * {
   padding: 0;
   margin: 0;
@@ -23,9 +20,6 @@ ion-icon {
   font-size: 25px;
 }
 
-
-/* CONTENT
-=========================== */
 .content {
   position: relative;
   width: 100%;
@@ -40,6 +34,8 @@ ion-icon {
   overflow: hidden;
 }
 
+
+/* Animations ------------------------------ */
 .hover-left .split.left {
   width: 60%;
 }
@@ -72,6 +68,8 @@ ion-icon {
   transform: translate(-45%, -50%);
 }
 
+
+/* Text ------------------------------ */
 .text {
   width: 600px;
   position: absolute;
@@ -123,8 +121,7 @@ ion-icon {
 }
 
 
-/* Default view
-=========================== */
+/* Default view ------------------------------ */
 .split.left {
   left: 0;
   background: #05222e;
@@ -147,11 +144,7 @@ ion-icon {
 }
 
 
-
-
-
-/* Game view
-=========================== */
+/* Game view ------------------------------ */
 .split.right {
   right: 0;
   background: #9b9b9b;

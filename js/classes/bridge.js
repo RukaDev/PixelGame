@@ -24,28 +24,20 @@ class Bridge {
         })
     }
 
-    constructor(image, boundary, boundaries) {
-        this.bridge = new Sprite({
-            position: {
-                x: 1,
-                y: 1
-            },
-            image: image,
-            invis: true
-        })
-    
+    constructor(sprite, boundary, boundaries) {
+        this.sprite = sprite
         this.boundary = boundary
         this.boundaries = boundaries
     }
 
     // Set bridge
     activate() {
-        this.bridge.position = {
+        this.sprite.position = {
             x:  Level.instance.background.position.x,
             y:  Level.instance.background.position.y
         }
-        Canvas.instance.drawn.splice(3, 0, this.bridge)
-        Canvas.instance.moveable.splice(3, 0, this.bridge)
+        Canvas.instance.drawn.splice(3, 0, this.sprite)
+        Canvas.instance.moveable.splice(3, 0, this.sprite)
 
 
         // Clear path, don't delete boundaries
@@ -54,12 +46,12 @@ class Bridge {
 
     // Reset bridge
     deactivate() {
-        this.bridge.sprite.invis = true
+        this.sprite.sprite.invis = true
         this.boundary.zone.push(...this.boundaries)
-        Canvas.instance.removeElement(this.bridge) 
+        Canvas.instance.removeElement(this.sprite) 
     }
 
     isActive() {
-        return !this.bridge.sprite.invis
+        return !this.sprite.invis
     }
 }

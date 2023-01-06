@@ -28,18 +28,8 @@ class Crystal {
         })
     }
 
-    constructor({image, positionZone, boundary}) {
-        this.sprite = new Sprite({
-            image: image,
-            frames: {
-                xmax: 3,
-                ymax: 1
-            },
-            velocity: 40,
-            scale: 2,
-            moveable: true
-        })
-
+    constructor({sprite, positionZone, boundary}) {
+        this.sprite = sprite
         this.boundary = boundary
         this.sprite.moving = true
         this.positionZone = positionZone

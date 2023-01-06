@@ -7,7 +7,7 @@ Pick up a key to unlock door
 
 function endGame(animId) {
     window.cancelAnimationFrame(animId)
-    fadeOut()
+    fadeOut('about')
 }
 
 function startGame(player, levers, crystal) {
@@ -63,25 +63,92 @@ function setupGame(images) {
     var bridgeZone = new Zone(bridgeData)
     var crystalZone = new Zone(crystalData)
 
+    // Sprites
+    var playerSprite = new Sprite({
+        position: {
+            x: (Canvas.instance.canvas.width / 2 - images.player.width / 8 + 40),
+            y: (Canvas.instance.canvas.height / 2 - images.player.height / 2)
+        },
+        image: images.player,
+        frames: {
+            xmax: 3,
+            ymax: 4
+        },
+        scale: 3.5,
+    })
+
+    var crystalSprite = new Sprite({
+        image: images.crystal,
+        frames: {xmax: 3, ymax: 1},
+        velocity: 40,
+        scale: 2,
+        moveable: true
+    })
+
+    var leverSprite1 = new Sprite({
+        image: images.lever1,
+        frames: {
+            xmax: 3,
+            ymax: 3.975
+        },
+        velocity: 20,
+        scale: 4,
+        stop: true,
+        moveable: true
+    })
+
+    var leverSprite2 = new Sprite({
+        image: images.lever2,
+        frames: {
+            xmax: 3,
+            ymax: 3.975
+        },
+        velocity: 20,
+        scale: 4,
+        stop: true,
+        moveable: true
+    })
+
+    var bridgeSprite1 = new Sprite({
+        position: {
+            x: 1,
+            y: 1
+        },
+        image: images.bridge1,
+        invis: true
+    })
+
+    var bridgeSprite2 = new Sprite({
+        position: {
+            x: 1,
+            y: 1
+        },
+        image: images.bridge2,
+        invis: true
+    })
+
+
+
+
     // Player
     var player = new Player({
+        playerSprite: playerSprite,
         boundaryZones: [bridgeZone, boundaryZone], 
-        playerImage: images.player,
     })
     
     // Bridges
-    var bridge1 = new Bridge(images.bridge1, bridgeZone, bridgeZone.zone.slice(3, 6))
-    var bridge2 = new Bridge(images.bridge2, bridgeZone, bridgeZone.zone.slice(0, 3))
+    var bridge1 = new Bridge(bridgeSprite1, bridgeZone, bridgeZone.zone.slice(3, 6))
+    var bridge2 = new Bridge(bridgeSprite2, bridgeZone, bridgeZone.zone.slice(0, 3))
  
     // Levers
-    var lever1 = new Lever(images.lever1, bridge1.activate.bind(bridge1))
-    var lever2 = new Lever(images.lever2, bridge2.activate.bind(bridge2))
+    var lever1 = new Lever(leverSprite1, bridge1.activate.bind(bridge1))
+    var lever2 = new Lever(leverSprite2, bridge2.activate.bind(bridge2))
     var levers = [lever1, lever2]
     leverZone.assignBoundaries(levers, player.playerSprite.position)
  
     var crystal1 = new Crystal({
-        image: images.crystal, 
-        positionZone: crystalZone
+        sprite: crystalSprite,
+        positionZone: crystalZone,
     })
 
     startGame(player, levers, crystal1)
