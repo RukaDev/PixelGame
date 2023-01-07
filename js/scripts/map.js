@@ -148,7 +148,7 @@ function start() {
     document.body.classList.toggle("dark")
 }
 
-window.onload = function() {
-    start()
-}
+
+start()
+
 
