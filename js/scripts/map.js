@@ -148,7 +148,7 @@ function start() {
     document.body.classList.toggle("dark")
 }
 
-
+console.log('starting here')
 start()
 
 
