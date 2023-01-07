@@ -1,11 +1,11 @@
 // Elements
-var mapContainer = document.querySelector('.map-container')
-var pageContainer = document.querySelector('.page-container')
-var sectionContainer = document.querySelector('.section-container')
-var regionSpans = document.querySelectorAll('.regions span')
-var section = document.querySelector('.section')
-var regionCards = document.querySelectorAll('.container .card')
-var mapSpans = document.querySelectorAll('.map span')
+var mapContainer
+var pageContainer
+var sectionContainer
+var regionSpans
+var section
+var regionCards
+var mapSpans
 
 
 // Session stroage
@@ -118,6 +118,16 @@ function setupRegions() {
 
 
 function start() {
+    mapContainer = document.querySelector('.map-container')
+    pageContainer = document.querySelector('.page-container')
+    sectionContainer = document.querySelector('.section-container')
+    regionSpans = document.querySelectorAll('.regions span')
+    section = document.querySelector('.section')
+    regionCards = document.querySelectorAll('.container .card')
+    mapSpans = document.querySelectorAll('.map span')
+
+
+
     fadeIn()
     setupRegions()
 
