@@ -14,6 +14,7 @@ instead of draw
 
 */
 
+
 function endGame(animId) {
     window.cancelAnimationFrame(animId)
     fadeOut('home')
@@ -23,31 +24,42 @@ function startGame(player, crystal) {
     const canvas = Canvas.getInstance()
     const input = Input.getInstance()
 
+    // FPS
+    var fps = 75
+    var fpsInterval = 1000 / fps;
+    var then = Date.now();
+
     // Core loop
     function step() {
         const animId = window.requestAnimationFrame(step)
 
-        // Crystal
-        if (crystal.reached(player.playerSprite)) {
-            if (crystal.isLast()) {
-                endGame(animId)
+        var now = Date.now()
+        var elapsed = now - then
+
+        if (elapsed > fpsInterval) {
+            then = now - (elapsed % fpsInterval)
+
+            // Crystal
+            if (crystal.reached(player.playerSprite)) {
+                if (crystal.isLast()) {
+                    endGame(animId)
+                } else {
+                    crystal.nextPosition()
+                }
+            }
+
+            // Movement
+            if (input.isPressed(['w', 'a', 's', 'd'])) {
+                var {x, y} = player.calculatePosition(input.lastKey)
+                if (player.canMove(x, y)) {
+                    player.animate(input.lastKey)
+                    canvas.moveElements(x, y)
+                }
             } else {
-                crystal.nextPosition()
+                player.stop()
             }
+            canvas.drawElements()
         }
-
-        // Movement
-        if (input.isPressed(['w', 'a', 's', 'd'])) {
-            var {x, y} = player.calculatePosition(input.lastKey)
-            if (player.canMove(x, y)) {
-                player.animate(input.lastKey)
-                canvas.moveElements(x, y)
-            }
-        } else {
-            player.stop()
-        }
-
-        canvas.drawElements()
     }
 
     step()
