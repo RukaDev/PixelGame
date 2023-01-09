@@ -17,15 +17,15 @@ class Sprite {
         this.stop = stop
         
         if (!invis) {
-            Canvas.instance.drawn.push(this)
+            canvas.drawn.push(this)
         }
         if (moveable) {
-            Canvas.instance.moveable.push(this)
+            canvas.moveable.push(this)
         }
     }
 
     draw() {
-        Canvas.instance.ctx.drawImage(
+        canvas.ctx.drawImage(
             this.image,
             this.frames.xval * this.width,
             this.frames.yval * this.height,

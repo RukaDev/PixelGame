@@ -50,8 +50,8 @@ class Boundary {
     }
 
     draw() {
-        Canvas.instance.ctx.fillStyle = 'red'
-        Canvas.instance.ctx.fillRect(this.position.x, this.position.y, this.width, this.height)
+        canvas.ctx.fillStyle = 'red'
+        canvas.ctx.fillRect(this.position.x, this.position.y, this.width, this.height)
     }
 }
 

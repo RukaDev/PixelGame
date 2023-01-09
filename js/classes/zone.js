@@ -15,16 +15,16 @@ class Zone {
              if (symbol === 1025)
                  this.zone.push(new Boundary({
                      position: {
-                         x: j * Boundary.width + Level.instance.offset.x,
-                         y: i * Boundary.height + Level.instance.offset.y
+                         x: j * Boundary.width + level.offset.x,
+                         y: i * Boundary.height + level.offset.y
                      },
                      zone: this.zone
                  }))
              }) 
          })
 
-        Canvas.instance.drawn.push(this)
-        Canvas.instance.moveable.push(...this.zone)
+        canvas.drawn.push(this)
+        canvas.moveable.push(...this.zone)
     }
 
     removeBoundary(i) {
@@ -57,7 +57,7 @@ class Zone {
 
     draw() {
         this.zone.forEach((boundary) => {
-            boundary.draw()
+            //boundary.draw()
         })
     }
 

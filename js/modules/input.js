@@ -1,6 +1,6 @@
-class Input {
-    constructor() {
-        this.lastKey = 'w'
+var input = {
+    register: function(key) {
+        this.lastKey = key
         this.keys = {}
 
         window.addEventListener('keyup', e => {
@@ -14,15 +14,9 @@ class Input {
             this.lastKey = e.key
             this.keys[e.key].pressed = true
         })
+    },
 
-        Input.instance = this
-    }
-
-    static getInstance() {
-        return Input.instance
-    }
-
-    isPressed(keys) {
+    isPressed: function(keys) {
         return keys.some(key => {
             return this.keys[key] && this.keys[key].pressed && this.lastKey == key
         })

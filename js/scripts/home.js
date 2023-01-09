@@ -1,43 +1,26 @@
-/*
-
-Objectives that float around to show the path
-
-*/
 
 /*
 
-Objectives that float around to show the path
-
-"Scene" class that draws everything
-instead of draw
-
+Crystals that float around to show the path
 
 */
 
 
 function endGame(animId) {
     window.cancelAnimationFrame(animId)
-    fadeOut('home')
+    fade.out(1.5, function() {
+        setArrayItem('unlocked', 'home')
+        sessionStorage.setItem('fromGame', 'home')
+        history.back()
+    })
 }
 
 function startGame(player, crystal) {
-    const canvas = Canvas.getInstance()
-    const input = Input.getInstance()
-
-    // FPS
-    var fps = 75
-    var fpsInterval = 1000 / fps;
-    var then = Date.now();
-
     // Core loop
     function step() {
         const animId = window.requestAnimationFrame(step)
 
-        var now = Date.now()
-        var elapsed = now - then
-
-        if (elapsed > fpsInterval) {
-            then = now - (elapsed % fpsInterval)
+        if (fps.advance()) {
 
             // Crystal
             if (crystal.reached(player.playerSprite)) {
@@ -58,6 +41,8 @@ function startGame(player, crystal) {
             } else {
                 player.stop()
             }
+
+            // Draw
             canvas.drawElements()
         }
     }
@@ -66,22 +51,31 @@ function startGame(player, crystal) {
 }
 
 function setupGame(images) {
-    // Map
-    new Level(
-        images.background, 
-        images.foreground,
-        {x: -15, y: -1600}, 
-    )
 
-    // Zones
-    var boundaryZone = new Zone(boundaryData)
-    var crystalZone = new Zone(crystalData)
+    // Effect
+    fade.in(4)
+
+    // Technical
+    canvas.create(1080, 1920)
+    input.register('w')
+    fps.set(75)
 
     // Sprites
+    var offset = {x: -25, y: -1600}
+
+    var backgroundSprite = new Sprite({
+        position: {
+            x: offset.x,
+            y: offset.y
+        },
+        image: images.background,
+        moveable: true
+    })
+
     var playerSprite = new Sprite({
         position: {
-            x: (Canvas.instance.canvas.width / 2 - images.player.width / 8 + 40),
-            y: (Canvas.instance.canvas.height / 2 - images.player.height / 2)
+            x: (canvas.instance.width / 2 - images.player.width / 8 + 40),
+            y: (canvas.instance.height / 2 - images.player.height / 2)
         },
         image: images.player,
         frames: {
@@ -89,6 +83,15 @@ function setupGame(images) {
             ymax: 4
         },
         scale: 3.5,
+    })
+
+    var foregroundSprite = new Sprite({
+        position: {
+            x: offset.x,
+            y: offset.y
+        }, 
+        moveable: true,
+        image: images.foreground,
     })
     
     var crystalSprite = new Sprite({
@@ -98,6 +101,13 @@ function setupGame(images) {
         scale: 2,
         moveable: true
     })
+
+    // Level
+    level.create(backgroundSprite, foregroundSprite, offset)
+
+    // Zones
+    var boundaryZone = new Zone(boundaryData)
+    var crystalZone = new Zone(crystalData)
 
     // Player
     var player = new Player({

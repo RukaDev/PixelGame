@@ -46,8 +46,8 @@ class Enemy {
 
     cleanup(enemys) {
         clearInterval(this.intervalId)
-        Canvas.instance.removeElement(this.sprite)
-        Canvas.instance.removeElement(this.boundary)
+        canvas.removeElement(this.sprite)
+        canvas.removeElement(this.boundary)
         this.boundary.cleanup()
         removeFromArray(enemys, this)
         deleteObject(this)
@@ -58,7 +58,7 @@ class Enemy {
     }
 
     move() {
-        Canvas.instance.manualMoveElement(this.sprite, this.movex, this.movey)
-        Canvas.instance.manualMoveElement(this.boundary, this.movex, this.movey)
+        canvas.manualMoveElement(this.sprite, this.movex, this.movey)
+        canvas.manualMoveElement(this.boundary, this.movex, this.movey)
     }
 }

@@ -15,8 +15,6 @@ if (!sessionStorage.getItem('unlocked')) {
 }
 
 
-
-
 // Map 
 function mapEnter() {
     mapContainer.classList.add('unfold')
@@ -30,6 +28,15 @@ function mapLeave() {
     regionCards.forEach(region => {
         region.style.display = 'none'
     });
+}
+
+
+function initialMapCheck(e) {
+    var ele = document.elementFromPoint(e.clientX, e.clientY) 
+    if (mapContainer.contains(ele)) {
+        mapEnter()
+    }
+    document.removeEventListener('mousemove', initialMapCheck)
 }
 
 
@@ -60,15 +67,11 @@ function addCloseBtn(sectionElement) {
 
 function addGameBtn(region) {
     var gameBtn = region.querySelector('#play')
+
     gameBtn.addEventListener('click', function() { 
-        gsap.to('#inner', {
-            opacity: 1,
-            repeat: 0,
-            duration: 1.5,
-            onComplete() {
-                sessionStorage.setItem('GameName', region.id)
-                window.location.href = '/html/game.html'
-            }
+        fade.out(1.5, function() {
+            sessionStorage.setItem('GameName', region.id)
+            window.location.href = '/html/game.html'
         })
     })
 }
@@ -118,6 +121,7 @@ function setupRegions() {
 
 
 function start() {
+    // Loaded vars
     mapContainer = document.querySelector('.map-container')
     pageContainer = document.querySelector('.page-container')
     sectionContainer = document.querySelector('.section-container')
@@ -126,29 +130,29 @@ function start() {
     regionCards = document.querySelectorAll('.container .card')
     mapSpans = document.querySelectorAll('.map span')
 
+    // Effect
+    fade.in(4)
 
-
-    fadeIn()
+    // Configure locked/unlocked/completed 
     setupRegions()
 
+    // Set the correct map image
     var ar = getArray('unlocked')
     var n = ar[ar.length-1]
-    
     var name = n ? n : 'empty'
-    
-    
 
     mapSpans.forEach(span => {
         span.style.background = "url(/media/images/maps/overworld/" + name + ".png)"
         span.style['background-position'] =  "calc(-235px * var(--i))"
     })
 
+    // Events
     mapContainer.addEventListener('mouseenter', mapEnter)
     mapContainer.addEventListener('mouseleave', mapLeave)
+    document.addEventListener('mousemove', initialMapCheck)
     document.body.classList.toggle("dark")
 }
 
-console.log('starting here')
 start()
 
 

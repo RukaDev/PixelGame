@@ -1,73 +1,102 @@
 /*
 
-Key and door objective
-Pick up a key to unlock door
+Key and bridge objective
 
 */
 
 function endGame(animId) {
     window.cancelAnimationFrame(animId)
-    fadeOut('about')
+    fade.out(1.5, function() {
+        setArrayItem('unlocked', 'about')
+        sessionStorage.setItem('fromGame', 'about')
+        history.back()
+    })
 }
 
 function startGame(player, levers, crystal) {
-    const canvas = Canvas.getInstance()
-    const input = Input.getInstance()
 
     // Core loop
     function step() {
         const animId = window.requestAnimationFrame(step)
 
-         // Crystal
-         if (crystal.reached(player.playerSprite)) {
-            if (crystal.isLast()) {
-                endGame(animId)
+        if (fps.advance()) {
+            // Crystal
+            if (crystal.reached(player.playerSprite)) {
+                if (crystal.isLast()) {
+                    endGame(animId)
+                } else {
+                    crystal.nextPosition()
+                }
+            }
+            
+            // Levers
+            if (input.isPressed(['e'])) {
+                Lever.activateCheck(levers, player.playerSprite.position)
+            }
+            
+            // Movement
+            if (input.isPressed(['w', 'a', 's', 'd'])) {
+                var {x, y} = player.calculatePosition(input.lastKey)
+                if (player.canMove(x, y)) {
+                    player.animate(input.lastKey)
+                    canvas.moveElements(x, y)
+                }
             } else {
-                crystal.nextPosition()
+                player.stop()
             }
-        }
-        
-        // Levers
-        if (input.isPressed(['e'])) {
-            Lever.activateCheck(levers, player.playerSprite.position)
-        }
-        
-        // Movement
-        if (input.isPressed(['w', 'a', 's', 'd'])) {
-            var {x, y} = player.calculatePosition(input.lastKey)
-            if (player.canMove(x, y)) {
-                player.animate(input.lastKey)
-                canvas.moveElements(x, y)
-            }
-        } else {
-            player.stop()
-        }
 
-        canvas.drawElements()
+            canvas.drawElements()
+        }
     }
 
     step()
 }
 
 function setupGame(images) {
-    // Sets the canvas + bg + fg
-    new Level(
-        images.background,
-        images.foreground,
-        {x: -1400, y: -1400}
-    )
+    // Effect
+    fade.in(4)
 
-    // Zones
-    var boundaryZone = new Zone(boundaryData)
-    var leverZone = new Zone(switchData)
-    var bridgeZone = new Zone(bridgeData)
-    var crystalZone = new Zone(crystalData)
+    // Canvas
+    canvas.setup(1080, 1920)
+
+    // Config
+    input.setup('w')
+    fps.setup(75)
 
     // Sprites
+    var offset = {x: -1400, y: -1400}
+
+    var backgroundSprite = new Sprite({
+        position: {
+            x: offset.x,
+            y: offset.y
+        },
+        image: images.background,
+        moveable: true
+    })
+
+    var bridgeSprite1 = new Sprite({
+        position: {
+            x: 1,
+            y: 1
+        },
+        image: images.bridge1,
+        invis: true
+    })
+
+    var bridgeSprite2 = new Sprite({
+        position: {
+            x: 1,
+            y: 1
+        },
+        image: images.bridge2,
+        invis: true
+    })
+
     var playerSprite = new Sprite({
         position: {
-            x: (Canvas.instance.canvas.width / 2 - images.player.width / 8 + 40),
-            y: (Canvas.instance.canvas.height / 2 - images.player.height / 2)
+            x: (canvas.instance.width / 2 - images.player.width / 8 + 40),
+            y: (canvas.instance.height / 2 - images.player.height / 2)
         },
         image: images.player,
         frames: {
@@ -75,6 +104,15 @@ function setupGame(images) {
             ymax: 4
         },
         scale: 3.5,
+    })
+
+    var foregroundSprite = new Sprite({
+        position: {
+            x: offset.x,
+            y: offset.y
+        }, 
+        moveable: true,
+        image: images.foreground,
     })
 
     var crystalSprite = new Sprite({
@@ -109,26 +147,14 @@ function setupGame(images) {
         moveable: true
     })
 
-    var bridgeSprite1 = new Sprite({
-        position: {
-            x: 1,
-            y: 1
-        },
-        image: images.bridge1,
-        invis: true
-    })
+    // Level
+    level.setup(backgroundSprite, foregroundSprite, offset)
 
-    var bridgeSprite2 = new Sprite({
-        position: {
-            x: 1,
-            y: 1
-        },
-        image: images.bridge2,
-        invis: true
-    })
-
-
-
+    // Zones
+    var boundaryZone = new Zone(boundaryData)
+    var leverZone = new Zone(switchData)
+    var bridgeZone = new Zone(bridgeData)
+    var crystalZone = new Zone(crystalData)
 
     // Player
     var player = new Player({

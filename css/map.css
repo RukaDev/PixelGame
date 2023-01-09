@@ -54,7 +54,7 @@ body
     width: 100%;
     -webkit-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
-    background-color: rgb(230, 228, 228);
+    background-color: #f4b41285;
 }
 
 
@@ -63,7 +63,6 @@ body
     display: flex;
     flex-wrap: wrap;
     padding-left: 0;
-    background: black;
 }
 
 #container span {
@@ -113,6 +112,13 @@ body
     background-color: green;
 }
 
+.glass {
+    background: linear-gradient(100deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
 
 /* Map ------------------------------------------------ */
 .map-container
@@ -130,7 +136,6 @@ body
     height: 640px;
     transition: 0.5s;
     display: flex;
-    background-color: green;
 }
 
 .map span

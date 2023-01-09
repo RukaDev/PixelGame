@@ -8,6 +8,17 @@
     <link rel="stylesheet" href="/css/game.css">
 </head>
 
+<!-- Safari reload -->
+<script>
+  (function () {
+    window.onpageshow = function(event) {
+      if (event.persisted) {
+        window.location.reload();
+      }
+    };
+  })();
+</script>
+
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZMRVR5SEE3"></script>
 <script>
@@ -57,14 +68,10 @@
 
 
 <!-- Classes -->
-<script src = '/js/modules/image.js'></script>
 <script src = '/js/classes/player.js'></script>
-<script src = '/js/classes/input.js'></script>
 <script src = '/js/classes/boundary.js'></script>
 <script src = '/js/classes/sprite.js'></script>
 <script src = '/js/classes/zone.js'></script>
-<script src = '/js/classes/canvas.js'></script>
-<script src = '/js/classes/level.js'></script>
 
 <!-- Util -->
 <script src = '/js/util/math.js'></script>
@@ -73,10 +80,12 @@
 
 
 <!-- Modules -->
+<script src="/js/modules/fps.js"></script>
 <script src="/js/modules/fade.js"></script>
 <script src="/js/modules/image.js"></script>
+<script src="/js/modules/input.js"></script>
 <script src="/js/modules/canvas.js"></script>
-
+<script src="/js/modules/level.js"></script>
 
 <script>
 
@@ -181,7 +190,7 @@
         js: [
         '/js/data/zones/portfolio/boundary.js',
         '/js/data/zones/portfolio/crystal.js',
-        '/js/data/zones/portfolio/sickle.js',
+        '/js/data/zones/portfolio/trap.js',
         '/js/classes/trap.js',
         '/js/classes/crystal.js',
         '/js/scripts/portfolio.js'
@@ -297,12 +306,7 @@
 
   // Setup game
   window.onload = function() {
-    fadeIn()
-    loadImages(info[gameName].images, function(images) {
-      
-      new Input()
-      new Canvas()
-
+    imageLoader(info[gameName].images, function(images) {
       setupGame(images)
     })
   }

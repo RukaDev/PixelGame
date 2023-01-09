@@ -1,17 +1,5 @@
 // For placement, detection, etc of crystals
 
-/* 
-
-Two methods:
-
-Spawn a bunch of crystals and collect them all
-    Use zone.assignBoundaries(crystals) to give each crystal a boundary
-or
-Have one crystal that can change to a set of positions
-
-
-*/
-
 class Crystal {
 
     static crystals = []
@@ -20,8 +8,8 @@ class Crystal {
     static reached(crystals) {
         crystals.forEach(crystal => {
             if (crystal.boundary.collision(Player.instance.playerSprite)) {
-                Canvas.instance.removeElement(crystal.sprite)
-                Canvas.instance.removeElement(crystal.boundary)
+                canvas.instance.removeElement(crystal.sprite)
+                canvas.instance.removeElement(crystal.boundary)
                 crystal.boundary.cleanup()
                 crystal.cleanup(crystals)
             }
@@ -36,7 +24,7 @@ class Crystal {
         this.positionIter = 0
 
         if (this.positionZone) {
-            this.positionZone.proximitySort(Canvas.instance.center)
+            this.positionZone.proximitySort(canvas.center)
             this.sprite.position = {
                 x: positionZone.zone[0].position.x,
                 y: positionZone.zone[0].position.y

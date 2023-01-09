@@ -1,14 +1,14 @@
-class Sickle {
+class Trap {
 
-    static reached(sickles, pos) {
-        sickles.forEach(sickle => {
-            sickle.hitPlayer(pos)
+    static reached(traps, pos) {
+        traps.forEach(trap => {
+            trap.hitPlayer(pos)
         });
     }
 
-    static assignCallback(sickles, callback) {
-        sickles.forEach(sickle => {
-            sickle.callback = callback
+    static assignCallback(traps, callback) {
+        traps.forEach(trap => {
+            trap.callback = callback
         })
     }
 

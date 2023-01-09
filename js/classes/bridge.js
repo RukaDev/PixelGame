@@ -1,15 +1,4 @@
 
-
-/* 
-
-
-Creates a bridge 
-
-Pass the path that prevents the user from moving along the path
-
-
-*/
-
 class Bridge {
 
     static activateAll(bridges) {
@@ -33,12 +22,11 @@ class Bridge {
     // Set bridge
     activate() {
         this.sprite.position = {
-            x:  Level.instance.background.position.x,
-            y:  Level.instance.background.position.y
+            x:  level.bg.position.x,
+            y:  level.bg.position.y
         }
-        Canvas.instance.drawn.splice(3, 0, this.sprite)
-        Canvas.instance.moveable.splice(3, 0, this.sprite)
-
+        canvas.drawn.splice(1, 0, this.sprite)
+        canvas.moveable.splice(1, 0, this.sprite)
 
         // Clear path, don't delete boundaries
         removeFromArrayMultiple(this.boundary.zone, this.boundaries)
@@ -48,7 +36,7 @@ class Bridge {
     deactivate() {
         this.sprite.sprite.invis = true
         this.boundary.zone.push(...this.boundaries)
-        Canvas.instance.removeElement(this.sprite) 
+        canvas.removeElement(this.sprite) 
     }
 
     isActive() {

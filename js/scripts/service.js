@@ -1,72 +1,84 @@
 /*
 
-Objectives that float around to show the path
+Player attacking enemies
 
 */
 
 
 function endGame(animId) {
     window.cancelAnimationFrame(animId)
-    fadeOut('service')
+    fade.out(1.5, function() {
+        setArrayItem('unlocked', 'service')
+        sessionStorage.setItem('fromGame', 'service')
+        history.back()
+    })
 }
 
 function startGame(player, crystal, enemies) {
-
-    const input = Input.getInstance()
-    const canvas = Canvas.getInstance()
 
     // Core loop
     function step() {
         const animId = window.requestAnimationFrame(step)
 
-        // Update objects
-        Enemy.moveAll(enemies)
-        if (crystal.singleReach(player.playerSprite)) {
-            endGame(animId)
-        }
+        if (fps.advance()) {
 
-        // Attack
-        if (input.isPressed(['f']) && player.canAttack()) {
-            player.attack(enemies)
-        } 
-
-        // Movement
-        if (input.isPressed(['w', 'a', 's', 'd'])) {
-            var {x, y} = player.calculatePosition(input.lastKey)
-            if (player.canMove(x, y)) {
-                player.animate(input.lastKey)
-                canvas.moveElements(x, y)
+            // Update objects
+            Enemy.moveAll(enemies)
+            if (crystal.singleReach(player.playerSprite)) {
+                endGame(animId)
             }
-        } else {
-            player.stop()
-        }
 
-        // Display
-        canvas.drawElements()
+            // Attack
+            if (input.isPressed(['f']) && player.canAttack()) {
+                player.attack(enemies)
+            } 
+
+            // Movement
+            if (input.isPressed(['w', 'a', 's', 'd'])) {
+                var {x, y} = player.calculatePosition(input.lastKey)
+                if (player.canMove(x, y)) {
+                    player.animate(input.lastKey)
+                    canvas.moveElements(x, y)
+                }
+            } else {
+                player.stop()
+            }
+
+            // Display
+            canvas.drawElements()
+        }
     }
 
     step()
 }
 
 function setupGame(images) {
+    // Effect
+    fade.in(4)
 
-    // Level
-    new Level(
-        images.background,
-        images.foreground,
-        {x: -210, y: -1000}
-    )
+    // Canvas
+    canvas.setup(1080, 1920)
 
-    // Zones
-    var boundaryZone = new Zone(boundaryData)
-    var enemyZone = new Zone(enemyData)
-    var crystalZone = new Zone(crystalData)
+    // Config
+    input.setup('w')
+    fps.setup(75)
+
+    var offset = {x: -210, y: -1000}
 
     // Sprites
+    var backgroundSprite = new Sprite({
+        position: {
+            x: offset.x,
+            y: offset.y
+        },
+        image: images.background,
+        moveable: true
+    })
+
     var playerSprite = new Sprite({
         position: {
-            x: (Canvas.instance.canvas.width / 2 - images.player.width / 8 + 40),
-            y: (Canvas.instance.canvas.height / 2 - images.player.height / 2)
+            x: (canvas.instance.width / 2 - images.player.width / 8 + 40),
+            y: (canvas.instance.height / 2 - images.player.height / 2)
         },
         image: images.player,
         frames: {
@@ -129,12 +141,29 @@ function setupGame(images) {
         moveable: true
     })
 
+    var foregroundSprite = new Sprite({
+        position: {
+            x: offset.x,
+            y: offset.y
+        },
+        image: images.foreground,
+        moveable: true
+    })
+
+    // Level
+    level.setup(backgroundSprite, foregroundSprite, offset)
+
+    // Zones
+    var boundaryZone = new Zone(boundaryData)
+    var enemyZone = new Zone(enemyData)
+    var crystalZone = new Zone(crystalData)
+
     // Enemies
     var enemy1 = new Enemy(enemySprite1)
     var enemy2 = new Enemy(enemySprite2)
     var enemy3 = new Enemy(enemySprite3)
     var enemies = [enemy1, enemy2, enemy3]
-    enemyZone.assignBoundaries(enemies, Canvas.instance.center)
+    enemyZone.assignBoundaries(enemies, canvas.center)
 
     // Crystals
     var crystal1 = new Crystal({

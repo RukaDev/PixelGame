@@ -1,7 +1,7 @@
 // Image loading and unloading
 
 
-async function loadImages(imageUrls, callback) {
+var imageLoader = async function(imageUrls, callback) {
     const promiseArray = []; // create an array for promises
     const imageDict = {}
 
@@ -20,11 +20,4 @@ async function loadImages(imageUrls, callback) {
 
     await Promise.all(promiseArray); // wait for all the images to be loaded
     callback(imageDict)
-}
-
-function loadZones(zoneUrls) {
-    for (let [key, zoneUrl] of Object.entries(zoneUrls)) {
-        zones[key] = new Zone()
-    }
-
 }

@@ -1,106 +1,115 @@
 /*
 
-Objectives that float around to show the path
+Final level with many additions
 
-"Scene" class that draws everything
-instead of draw
-
-
-
-Don't have the enemies thing inside the attack from the player
-pass the enemies to it as a paramter 
-
-
-if player.canAttack() {
-    player.attack(enemies)
-}
-
-if player.canMove() {
-    player.move(input.lastKey)
-}
-
-if Lever.checkActivation(levers) {
-
-}
-
-
-passing params and not just a map gives more control so i will do that
-
-all things must be created in the start game area
-then the game loop just sets them up
 */
 
 
 function endGame(animId) {
     window.cancelAnimationFrame(animId)
-    fadeOut('contact')
+    fade.out(1.5, function() {
+        setArrayItem('unlocked', 'contact')
+        sessionStorage.setItem('fromGame', 'contact')
+        history.back()
+    })
 }
 
-
 function startGame(player, levers, enemies, crystal) {
-
-    const canvas = Canvas.getInstance()
-    const input = Input.getInstance()
-
     // Core loop
     function step() {
         const animId = window.requestAnimationFrame(step)
 
-        Enemy.moveAll(enemies)
+        if (fps.advance()) {
 
-        // Crystal
-        if (crystal.singleReach(player.playerSprite)) {
-            endGame(animId)
-        }
+            Enemy.moveAll(enemies)
 
-        // Levers
-        if (input.isPressed(['e'])) {
-            Lever.activateCheck(levers, player.playerSprite.position)
-        }
-
-        // Attack
-        if (input.isPressed(['f']) && player.canAttack()) {
-            player.attack(enemies)
-        } 
-        
-        // Movement
-        if (input.isPressed(['w', 'a', 's', 'd'])) {
-            var {x, y} = player.calculatePosition(input.lastKey)
-            if (player.canMove(x, y)) {
-                player.animate(input.lastKey)
-                canvas.moveElements(x, y)
+            // Crystal
+            if (crystal.singleReach(player.playerSprite)) {
+                endGame(animId)
             }
-        } else {
-            player.stop()
-        }
 
-        canvas.drawElements()
+            // Levers
+            if (input.isPressed(['e'])) {
+                Lever.activateCheck(levers, player.playerSprite.position)
+            }
+
+            // Attack
+            if (input.isPressed(['f']) && player.canAttack()) {
+                player.attack(enemies)
+            } 
+            
+            // Movement
+            if (input.isPressed(['w', 'a', 's', 'd'])) {
+                var {x, y} = player.calculatePosition(input.lastKey)
+                if (player.canMove(x, y)) {
+                    player.animate(input.lastKey)
+                    canvas.moveElements(x, y)
+                }
+            } else {
+                player.stop()
+            }
+
+            canvas.drawElements()
+        }
     }
 
     step()
 }
 
 function setupGame(images) {
-    // Sets the bg + fg
-    new Level(
-        images.background,
-        images.foreground,
-        {x: -875, y: -2650}, 
-    )
-    
-    // Zones
-    var boundaryZone = new Zone(boundaryData)
-    var leverZone = new Zone(switchData)
-    var enemyZone = new Zone(enemyData)
-    var sickleZone = new Zone(sickleData)
-    var bridgeZone = new Zone(bridgeBoundaryData)
-    var crystalZone = new Zone(crystalData)
+    // Effect
+    fade.in(4)
 
+    // Canvas
+    canvas.setup(1080, 1920)
+
+    // Config
+    input.setup('w')
+    fps.setup(75)
+  
+    var offset = {x: -875, y: -2550}
+    
     // Sprites
+    var backgroundSprite = new Sprite({
+        position: {
+            x: offset.x,
+            y: offset.y
+        },
+        image: images.background,
+        moveable: true
+    })
+
+    var bridgeSprite1 = new Sprite({
+        position: {
+            x: 1,
+            y: 1
+        },
+        image: images.bridge1,
+        invis: true
+    })
+
+    var bridgeSprite2 = new Sprite({
+        position: {
+            x: 1,
+            y: 1
+        },
+        image: images.bridge2,
+        invis: true
+    })
+
+    var foregroundSprite = new Sprite({
+        position: {
+            x: offset.x,
+            y: offset.y
+        },
+        image: images.lever1,
+        moveable: true
+    })
+
     var playerSprite = new Sprite({
         position: {
-            x: (Canvas.instance.canvas.width / 2 - images.player.width / 8 + 40),
-            y: (Canvas.instance.canvas.height / 2 - images.player.height / 2)
+            x: (canvas.instance.width / 2 - images.player.width / 8 + 40),
+            y: (canvas.instance.height / 2 - images.player.height / 2)
         },
         image: images.player,
         frames: {
@@ -163,24 +172,6 @@ function setupGame(images) {
         moveable: true
     })
 
-    var bridgeSprite1 = new Sprite({
-        position: {
-            x: 1,
-            y: 1
-        },
-        image: images.bridge1,
-        invis: true
-    })
-
-    var bridgeSprite2 = new Sprite({
-        position: {
-            x: 1,
-            y: 1
-        },
-        image: images.bridge2,
-        invis: true
-    })
-
     var leverSprite1 = new Sprite({
         image: images.lever1,
         frames: {
@@ -204,6 +195,17 @@ function setupGame(images) {
         stop: true,
         moveable: true
     })
+
+    // Level
+    level.setup(backgroundSprite, foregroundSprite, offset)
+
+    // Zones
+    var boundaryZone = new Zone(boundaryData)
+    var leverZone = new Zone(switchData)
+    var enemyZone = new Zone(enemyData)
+    var sickleZone = new Zone(sickleData)
+    var bridgeZone = new Zone(bridgeBoundaryData)
+    var crystalZone = new Zone(crystalData)
 
     // Player
     var player = new Player({

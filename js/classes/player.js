@@ -29,7 +29,7 @@ class Player {
         },
     }
 
-    constructor({playerSprite, attackSprite, boundaryZones, mobZones, playerImage, attackImage}) {
+    constructor({playerSprite, attackSprite, boundaryZones, mobZones}) {
         var canvas = document.querySelector('canvas')
 
         this.playerSprite = playerSprite
@@ -87,8 +87,8 @@ class Player {
     attackFinished() {
         this.attacking = false
         this.playerSprite.frames.xval = 1
-        Canvas.instance.drawn.push(this.playerSprite)
-        removeFromArray(Canvas.instance.drawn, this.attackSprite)
+        canvas.drawn.push(this.playerSprite)
+        removeFromArray(canvas.drawn, this.attackSprite)
     }
 
     attack(enemies) {
@@ -107,8 +107,8 @@ class Player {
         this.attackSprite.moving = true
 
         // Update draw elements
-        Canvas.instance.drawn.push(this.attackSprite)
-        removeFromArray(Canvas.instance.drawn, this.playerSprite)
+        canvas.drawn.push(this.attackSprite)
+        removeFromArray(canvas.drawn, this.playerSprite)
     }
 
 }

@@ -12,6 +12,17 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 </head>
 
+<!-- Safari reload -->
+<script>
+  (function () {
+    window.onpageshow = function(event) {
+      if (event.persisted) {
+        window.location.reload();
+      }
+    };
+  })();
+</script>
+
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZMRVR5SEE3"></script>
 <script>
@@ -116,7 +127,7 @@
             </div>
         </div>
 
-        <div id="container">
+        <div id="container" class="glass">
           <span id="left">
             <h1>Collect crystals and unlock content!</h1>
           </span>
@@ -140,16 +151,6 @@
       <section class="contact section" id="contactt"></section>
     </div>
 </body>
-
-<script>
-(function () {
-	window.onpageshow = function(event) {
-		if (event.persisted) {
-			window.location.reload();
-		}
-	};
-})();
-</script>
 
 <script
   src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"
