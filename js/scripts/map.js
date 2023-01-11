@@ -14,6 +14,14 @@ if (!sessionStorage.getItem('unlocked')) {
     setArray("unlocked", [])
 }
 
+/* ============================== typing animation ============================ */
+var typed = new Typed(".typing",{
+    strings:["","Hobbyist Game Developer", "Student", "Developer"],
+    typeSpeed:100,
+    BackSpeed:60,
+    loop:true
+})
+
 
 // Map 
 function mapEnter() {
