@@ -428,6 +428,7 @@ h3.my-profession
     text-align: left;
     line-height: 1.4em;
     font-size: 16px;
+    border-radius: 20px;
 }
 
 .portfolio-img * {
@@ -440,9 +441,10 @@ h3.my-profession
 .portfolio-img .figcaption
 {
     position: absolute;
-    top: calc(77%);
+    top: 265px;
     width: 100%;
     padding: 15px 25px 65px;
+    background-color: black;
 }
 
 
@@ -485,7 +487,7 @@ h3.my-profession
 }
 
 .portfolio-img:hover .figcaption, .portfolio-img.hover .figcaption {
-    top: 60px;
+    top: 150px;
 }
 
 .portfolio-img:hover p, .portfolio-img:hover button, .portfolio-img:hover h3 {

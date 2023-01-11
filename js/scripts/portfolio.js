@@ -51,11 +51,11 @@ function setupGame(images) {
     fade.in(4)
 
     // Canvas
-    canvas.setup(1080, 1920)
+    canvas.create(1080, 1920)
 
     // Config
-    input.setup('w')
-    fps.setup(75)
+    input.register('w')
+    fps.set(75)
   
     // Sprites
     var offset = {x: -875, y: -2450}
@@ -156,7 +156,7 @@ function setupGame(images) {
     })
 
     // Level
-    level.setup(backgroundSprite, foregroundSprite, offset)
+    level.create(backgroundSprite, foregroundSprite, offset)
 
     // Zones
     var boundaryZone = new Zone(boundaryData)

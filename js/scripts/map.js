@@ -9,9 +9,9 @@ var mapSpans
 
 
 // Session stroage
-sessionStorage.clear()
+//sessionStorage.clear()
 if (!sessionStorage.getItem('unlocked')) {
-    setArray("unlocked", ['home', 'about', 'service', 'portfolio', 'contact'])
+    setArray("unlocked", [])
 }
 
 

@@ -30,7 +30,7 @@ ion-icon {
   position: absolute;
   width: 50%;
   height: 100%;
-  transition: 1s all cubic-bezier(.87, .76, .33, .98);
+  transition: 0.75s all cubic-bezier(.87, .76, .33, .98);
   overflow: hidden;
 }
 
@@ -76,7 +76,7 @@ ion-icon {
   top: 45%;
   left: 50%;
   transform: translate(-50%, -50%);
-  transition: all 1s cubic-bezier(.87, .76, .33, .98);
+  transition: all 0.75s cubic-bezier(.87, .76, .33, .98);
 }
 
 .text .subtitle {
