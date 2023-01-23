@@ -540,7 +540,7 @@ h3.my-profession
     margin: 15px 0 5px;
 }
 
-.contact .contact-info-item p
+.contact .contact-info-item a, .contact .contact-info-item p
 {
     font-size: 16px;
     line-height: 25px;
