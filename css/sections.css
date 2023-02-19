@@ -405,7 +405,6 @@ h3.my-profession
 {
     border: 6px solid var(--bg-black-100);
     border-radius: 10px;
-    overflow: hidden;
     cursor: pointer;
 }
 
@@ -441,7 +440,7 @@ h3.my-profession
 .portfolio-img .figcaption
 {
     position: absolute;
-    top: 265px;
+    top: 85%;
     width: 100%;
     padding: 15px 25px 65px;
     background-color: black;
@@ -450,15 +449,15 @@ h3.my-profession
 
 .portfolio-img h3, .portfolio-img p {
     margin: 0 0 10px;
-  }
+}
   
-  .portfolio-img h3 {
+.portfolio-img h3 {
     font-weight: 300;
     font-size: 1.4em;
     line-height: 1.2em;
     font-family: 'Oswald', Arial, sans-serif;
     text-transform: uppercase;
-  }
+}
 
 .portfolio-img p {
     font-size: 0.9em;
@@ -487,11 +486,49 @@ h3.my-profession
 }
 
 .portfolio-img:hover .figcaption, .portfolio-img.hover .figcaption {
-    top: 150px;
+    top: 40%;
 }
 
 .portfolio-img:hover p, .portfolio-img:hover button, .portfolio-img:hover h3 {
     opacity: 1;
+}
+
+/* Tabs */
+.tabs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-left: 100px;
+}
+
+.tabs__label {
+    padding: 0px 30px;
+    cursor: pointer;
+    color: var(--text-black-900);
+    font-size: 1.5em;
+}
+
+.tabs__radio {
+    display: none;
+}
+
+.tabs__content {
+    order: 1;
+    padding-top: 20px;
+    width: 100%;
+    line-height: 1.5;
+    font-size: 0.9em;
+    display: none;
+}
+
+.tabs__radio:checked+.tabs__label {
+    font-weight: bold;
+    color: var(--skin-color);
+    border-bottom: 2px solid #009578;
+}
+
+.tabs__radio:checked+.tabs__label+.tabs__content {
+    display: initial;
 }
 
 
@@ -599,3 +636,6 @@ h3.my-profession
     height: 50px;
     padding: 0 50px;
 }
+
+
+
