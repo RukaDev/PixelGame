@@ -100,8 +100,8 @@ function setupGame(images) {
     })
 
     var trapSprite1 = new Sprite({
-        image: images.spike,
-        frames: {xmax: 6, ymax: 2},
+        image: images.sickle,
+        frames: {xmax: 3, ymax: 4},
         scale: 3.5,
         moveable: true
     })
@@ -176,14 +176,14 @@ function setupGame(images) {
     })
     
     // Sickles
-    var trap1 = new Trap(trapSprite1, {interval: 800, delay: 2000}) 
-    var trap2 = new Trap(trapSprite2, {interval: 3000, delay: 1000})
-    var trap3 = new Trap(trapSprite3, {interval: 3000, delay: 1000})
-    var trap4 = new Trap(trapSprite4, {interval: 3000, delay: 1000})
-    var trap5 = new Trap(trapSprite5, {interval: 3000, delay: 1000})
-    var trap6 = new Trap(trapSprite6, {interval: 3000, delay: 1000})
-    var trap7 = new Trap(trapSprite7, {interval: 3000, delay: 1000})
-    var trap8 = new Trap(trapSprite8, {interval: 3000, delay: 1000})
+    var trap1 = new Trap(trapSprite1, {interval: 3000, delay: 2000}) 
+    var trap2 = new Trap(trapSprite2, {interval: 3000, delay: 2000})
+    var trap3 = new Trap(trapSprite3, {interval: 3000, delay: 2000})
+    var trap4 = new Trap(trapSprite4, {interval: 3000, delay: 2000})
+    var trap5 = new Trap(trapSprite5, {interval: 3000, delay: 2000})
+    var trap6 = new Trap(trapSprite6, {interval: 3000, delay: 2000})
+    var trap7 = new Trap(trapSprite7, {interval: 3000, delay: 2000})
+    var trap8 = new Trap(trapSprite8, {interval: 3000, delay: 2000})
     var traps = [trap1, trap2, trap3, trap4, trap5, trap6, trap7, trap8]
     trapZone.assignBoundaries(traps, player.playerSprite.position)
 

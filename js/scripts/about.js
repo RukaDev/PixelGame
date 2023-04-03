@@ -136,7 +136,7 @@ function setupGame(images) {
     })
 
     var leverSprite2 = new Sprite({
-        image: images.lever2,
+        image: images.lever1,
         frames: {
             xmax: 3,
             ymax: 3.975
