@@ -1,6 +1,6 @@
 /* ============================== typing animation ============================ */
 var typed = new Typed(".typing",{
-    strings:["","Hobbyist Game Developer", "Student", "Developer"],
+    strings:["","Hobbyist Game Developer", "Creator", "Student", "Developer"],
     typeSpeed:100,
     BackSpeed:60,
     loop:true
