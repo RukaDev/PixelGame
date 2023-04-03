@@ -90,6 +90,7 @@ function setActiveStyle(color)
 
 
 /* ========================== theme light and dark mode =========================== */
+/*
 const dayNight = document.querySelector(".day-night");
 dayNight.addEventListener("click", () => {
     dayNight.querySelector("i").classList.toggle("fa-sun");
@@ -109,7 +110,7 @@ window.addEventListener("load", () => {
 
     window.addEventListener('scroll', sectionScroll)
 })
-
+ */
 
 setActiveStyle('color-3')
 document.body.classList.toggle("dark");

@@ -49,9 +49,6 @@
     </div>
   </div>
   <div class="style-switcher">
-    <div class="day-night s-icon">
-      <i class="fas "></i>
-    </div>
     <div class="back-out s-icon">
       <i class="fas fa-sign-out-alt"></i>
     </div>
@@ -61,7 +58,6 @@
   <script>
     ['#home', '#about', '#service', '#portfolio', '#contact'].forEach((val, i) => {
       $(val).load(`/html/sections.html ${val}`, function() {
-        console.log(i)
         if (i == 4) {
           var sc = document.createElement('script')
           sc.src = "/js/scripts/default.js"
