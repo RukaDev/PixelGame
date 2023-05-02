@@ -112,6 +112,8 @@ window.addEventListener("load", () => {
 })
  */
 
+window.addEventListener('scroll', sectionScroll)
+
 setActiveStyle('color-3')
 document.body.classList.toggle("dark");
 
