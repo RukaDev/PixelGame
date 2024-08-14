@@ -34,31 +34,21 @@
       <ul class="nav">
         <li><a href="#home" class="active"><i class="fa fa-home"></i> Home</a></li>
         <li><a href="#portfolio"><i class="fa fa-briefcase"></i>Portfolio</a></li>
-        <li><a href="#about"><i class="fa fa-user"> </i> About</a></li>
-        <li><a href="#service"><i class="fa fa-list"></i>Interests</a></li>
-        <li><a href="#contact"><i class="fa fa-comments"></i>Connect</a></li>
+
       </ul>
     </div>
 
     <div class="main-content">
       <section class="home active section" id="home"></section>
       <section class="portfolio section" id="portfolio"></section>
-      <section class="about section" id="about"> </section>
-      <section class="service section" id="service"></section>
-      <section class="contact section" id="contact"></section>
-    </div>
-  </div>
-  <div class="style-switcher">
-    <div class="back-out s-icon">
-      <i class="fas fa-sign-out-alt"></i>
     </div>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js" referrerpolicy="no-referrer"></script>
   <script>
-    ['#home', '#about', '#service', '#portfolio', '#contact'].forEach((val, i) => {
+    ['#home', '#portfolio'].forEach((val, i) => {
       $(val).load(`/html/sections.html ${val}`, function() {
-        if (i == 4) {
+        if (i == 1) {
           var sc = document.createElement('script')
           sc.src = "/js/scripts/default.js"
           document.body.append(sc)

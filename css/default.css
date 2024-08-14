@@ -20,8 +20,8 @@
 
 body.dark 
 {
-    --bg-black-900:#0a192f;
-    --bg-black-100:#0a192f;
+    --bg-black-900:#111111;
+    --bg-black-100:#111111;
     --bg-black-50:#393939;
     --text-black-900:#ffffff;
     --text-black-700:#e9e9e9;
@@ -153,6 +153,11 @@ ul
     margin-left: -15px;
     margin-right: -15px;
     position: relative;
+}
+
+.home-img {
+    position: relative;
+    top: -80px;
 }
 
 .btn
